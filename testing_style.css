@@ -148,13 +148,13 @@ footer {
     display: none;
 }
 
-@media only screen and (min-width: 900px) {
+@media only screen and (min-width: 1000px) {
     .container {
            grid-template-areas: "a1 a2 a3";
     }
 }
 
-@media only screen and (max-width: 900px) {
+@media only screen and (max-width: 1000px) {
 
     .container {
         grid-template-areas: "a1" "a3" "a2" ;
