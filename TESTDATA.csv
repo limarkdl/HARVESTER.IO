@@ -1,0 +1,81 @@
+field-id,field-culture,field-density,field-complexity,harvester-id,harvester-type,reaper-type
+1,wheat,0.89,0.36,3,Universal,L
+2,soy,0.5,0.29,4,Specialized,L
+3,oats,0.0,0.93,10,Semi-universal,L
+4,wheat,0.53,0.61,5,Specialized,M
+5,oats,0.04,0.43,2,Universal,M
+6,sugar beet,0.96,0.33,3,Semi-universal,M
+7,sugar beet,0.62,0.68,4,Universal,L
+8,sugar beet,0.1,0.59,2,Specialized,S
+9,sunflower,0.22,0.43,7,Universal,M
+10,cotton,0.78,0.36,9,Specialized,S
+11,sugar beet,0.98,0.45,8,Specialized,S
+12,sunflower,0.27,0.34,3,Semi-universal,L
+13,soy,0.19,0.31,10,Semi-universal,L
+14,soy,0.7,0.02,7,Specialized,L
+15,potato,0.82,0.08,2,Semi-universal,M
+16,oats,0.57,0.79,7,Semi-universal,S
+17,soy,0.53,0.7,3,Semi-universal,S
+18,oats,0.8,0.28,8,Universal,L
+19,wheat,0.43,0.59,3,Semi-universal,M
+20,wheat,0.45,0.54,7,Universal,L
+21,sugar beet,0.96,0.03,10,Specialized,L
+22,cotton,0.51,0.79,3,Semi-universal,L
+23,potato,0.07,0.56,7,Semi-universal,L
+24,sunflower,0.0,0.57,7,Specialized,M
+25,soy,0.38,0.56,2,Semi-universal,M
+26,sunflower,0.6,0.84,10,Specialized,L
+27,sunflower,0.78,0.15,3,Universal,M
+28,potato,0.31,0.68,2,Specialized,L
+29,soy,0.18,0.6,4,Specialized,S
+30,sunflower,0.58,0.41,6,Semi-universal,M
+31,corn,0.41,0.04,6,Semi-universal,M
+32,sugar beet,0.47,0.34,3,Semi-universal,M
+33,corn,0.62,0.38,2,Universal,S
+34,potato,0.52,0.16,5,Specialized,S
+35,oats,0.19,0.62,10,Universal,M
+36,corn,0.24,0.19,2,Semi-universal,S
+37,oats,0.81,0.12,8,Universal,M
+38,oats,0.13,0.04,10,Semi-universal,S
+39,potato,0.49,0.5,4,Semi-universal,S
+40,potato,0.94,0.2,5,Semi-universal,L
+41,potato,0.65,0.79,2,Universal,L
+42,wheat,0.12,0.24,3,Specialized,L
+43,oats,0.24,0.37,3,Universal,L
+44,wheat,0.27,0.1,10,Specialized,S
+45,corn,0.34,0.72,5,Semi-universal,L
+46,oats,0.18,0.14,8,Specialized,M
+47,oats,0.05,0.75,10,Specialized,M
+48,soy,0.62,0.55,4,Specialized,S
+49,oats,0.81,0.17,4,Specialized,S
+50,sugar beet,0.86,0.07,4,Semi-universal,S
+51,oats,0.07,0.01,1,Specialized,L
+52,wheat,0.05,0.39,2,Universal,M
+53,oats,0.5,0.54,9,Semi-universal,S
+54,soy,0.52,0.95,2,Semi-universal,M
+55,soy,0.54,0.37,3,Semi-universal,L
+56,sugar beet,0.75,0.12,10,Universal,M
+57,sugar beet,0.86,0.4,3,Semi-universal,S
+58,oats,0.94,0.31,1,Specialized,S
+59,wheat,0.32,0.57,9,Semi-universal,M
+60,sugar beet,0.71,0.93,1,Universal,S
+61,sunflower,0.75,0.46,8,Specialized,L
+62,sunflower,0.05,0.19,9,Universal,S
+63,sunflower,0.03,0.58,9,Semi-universal,M
+64,sunflower,0.4,0.44,1,Specialized,L
+65,wheat,0.4,0.95,9,Universal,L
+66,potato,0.16,0.8,1,Specialized,M
+67,potato,0.48,0.83,10,Semi-universal,S
+68,oats,0.29,0.97,1,Universal,M
+69,corn,0.56,0.14,4,Semi-universal,L
+70,potato,0.65,0.72,6,Semi-universal,M
+71,corn,0.39,0.22,7,Specialized,L
+72,sunflower,1.0,0.51,4,Specialized,M
+73,oats,0.62,0.86,6,Semi-universal,L
+74,sugar beet,0.43,0.58,1,Semi-universal,S
+75,oats,0.39,0.48,9,Universal,S
+76,wheat,0.05,0.37,6,Semi-universal,S
+77,corn,0.5,0.21,3,Universal,M
+78,wheat,0.37,0.78,7,Semi-universal,S
+79,oats,0.36,0.18,3,Semi-universal,M
+80,corn,0.61,0.27,8,Universal,S
