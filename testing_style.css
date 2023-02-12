@@ -1,0 +1,213 @@
+/** {
+      margin: 0 0;
+    }
+    !*.header {
+      background-color: green;
+      text-align: center;
+      grid-area: h;
+    }*!
+    !*.grid {
+      display: flex;
+      flex-direction: row;
+      flex-wrap: wrap;
+      margin-top: 50px;
+      width: 80%;
+
+    }
+
+    .element {
+      background-color: aqua;
+      color: black;
+      width: 10%;
+      aspect-ratio : 1 / 1;
+      text-align: center;
+      !*border: 1px black solid;*!
+      min-width: 100px;
+
+    }*!
+
+    .footer, .header{
+      background-color: black;
+    }
+
+    @media only screen and (min-width: 600px)  {
+      .wrapper {
+        grid-template-areas:
+        "h"
+        "a1"
+        "a2"
+        "a3"
+        "f";
+      }
+    }
+
+
+    .container {
+      grid-template-areas:
+    "h  h  h"
+    "a1 a2 a3"
+    "f  f  f";
+      display: grid;
+      grid-gap: 10px;
+    }
+
+    .sidebar1 {
+      background-color: blue;
+      width: 10%;
+    }
+
+
+    .header { grid-area: h; }
+    .art.first { grid-area: a1; }
+    .art.second { grid-area: a2; }
+    .art.third { grid-area: a3; }
+    .footer { grid-area: f; }*/
+body {
+    background-color:black;
+}
+
+
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    min-height: 60px;
+    background-color: #ff9300;
+    color: white;
+}
+
+.insider {
+    height:100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: end;
+    min-height: 60px;
+    background-color: white;
+
+}
+p {
+    font-size: xx-small;
+}
+
+.mainContent {
+    aspect-ratio: 1/1;
+    width: 95%;
+    height: 100%;
+    text-align: left;
+}
+.bar {
+    height:100%;
+    width: 0.5vw;
+    background-color:red;
+}
+footer {
+
+    width: 100%;
+    background-color: #ff9300;
+    color: white;
+    text-align: center;
+}
+
+.element {
+    background-color: #ffffff;
+    min-height: 100px;
+}
+* {
+    margin: 0 0;
+    /*border: 1px solid red;*/
+    font-family: "Comic Sans MS";
+}
+.container {
+    display: grid;
+    grid-gap: 10px;
+
+    grid-template-areas: "a1 a2 a3";
+}
+.sidebar1 {
+    padding: 5px;
+    background-color: #ffffff;
+    /*Настройки боковой панели как блока в сетке главной*/
+}
+
+.sidebar2 {
+    padding: 5px;
+    background-color: #ffffff;
+    /*Настройки боковой панели как блока в сетке главной*/
+}
+
+#menuIcon {
+    max-height: 70px;
+}
+
+.sidebar1 { grid-area: a1; }
+.mainGrid { grid-area: a2;}
+.sidebar2 { grid-area: a3; }
+
+
+#test {
+    display: none;
+}
+
+@media only screen and (min-width: 900px) {
+    .container {
+           grid-template-areas: "a1 a2 a3";
+    }
+}
+
+@media only screen and (max-width: 900px) {
+
+    .container {
+        grid-template-areas: "a1" "a3" "a2" ;
+    }
+    .element {
+        width: 100% !important;
+    }
+}
+html {
+    height: 100%;
+}
+.wrapper {
+    min-width: 300px;
+    height: 100vh;
+}
+
+.mainGrid {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    width: 100%;
+    gap:5px;
+    justify-content: space-between;
+    background-color:black;
+}
+
+.oats {
+    background-color: #ff9300;
+}
+.wheat {
+    background-color: yellow;
+}
+
+.corn {
+    background-color: green;
+}
+
+.element_grid {
+
+    color: black;
+
+    aspect-ratio : 1 / 1;
+    text-align: center;
+    /*border: 1px black solid;*/
+
+
+}
+
+.sidebar1item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    min-height: 60px;
+
+
+}

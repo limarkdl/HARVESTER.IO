@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>TEST</title>
+    <link rel="stylesheet" href="testing_style.css">
+
+</head>
+<body>
+
+<div class="wrapper">
+
+     <header class="header">
+        <h1>HARVESTER DEMO</h1>
+        <!--<img src="logo.png">-->
+        <img src="menu_icon_light.png" id="menuIcon" >
+
+     </header>
+    <main>
+        <div id="current_field" style="min-height: 200px;color:white"></div>
+        <div class="container">
+            <div class="element sidebar1" id="sidebar1">Tractor: Blue</div>
+            <div class="element mainGrid" id="grid"></div>
+            <div class="element sidebar2">PLAY PAUSE</div>
+        </div>
+    </main>
+    <footer>FOOTER</footer>
+
+</div>
+
+<!--<div class="container">
+  <div class="header">HEADER</div>
+  <div class="art first">SIDEBAR</div>
+  <div class="art second" id="fields_grid"></div>
+  <div class="art third">SIDEBAR</div>
+  <div class="footer">FOOTER</div>
+</div>-->
+
+</body>
+<script>
+    var SpreadSheet = {
+        'Field': [
+            { ID: '1', cultureIs: 'oats', densityIs: 0.29, complexityIs: 0 },
+            { ID: '2', cultureIs: 'wheat', densityIs: 0, complexityIs: 0 },
+            { ID: '3', cultureIs: 'wheat', densityIs: 0.40, complexityIs: 0.45 },
+            { ID: '4', cultureIs: 'wheat', densityIs: 0, complexityIs: 0 },
+            { ID: '5', cultureIs: 'oats', densityIs: 0, complexityIs: 0 },
+            { ID: '6', cultureIs: 'corn', densityIs: 0, complexityIs: 0.45 },
+            { ID: '7', cultureIs: 'oats', densityIs: 0, complexityIs: 0 },
+            { ID: '8', cultureIs: 'wheat', densityIs: 0, complexityIs: 0 },
+            { ID: '9', cultureIs: 'oats', densityIs: 0, complexityIs: 0.78 },
+            { ID: '10', cultureIs: 'oats', densityIs: 0.41, complexityIs: 0 },
+            { ID: '11', cultureIs: 'corn', densityIs: 0, complexityIs: 0 },
+            { ID: '12', cultureIs: 'corn', densityIs: 0.45, complexityIs: 0.45 },
+            { ID: '13', cultureIs: 'wheat', densityIs: 0, complexityIs: 0 },
+            { ID: '14', cultureIs: 'oats', densityIs: 0, complexityIs: 0.78 },
+            { ID: '15', cultureIs: 'corn', densityIs: 0.4, complexityIs: 0 },
+            { ID: '16', cultureIs: 'corn', densityIs: 0, complexityIs: 0.45 },
+            { ID: '17', cultureIs: 'wheat', densityIs: 0, complexityIs: 1 },
+            { ID: '18', cultureIs: 'oats', densityIs: 0, complexityIs: 0 },
+            { ID: '19', cultureIs: 'wheat', densityIs: 0, complexityIs: 0 },
+            { ID: '20', cultureIs: 'wheat', densityIs: 0, complexityIs: 0 },
+            { ID: '21', cultureIs: 'oats', densityIs: 0, complexityIs: 0 },
+            { ID: '22', cultureIs: 'oats', densityIs: 0.12, complexityIs: 1 },
+            { ID: '23', cultureIs: 'oats', densityIs: 0, complexityIs: 0 },
+            { ID: '24', cultureIs: 'wheat', densityIs: 0, complexityIs: 0.45 },
+            { ID: '25', cultureIs: 'oats', densityIs: 0, complexityIs: 0 },
+            { ID: '26', cultureIs: 'corn', densityIs: 0, complexityIs: 0.45 },
+            { ID: '27', cultureIs: 'wheat', densityIs: 0, complexityIs: 0 },
+            { ID: '28', cultureIs: 'corn', densityIs: 0, complexityIs: 0.78 },
+            { ID: '29', cultureIs: 'wheat', densityIs: 0, complexityIs: 0.45 },
+            { ID: '30', cultureIs: 'corn', densityIs: 0, complexityIs: 0.78 },
+            { ID: '31', cultureIs: 'corn', densityIs: 0, complexityIs: 0.78 },
+            { ID: '32', cultureIs: 'corn', densityIs: 0, complexityIs: 0.78 },
+            { ID: '33', cultureIs: 'corn', densityIs: 0, complexityIs: 0.78 },
+            { ID: '34', cultureIs: 'corn', densityIs: 0, complexityIs: 0.78 },
+            { ID: '35', cultureIs: 'corn', densityIs: 0, complexityIs: 0.78 },
+            { ID: '36', cultureIs: 'corn', densityIs: 0, complexityIs: 0.78 },
+            { ID: '37', cultureIs: 'corn', densityIs: 0, complexityIs: 0.78 },
+            { ID: '38', cultureIs: 'corn', densityIs: 0, complexityIs: 0.78 },
+            { ID: '39', cultureIs: 'corn', densityIs: 0, complexityIs: 0.78 },
+            { ID: '40', cultureIs: 'corn', densityIs: 0, complexityIs: 0.78 },
+            { ID: '41', cultureIs: 'corn', densityIs: 0, complexityIs: 0.78 },
+        ],
+        'Vehicle': [
+            { TypeIs: 'Harvester', NameIs: 'JohnDeer'},
+            { TypeIs: 'Harvester', NameIs: 'JohnDeer'},
+            { TypeIs: 'Supporter', NameIs: 'JohnDeer'},
+            { TypeIs: 'Harvester', NameIs: 'JohnDeer'},
+            { TypeIs: 'Harvester', NameIs: 'JohnDeer'},
+            { TypeIs: 'Supporter', NameIs: 'JohnDeer'},
+            { TypeIs: 'Harvester', NameIs: 'JohnDeer'},
+            { TypeIs: 'Harvester', NameIs: 'JohnDeer'},
+            { TypeIs: 'Supporter', NameIs: 'JohnDeer'},
+            { TypeIs: 'Harvester', NameIs: 'JohnDeer'},
+            { TypeIs: 'Harvester', NameIs: 'JohnDeer'},
+            { TypeIs: 'Harvester', NameIs: 'JohnDeer'},
+            { TypeIs: 'Harvester', NameIs: 'JohnDeer'},
+            { TypeIs: 'Harvester', NameIs: 'JohnDeer'},
+            { TypeIs: 'Harvester', NameIs: 'JohnDeer'},
+            { TypeIs: 'Harvester', NameIs: 'JohnDeer'},
+            { TypeIs: 'Harvester', NameIs: 'JohnDeer'},
+            { TypeIs: 'Harvester', NameIs: 'JohnDeer'},
+            { TypeIs: 'Harvester', NameIs: 'JohnDeer'},
+            { TypeIs: 'Harvester', NameIs: 'JohnDeer'},
+            { TypeIs: 'Harvester', NameIs: 'JohnDeer'},
+            { TypeIs: 'Harvester', NameIs: 'JohnDeer'},
+            { TypeIs: 'Harvester', NameIs: 'JohnDeer'},
+            { TypeIs: 'Harvester', NameIs: 'JohnDeer'},
+            { TypeIs: 'Supporter', NameIs: 'JohnDeer'},
+            { TypeIs: 'Harvester', NameIs: 'JohnDeer'},
+            { TypeIs: 'Harvester', NameIs: 'JohnDeer'},
+            { TypeIs: 'Harvester', NameIs: 'JohnDeer'},
+        ]
+    }
+    let numOfFields;
+    let ArrayOfObjects = [];
+    ArrayOfObjects.push();
+    GridOfFieldsRender();
+    let TYPE_OF_FIELDS = [];
+    let TYPE_OF_VEHICLES = [];
+
+    for(let i = 0;i < SpreadSheet.Vehicle.length;i++) {
+        if (!TYPE_OF_VEHICLES.includes(SpreadSheet.Vehicle[i].TypeIs)) {
+            TYPE_OF_VEHICLES.push(SpreadSheet.Vehicle[i].TypeIs);
+        }
+    }
+
+    for(let i = 0;i < SpreadSheet.Field.length;i++) {
+        if (!TYPE_OF_FIELDS.includes(SpreadSheet.Field[i].cultureIs)) {
+            TYPE_OF_FIELDS.push(SpreadSheet.Field[i].cultureIs);
+        }
+    }
+    sideBarRender();
+    function sideBarRender() {
+        document.getElementById("sidebar1").innerHTML = "";
+        for(let i = 0;i < TYPE_OF_FIELDS.length;i++) {
+            let div = document.createElement("div");
+            div.innerHTML = `<div class="sidebar1item">`+ TYPE_OF_FIELDS[i]+`<input type="color"></div>`;
+            document.getElementById("sidebar1").appendChild(div);
+        }
+
+    }
+    if(document.body.clientWidth > 900) {
+        console.log("BIGGER");
+    }
+
+    function GridOfFieldsRender() {
+        let numOfFields = SpreadSheet.Field.length;
+        document.getElementById("grid").innerHTML = "";
+        for(let i = 0;i < numOfFields;i++) {
+            let div = document.createElement("div");
+            div.innerHTML = `<div class="element_grid"><div class="insider"><div class="mainContent `
+                + SpreadSheet.Field[i].cultureIs +`"><p>ID:`
+                +SpreadSheet.Field[i].ID+`</p><p>densityIs:`
+                +SpreadSheet.Field[i].densityIs+`</p></div><div class="bar" style="height:`+ SpreadSheet.Field[i].complexityIs * 100 +`%"></div></div></div>`;
+            let flexWidth =  Math.round(100/Math.sqrt(numOfFields));
+            console.log(flexWidth);
+            div.id = "div" + String(i);
+
+            div.style.width = flexWidth+"vh";
+
+
+            document.getElementById("grid").appendChild(div);
+        }
+    }
+
+
+
+    function outputd(id) {
+        let displayer = document.createElement("div");
+        let idd = "div";
+        displayer.innerHTML = document.getElementById("div")
+        console.log(id);
+    }
+
+    function getRandomColor() {
+        var letters = '0123456789ABCDEF';
+        var color = '#';
+        for (var i = 0; i < 6; i++) {
+            color += letters[Math.floor(Math.random() * 16)];
+        }
+        return color;
+    }
+</script>
+</html>
