@@ -150,7 +150,7 @@
         document.getElementById("grid").innerHTML = "";
         for(let i = 0;i < numOfFields;i++) {
             let div = document.createElement("div");
-            div.innerHTML = `<div class="element_grid"><div class="insider"><div class="mainContent `
+            div.innerHTML = `<div class="element_grid" onclick="alert(` + SpreadSheet.Field[i] + `)"><div class="insider"><div class="mainContent `
                 + SpreadSheet.Field[i].cultureIs +`"><p>ID:`
                 +SpreadSheet.Field[i].ID+`</p><p>densityIs:`
                 +SpreadSheet.Field[i].densityIs+`</p></div><div class="bar" style="height:`+ SpreadSheet.Field[i].complexityIs * 100 +`%"></div></div></div>`;
