@@ -1,69 +1,7 @@
-/** {
-      margin: 0 0;
-    }
-    !*.header {
-      background-color: green;
-      text-align: center;
-      grid-area: h;
-    }*!
-    !*.grid {
-      display: flex;
-      flex-direction: row;
-      flex-wrap: wrap;
-      margin-top: 50px;
-      width: 80%;
-
-    }
-
-    .element {
-      background-color: aqua;
-      color: black;
-      width: 10%;
-      aspect-ratio : 1 / 1;
-      text-align: center;
-      !*border: 1px black solid;*!
-      min-width: 100px;
-
-    }*!
-
-    .footer, .header{
-      background-color: black;
-    }
-
-    @media only screen and (min-width: 600px)  {
-      .wrapper {
-        grid-template-areas:
-        "h"
-        "a1"
-        "a2"
-        "a3"
-        "f";
-      }
-    }
-
-
-    .container {
-      grid-template-areas:
-    "h  h  h"
-    "a1 a2 a3"
-    "f  f  f";
-      display: grid;
-      grid-gap: 10px;
-    }
-
-    .sidebar1 {
-      background-color: blue;
-      width: 10%;
-    }
-
-
-    .header { grid-area: h; }
-    .art.first { grid-area: a1; }
-    .art.second { grid-area: a2; }
-    .art.third { grid-area: a3; }
-    .footer { grid-area: f; }*/
 body {
-    background-color: #757575;
+    background-color: #000000;
+    font-family: "PT Sans", Arial, sans-serif;
+    font-weight: 400;
 }
 
 
@@ -71,7 +9,6 @@ body {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    min-height: 60px;
     background-color: #ff9300;
     color: white;
 }
@@ -86,7 +23,7 @@ body {
 
 }
 p {
-    font-size: xx-small;
+    font-size: x-small;
 }
 
 .mainContent {
@@ -115,7 +52,7 @@ footer {
 * {
     margin: 0 0;
     /*border: 1px solid red;*/
-    font-family: "Comic Sans MS";
+
 }
 .container {
     display: grid;
@@ -128,7 +65,7 @@ footer {
     background-color: #ffffff;
     max-height: 400px;
     overflow: auto;
-    scrollbar-color: #ff9300;
+
     /*Настройки боковой панели как блока в сетке главной*/
 }
 
@@ -162,16 +99,12 @@ footer {
     .container {
         grid-template-areas: "a1" "a3" "a2" ;
     }
-    .element {
-        width: 100% !important;
-    }
+
 }
-html {
-    height: 100%;
-}
+
 .wrapper {
-    min-width: 300px;
-    height: 100vh;
+
+    /*min-height: 100vh;*/
 }
 
 .mainGrid {
