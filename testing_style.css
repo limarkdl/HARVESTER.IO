@@ -63,7 +63,7 @@
     .art.third { grid-area: a3; }
     .footer { grid-area: f; }*/
 body {
-    background-color:black;
+    background-color: #757575;
 }
 
 
@@ -72,7 +72,6 @@ body {
     justify-content: space-between;
     align-items: center;
     min-height: 60px;
-    width: 100%;
     background-color: #ff9300;
     color: white;
 }
@@ -104,7 +103,7 @@ p {
 footer {
 
     width: 100%;
-    background-color: #ff9300;
+    background-color: inherit;
     color: white;
     text-align: center;
 }
@@ -127,6 +126,9 @@ footer {
 .sidebar1 {
     padding: 5px;
     background-color: #ffffff;
+    max-height: 400px;
+    overflow: auto;
+    scrollbar-color: #ff9300;
     /*Настройки боковой панели как блока в сетке главной*/
 }
 
@@ -149,13 +151,13 @@ footer {
     display: none;
 }
 
-@media only screen and (min-width: 1000px) {
+@media only screen and (min-width: 900px) {
     .container {
            grid-template-areas: "a1 a2 a3";
     }
 }
 
-@media only screen and (max-width: 1000px) {
+@media only screen and (max-width: 900px) {
 
     .container {
         grid-template-areas: "a1" "a3" "a2" ;
@@ -178,8 +180,10 @@ html {
     flex-wrap: wrap;
     width: 100%;
     gap:5px;
-    justify-content: space-between;
-    background-color:black;
+    justify-content: center;
+    align-content: center;
+    background-color: inherit;
+    min-height: 300px;
 }
 
 .oats {
@@ -195,7 +199,7 @@ html {
 
 .element_grid {
 
-    color: black;
+    color: #000000;
 
     aspect-ratio : 1 / 1;
     text-align: center;
