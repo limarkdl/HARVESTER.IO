@@ -2,26 +2,71 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>TEST</title>
-    <link rel="stylesheet" href="testing_style.css">
+    <title>DEMO</title>
+    <link rel="stylesheet" href="newStyle.css">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 </head>
 <body>
 <div class="wrapper">
-     <header class="header">
-        <h1>HARVESTER DEMO</h1>
-        <img src="menu_icon_light.png" id="menuIcon" >
-     </header>
-    <main>
-        <div id="current_field" style="min-height: 100px;color:white"><input type="file" id="file-input-id"><p id="readerout"></p></div>
-        <div class="container">
-            <div class="element sidebar1" id="sidebar1"></div>
-            <div class="element mainGrid" id="grid"></div>
-            <div class="element sidebar2"></div>
-        </div>
-    </main>
+  <header>
+      <h2>HARVESTER.IO</h2>
+      <img src="menu_icon_flaticon_com.png" alt="MENU" onclick="toggleTools()">
+  </header>
+  <main>
+      <div class="tools isHidden">
+          <div>IMPORT FILE: <div>Select CSV/TXT file: <input type="file" id="fileReceiver"><p id="resultOfImport"></p></div></div>
+          <br>
+          <div>COLORS: <h6>After color selection please press "APPLY COLORS" in MISC</h6><br><div class="SubSettingsList">
+              <label><input type="color" value="#FFFFFF"></label>
+
+
+          </div>
+          </div>
+          <br>
+          <div>SORTING:<div class="SubSettingsList">
+              <button onclick="sortByID('asc')">SORT BY ID ↓</button>
+              <button onclick="sortByID('desc')">SORT BY ID ↑</button>
+              <button onclick="sortByCrop('asc')">SORT BY CROP ↓</button>
+              <button onclick="sortByCrop('desc')">SORT BY CROP ↑</button>
+              <button onclick="sortByDensity('asc')">SORT BY DENSITY ↓</button>
+              <button onclick="sortByDensity('desc')">SORT BY DENSITY ↑</button>
+              <button onclick="sortByComplexity('asc')">SORT BY COMPLEXITY ↓</button>
+              <button onclick="sortByComplexity('desc')">SORT BY COMPLEXITY ↑</button>
+              <button onclick="sortByHarvester()">SORT BY HARVESTER</button>
+              <button onclick="sortByReaper()">SORT BY REAPER</button>
+          </div>
+          </div>
+          <br>
+          <div>MISC:<div class="SubSettingsList">
+              <button onclick="toggleChosenInfo()">SHOW/HIDE CHOSEN FIELD PANEL</button>
+              <button onclick="GridOfFieldsRender()">APPLY COLORS</button>
+          </div>
+          </div>
+      </div>
+      <div class="mainContent">
+          <div class="chosenInfo isHidden">
+              <div class="chosenInfoElement" style="aspect-ratio: 1/1;background-color: wheat"></div>
+
+              <div class="chosenInfoElement">fieldID:</div>
+              <div class="chosenInfoElement">fieldCrop:</div>
+              <div class="chosenInfoElement">fieldDensity:</div>
+              <div class="chosenInfoElement">fieldComplexity:</div>
+              <div class="chosenInfoElement">harvesterModel:</div>
+              <div class="chosenInfoElement">reaperType:</div>
+
+
+
+          </div>
+          <div class="grid">
+              <b>AWAITING FOR TABLE IMPORT...</b>
+          </div>
+      </div>
+
+  </main>
+  <footer></footer>
+
 </div>
 </body>
 <script type="text/javascript" src="papaparse.min.js"></script>
-<script type="text/javascript" src="script.js"></script>
+<script type="text/javascript" src="newScript.js"></script>
 </html>
