@@ -55,9 +55,11 @@ function getAllTypesReapers() {
 
 
 
-function GridOfFieldsRender() {
+function GridOfFieldsRender(type) {
     let numOfFields = CONFIG.length;
-
+    if (type === "mobile") {
+        var CONST_WIDTH_MOBILE = "20%";
+    }
     document.getElementsByClassName("grid")[0].innerHTML = "";
 
     for(let i = 0;i < numOfFields;i++) {
@@ -71,10 +73,17 @@ function GridOfFieldsRender() {
             +CONFIG[i].harvesterType+`</p><p>`
             +CONFIG[i].reaperType+`</p></div><div class="bar" style="height:`
             +CONFIG[i].fieldComplexity * 100 +`%"></div></div></div>`;
-        let flexWidth =  Math.round(100/Math.sqrt(numOfFields));
+        if (CONST_WIDTH_MOBILE != undefined) {
+
+            div.style.width = CONST_WIDTH_MOBILE;
+        } else {
+            let flexWidth =  Math.round(100/Math.sqrt(numOfFields));
+            div.style.width = '10%';
+        }
+
 
         div.id = "div" + String(i);
-        div.style.width = '10%';
+
         document.getElementsByClassName("grid")[0].appendChild(div);
     }
 }
