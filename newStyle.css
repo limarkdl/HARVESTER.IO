@@ -14,63 +14,25 @@ body {
     flex-direction: column;
 }*/
 
-.chosenInfo {
-    /*border: 1px solid black;*/
-    width: 20%;
-}
-
-.grid {
-    /*border: 1px solid black;*/
-    width: 100%;
-}
-
-.chosenInfoElement {
-    width: 90%;
-    margin: auto auto;
-    border: 2px solid #494949;
-
-}
-
-.mainContent {
-    padding-top: 50px;
-    /*border: 2px black solid;*/
-    display: flex;
-
-    min-height: 500px;
-}
-
-
-
 header {
     background-color: #ff9300;
     display: flex;
     align-items: center;
     justify-content: space-between;
     padding: 15px;
+}
 
+img {
+    height: 25px;
+}
+
+p {
+    font-size: xx-small;
 }
 
 .tools {
     background-color: #d57c00;
-    /*border: 2px black solid;*/
     padding: 10px;
-}
-
-.isShowed {
-    display: block !important;
-}
-
-.isHidden {
-    display: none;
-}
-#resultOfImport {
-    width: fit-content;
-}
-
-.waiter {
-    min-height: 400px;
-    text-align: center;
-
 }
 
 .SubSettingsList {
@@ -85,20 +47,70 @@ header {
     gap: 10px;
 }
 
+#resultOfImport {
+    width: fit-content;
+}
+
+.isShowed {
+    display: block !important;
+}
+
+.isHidden {
+    display: none;
+}
+
+.chosenInfo {
+    width: 20%;
+}
+
+.grid {
+    width: 100%;
+}
+
+.chosenInfoElement {
+    width: 90%;
+    margin: auto auto;
+    border: 2px solid #494949;
+
+}
+
+.mainContent {
+    padding-top: 50px;
+    display: flex;
+    flex-direction: row;
+    min-height: 500px;
+}
+
+.waiter {
+    min-height: 400px;
+    text-align: center;
+}
+
+.grid {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    width: 100%;
+    gap: 5px;
+    justify-content: center;
+    align-content: center;
+    background-color: inherit;
+    min-height: 300px;
+}
+
+.element_grid {
+    color: #000000;
+    aspect-ratio: 1 / 1;
+    text-align: center;
+}
+
 .insider {
-    height:100%;
+    height: 100%;
     display: flex;
     justify-content: space-between;
     align-items: end;
     min-height: 60px;
     background-color: white;
-
-}
-
-img {
-
-    height: 25px;
-
 }
 
 .insiderMainContent {
@@ -108,36 +120,16 @@ img {
     text-align: left;
 }
 
-.element_grid {
-
-    color: #000000;
-
-    aspect-ratio : 1 / 1;
-    text-align: center;
-    /*border: 1px black solid;*/
-
-
-}
-p {
-    font-size: xx-small;
+.bar {
+    height: 100%;
+    width: 1vw;
+    background-color: red;
 }
 
-
-
-.grid {
-
-    display: flex;
-    flex-direction: row;
-    flex-wrap: wrap;
-    width: 100%;
-    gap:5px;
-    justify-content: center;
-    align-content: center;
-    background-color: inherit;
-    min-height: 300px;
-
-}.bar {
-     height:100%;
-     width: 1vw;
-     background-color:red;
- }
+@media only screen and (max-width: 800px) {
+    .mainContent {
+        flex-direction: column;
+        gap: 20px;
+        align-items: center;
+    }
+}
