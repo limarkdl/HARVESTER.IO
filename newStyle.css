@@ -132,4 +132,8 @@ p {
         gap: 20px;
         align-items: center;
     }
+
+    /*.element_grid {
+        width: 10% !important;
+    }*/
 }

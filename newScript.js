@@ -74,7 +74,7 @@ function GridOfFieldsRender() {
         let flexWidth =  Math.round(100/Math.sqrt(numOfFields));
 
         div.id = "div" + String(i);
-        div.style.width = '12%';
+        div.style.width = '10%';
         document.getElementsByClassName("grid")[0].appendChild(div);
     }
 }
