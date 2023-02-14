@@ -133,6 +133,10 @@ p {
         align-items: center;
     }
 
+    .chosenInfo {
+        width: 70%;
+    }
+
     /*.element_grid {
         width: 10% !important;
     }*/
