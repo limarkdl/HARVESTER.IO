@@ -58,7 +58,7 @@ function getAllTypesReapers() {
 function GridOfFieldsRender(type) {
     let numOfFields = CONFIG.length;
     if (type === "mobile") {
-        var CONST_WIDTH_MOBILE = "20%";
+        var CONST_WIDTH_MOBILE = "20vw";
     }
     document.getElementsByClassName("grid")[0].innerHTML = "";
 
