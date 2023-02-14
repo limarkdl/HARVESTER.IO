@@ -18,6 +18,8 @@ let DEFAULT_COLORS = [
     {name: "rice", color: "#FFFFFF"}
 ];
 
+let TOGGLE_ARRAY = ['','mobile'];
+
 // BASIC INITIALIZATION //
 
 
@@ -28,6 +30,11 @@ toggleChosenInfo();
 
 // DYNAMIC LIST OF FIELDS.CROPS / REAPER.TYPES / MACHINE.TYPES
 
+function fixThisGrid() {
+    TOGGLE_ARRAY.reverse();
+    GridOfFieldsRender(TOGGLE_ARRAY[0]);
+    console.log(TOGGLE_ARRAY[0]);
+}
 
 function getAllTypesMachines() {
     for(let i = 0;i < CONFIG.length;i++) {
@@ -249,6 +256,7 @@ function CONFIGPARSER() {
                 GridOfFieldsRender();
                 showToChosenInfo(1);
                 createListOfColors();
+                alert('Если некоректно и слишком крупно/мелко отображаются поля, то, пожалуйста, нажмите кнопку OPTIMIZE GRID в разделе MISC в меню. Это решение временное и чисто для удобства проверки работоспособности с любого устройства');
             }
         });
 
