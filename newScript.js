@@ -64,7 +64,7 @@ function getAllTypesReapers() {
 
 function GridOfFieldsRender(type) {
     let numOfFields = CONFIG.length;
-    if (type === "mobile") {
+    if (TOGGLE_ARRAY[0] === "mobile") {
         var CONST_WIDTH_MOBILE = "20vw";
     }
     document.getElementsByClassName("grid")[0].innerHTML = "";
@@ -85,7 +85,7 @@ function GridOfFieldsRender(type) {
             div.style.width = CONST_WIDTH_MOBILE;
         } else {
             let flexWidth =  Math.round(100/Math.sqrt(numOfFields));
-            div.style.width = '10%';
+            div.style.width = '7%';
         }
 
 
@@ -143,8 +143,21 @@ function resultOfImport(status) {
     }
 }
 
-function sortByCrop() {
-    CONFIG.sort(function(a, b) {
+function sortByCrop(type) {
+    if (type == 'asc') {
+        CONFIG.sort(function(a, b) {
+            const cropA = a.fieldCrop.toUpperCase();
+            const cropB = b.fieldCrop.toUpperCase();
+            if (cropA < cropB) {
+                return -1;
+            }
+            if (cropA > cropB) {
+                return 1;
+            }
+            return 0;
+        });
+    } else {
+        CONFIG.sort(function(a, b) {
             const cropA = a.fieldCrop.toUpperCase();
             const cropB = b.fieldCrop.toUpperCase();
             if (cropA > cropB) {
@@ -155,6 +168,8 @@ function sortByCrop() {
             }
             return 0;
         });
+    }
+
     GridOfFieldsRender();
 }
 
