@@ -4,6 +4,7 @@ let TYPE_OF_REAPERS = [];
 
 let CONFIG = [];
 let currentOBJ;
+let ORIGINAL_CONFIG = [];
 
 let DEFAULT_COLORS = [
     {name: "oats", color: "#C4BA9E"},
@@ -19,6 +20,7 @@ let DEFAULT_COLORS = [
     {name: "rice", color: "#FFFFFF"}
 ];
 
+let zoomF = 1.0;
 
 // BASIC INITIALIZATION //
 
@@ -111,16 +113,24 @@ function GridOfFieldsRender() {
     document.getElementsByClassName("grid")[0].innerHTML = "";
     for(let i = 0;i < CONFIG.length;i++) {
         currentOBJ = CONFIG[i];
+        if (currentOBJ[Object.keys(currentOBJ)[0]] === '') {
+            return;
+        }
         let div = document.createElement("div");
         div.innerHTML = `<div onclick="showToChosenInfo(`
             +currentOBJ[Object.keys(currentOBJ)[0]]+`)" class="element_grid"><div class="insider"><div style="background-color:`
             +getColorFromDEFAULT(currentOBJ[Object.keys(currentOBJ)[1]])+`" class="insiderMainContent `
             +currentOBJ[Object.keys(currentOBJ)[1]]+`"><p>ID:`
-            +currentOBJ[Object.keys(currentOBJ)[0]]+`</p><p>`
-            +currentOBJ[Object.keys(currentOBJ)[1]]+`</p><p>`
-            +currentOBJ[Object.keys(currentOBJ)[2]]+`</p><p>`
-            +currentOBJ[Object.keys(currentOBJ)[4]]+`</p><p>`
-            +currentOBJ[Object.keys(currentOBJ)[5]]+`</p><p>`
+            +currentOBJ[Object.keys(currentOBJ)[0]]+`</p><p class="`
+            +Object.keys(currentOBJ)[1]+`">`
+            +currentOBJ[Object.keys(currentOBJ)[1]]+`</p><p class="`
+            +Object.keys(currentOBJ)[2]+`">`
+            +currentOBJ[Object.keys(currentOBJ)[2]]+`</p><p class="`
+            +Object.keys(currentOBJ)[4]+`">`
+            +currentOBJ[Object.keys(currentOBJ)[4]]+`</p><p class="`
+            +Object.keys(currentOBJ)[5]+`">`
+            +currentOBJ[Object.keys(currentOBJ)[5]]+`</p><p class="`
+            +Object.keys(currentOBJ)[6]+`">`
             +currentOBJ[Object.keys(currentOBJ)[6]]+`</p></div><div class="bar" style="height:`
             +currentOBJ[Object.keys(currentOBJ)[3]] * 100 +`%"></div></div></div>`;
 
@@ -264,6 +274,7 @@ function sortByHarvester() {
     GridOfFieldsRender();
 }
 
+
 function sortByReaper() {
     CONFIG.sort(function(a, b) {
         const reaperA = a.reaperType.toUpperCase();
@@ -283,7 +294,7 @@ function createListOfColors() {
     document.getElementsByClassName('SubSettingsList')[0].innerHTML = '';
     for (let i = 0; i < DEFAULT_COLORS.length; i++) {
         let el = document.createElement("label");
-        el.innerHTML = `<label><input type="color" id="colorN`+i+`" oninput="updateListOfColors('` + DEFAULT_COLORS[i].name + `','colorN`+i+`')" value="`+ DEFAULT_COLORS[i].color +`"> `+DEFAULT_COLORS[i].name+`</label>`;
+        el.innerHTML = `<label><input type="color" id="colorN`+i+`" onchange="updateListOfColors('` + DEFAULT_COLORS[i].name + `','colorN`+i+`')" value="`+ DEFAULT_COLORS[i].color +`"> `+DEFAULT_COLORS[i].name+`</label>`;
         document.getElementsByClassName('SubSettingsList')[0].appendChild(el);
     }
 }
@@ -291,7 +302,17 @@ function createListOfColors() {
 function updateListOfColors(name, colorPickerId) {
     let itemIndex = DEFAULT_COLORS.findIndex(x => x.name === name)
     DEFAULT_COLORS[itemIndex].color = document.getElementById(colorPickerId).value;
+    GridOfFieldsRender();
+}
 
+function zoomIn() {
+    zoomF += 0.1;
+    document.getElementsByClassName('grid')[0].style.scale = String(zoomF);
+}
+
+function zoomOut() {
+    zoomF -= 0.1;
+    document.getElementsByClassName('grid')[0].style.scale = String(zoomF);
 }
 
 function AddColorsToDefault() {
@@ -320,6 +341,7 @@ function CONFIGPARSER() {
                 console.log("Finished:", results.data);
                 resultOfImport(true);
                 CONFIG = results.data;
+                ORIGINAL_CONFIG = results.data;
                 INITIALIZATION();
             }
         });

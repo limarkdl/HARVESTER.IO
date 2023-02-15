@@ -37,7 +37,7 @@ p {
 .tools {
     background-color: #FFAD4D;
     padding: 10px;
-
+    z-index: 2000;
 }
 
 .SubSettingsList {
@@ -47,6 +47,7 @@ p {
     overflow: auto;
     display: flex;
     justify-content: left;
+    align-items: center;
     flex-direction: row;
     flex-wrap: wrap;
     gap: 10px;
@@ -100,6 +101,7 @@ p {
     min-height: 300px;
     width: 100%;
     min-width: 350px;
+    z-index: 1;
 }
 
 .element_grid {
@@ -107,6 +109,10 @@ p {
     aspect-ratio: 1 / 1;
     text-align: center;
     border: 1px black solid;
+    z-index: 2;
+}
+button:hover {
+    background-color: #b6b6b6;
 }
 
 .insider {
@@ -115,7 +121,7 @@ p {
     justify-content: space-between;
     align-items: end;
     min-height: 60px;
-
+    z-index: 3;
 }
 
 .insiderMainContent {
@@ -123,12 +129,14 @@ p {
     width: 96%;
     height: 100%;
     text-align: left;
+    z-index: 4;
 }
 
 .bar {
     height: 100%;
     width: 1vw;
     background-color: red;
+    z-index: 4;
 }
 
 @media only screen and (max-width: 800px) {
