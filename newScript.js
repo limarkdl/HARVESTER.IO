@@ -19,19 +19,32 @@ let DEFAULT_COLORS = [
     {name: "buckwheat", color: "#9C6217"},
     {name: "rice", color: "#FFFFFF"}
 ];
-
+// TRICK
+window.onerror = stoperror;
+//
 let zoomF = 1.0;
 
 // BASIC INITIALIZATION //
 
+let showOnly;
 
-
-
+function stoperror() {
+    return true;
+}
 
 //// FUNCTIONS LIST
 
 // DYNAMIC LIST OF FIELDS.CROPS / REAPER.TYPES / MACHINE.TYPES
 
+function DamagedEraser() {
+
+    for(let i = 0; i < CONFIG.length; i++) {
+        let current = CONFIG[i];
+        if(current[Object.keys(current)[0]] === '') {
+            CONFIG.splice(i, 1);
+        }
+    }
+}
 
 
 function getAllTypesMachines() {
@@ -96,6 +109,7 @@ function calculateWidthForelement() {
 
 
 function INITIALIZATION() {
+    DamagedEraser();
     getAllTypesCrops();
     getAllTypesMachines();
     getAllTypesReapers();
@@ -113,9 +127,7 @@ function GridOfFieldsRender() {
     document.getElementsByClassName("grid")[0].innerHTML = "";
     for(let i = 0;i < CONFIG.length;i++) {
         currentOBJ = CONFIG[i];
-        if (currentOBJ[Object.keys(currentOBJ)[0]] === '') {
-            return;
-        }
+
         let div = document.createElement("div");
         div.innerHTML = `<div onclick="showToChosenInfo(`
             +currentOBJ[Object.keys(currentOBJ)[0]]+`)" class="element_grid"><div class="insider"><div style="background-color:`
@@ -290,12 +302,26 @@ function sortByReaper() {
     GridOfFieldsRender();
 }
 
+
+
 function createListOfColors() {
     document.getElementsByClassName('SubSettingsList')[0].innerHTML = '';
+    let IsFound = false;
+    let FIndex;
     for (let i = 0; i < DEFAULT_COLORS.length; i++) {
-        let el = document.createElement("label");
-        el.innerHTML = `<label><input type="color" id="colorN`+i+`" onchange="updateListOfColors('` + DEFAULT_COLORS[i].name + `','colorN`+i+`')" value="`+ DEFAULT_COLORS[i].color +`"> `+DEFAULT_COLORS[i].name+`</label>`;
-        document.getElementsByClassName('SubSettingsList')[0].appendChild(el);
+        for (let j = 0;j < TYPE_OF_CROPS.length;j++) {
+            if (DEFAULT_COLORS.find(c => c.name === TYPE_OF_CROPS[i])) {
+                IsFound = true;
+                FIndex = DEFAULT_COLORS.findIndex(c => c.name === TYPE_OF_CROPS[i]);
+            } else {
+                IsFound = false;
+            }
+        }
+        if (IsFound) {
+            let el = document.createElement("label");
+            el.innerHTML = `<label><input type="color" id="colorN`+i+`" onchange="updateListOfColors('` + DEFAULT_COLORS[FIndex].name + `','colorN`+i+`')" value="`+ DEFAULT_COLORS[FIndex].color +`"> `+DEFAULT_COLORS[FIndex].name+`</label>`;
+            document.getElementsByClassName('SubSettingsList')[0].appendChild(el);
+        }
     }
 }
 
@@ -342,6 +368,7 @@ function CONFIGPARSER() {
                 resultOfImport(true);
                 CONFIG = results.data;
                 ORIGINAL_CONFIG = results.data;
+                DamagedEraser();
                 INITIALIZATION();
             }
         });
