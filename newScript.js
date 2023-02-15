@@ -105,7 +105,7 @@ function GridOfFieldsRender(type) {
             calculatedWidth = '9%';
         } else if (window.innerWidth < 1400) {
             calculatedWidth = '8%';
-        } else if (window.innerWidth < 1500) {
+        } else if (window.innerWidth < 1550) {
             calculatedWidth = '7%';
         } else {
             calculatedWidth = '6%';
