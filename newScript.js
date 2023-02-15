@@ -4,7 +4,8 @@ let TYPE_OF_REAPERS = [];
 
 let CONFIG = [];
 let currentOBJ;
-let ORIGINAL_CONFIG = [];
+let CHOO;
+
 
 let DEFAULT_COLORS = [
     {name: "oats", color: "#C4BA9E"},
@@ -19,6 +20,11 @@ let DEFAULT_COLORS = [
     {name: "buckwheat", color: "#9C6217"},
     {name: "rice", color: "#FFFFFF"}
 ];
+
+let DEFAULT_COLORS_INI;
+
+BackUp();
+
 // TRICK
 //
 let zoomF = 1.0;
@@ -27,9 +33,7 @@ let zoomF = 1.0;
 
 let showOnly;
 
-function stoperror() {
-    return true;
-}
+
 
 //// FUNCTIONS LIST
 
@@ -73,6 +77,22 @@ function getAllTypesReapers() {
     }
 }
 
+function restoreToDefault() {
+    DEFAULT_COLORS = [
+        {name: "oats", color: "#C4BA9E"},
+        {name: "wheat", color: "#F5DEB3"},
+        {name: "corn", color: "#FBEC5D"},
+        {name: "sunflower", color: "#FFC512"},
+        {name: "sugar beet", color: "#D8D8D8"},
+        {name: "beans", color: "#811E1E"},
+        {name: "soy", color: "#D2C82E"},
+        {name: "cotton", color: "#EEEDDE"},
+        {name: "rye", color: "#DAE71E"},
+        {name: "buckwheat", color: "#9C6217"},
+        {name: "rice", color: "#FFFFFF"}
+    ];
+}
+
 function calculateWidthForelement() {
     let calculatedWidth;
     if (window.innerWidth < 350) {
@@ -112,17 +132,26 @@ function INITIALIZATION() {
     getAllTypesCrops();
     getAllTypesMachines();
     getAllTypesReapers();
+    clearListOfColors();
     AddColorsToDefault();
     createListOfColors();
     button_update();
     GridOfFieldsRender();
 }
 
+function BackUp() {
+    DEFAULT_COLORS_INI = DEFAULT_COLORS;
+}
 
+function clearListOfColors() {
+    document.getElementsByClassName('SubSettingsList')[0].innerHTML = '';
 
+}
 
-
-function GridOfFieldsRender() {
+function GridOfFieldsRender(type) {
+    /*if (type === 'ini') {
+        CONFIG = ORIGINAL_CONFIG;
+    }*/
     document.getElementsByClassName("grid")[0].innerHTML = "";
     for(let i = 0;i < CONFIG.length;i++) {
         currentOBJ = CONFIG[i];
@@ -172,14 +201,15 @@ function getRandomColor() {
 
 
 function button_update() {
-    document.getElementsByClassName('SubSettingsList')[1].children[0].innerHTML = 'SORTING BY ' + Object.keys(currentOBJ)[0] + '↓';
-    document.getElementsByClassName('SubSettingsList')[1].children[1].innerHTML = 'SORTING BY ' + Object.keys(currentOBJ)[0] + '↑';
-    document.getElementsByClassName('SubSettingsList')[1].children[2].innerHTML = 'SORTING BY ' + Object.keys(currentOBJ)[1] + '↓';
-    document.getElementsByClassName('SubSettingsList')[1].children[3].innerHTML = 'SORTING BY ' + Object.keys(currentOBJ)[1] + '↑';
-    document.getElementsByClassName('SubSettingsList')[1].children[4].innerHTML = 'SORTING BY ' + Object.keys(currentOBJ)[2] + '↓';
-    document.getElementsByClassName('SubSettingsList')[1].children[5].innerHTML = 'SORTING BY ' + Object.keys(currentOBJ)[2] + '↑';
-    document.getElementsByClassName('SubSettingsList')[1].children[6].innerHTML = 'SORTING BY ' + Object.keys(currentOBJ)[3] + '↓';
-    document.getElementsByClassName('SubSettingsList')[1].children[7].innerHTML = 'SORTING BY ' + Object.keys(currentOBJ)[3] + '↑';
+
+    document.getElementsByClassName('SubSettingsList')[1].children[1].innerHTML = 'SORTING BY ' + Object.keys(currentOBJ)[0] + '↓';
+    document.getElementsByClassName('SubSettingsList')[1].children[2].innerHTML = 'SORTING BY ' + Object.keys(currentOBJ)[0] + '↑';
+    document.getElementsByClassName('SubSettingsList')[1].children[3].innerHTML = 'SORTING BY ' + Object.keys(currentOBJ)[1] + '↓';
+    document.getElementsByClassName('SubSettingsList')[1].children[4].innerHTML = 'SORTING BY ' + Object.keys(currentOBJ)[1] + '↑';
+    document.getElementsByClassName('SubSettingsList')[1].children[5].innerHTML = 'SORTING BY ' + Object.keys(currentOBJ)[2] + '↓';
+    document.getElementsByClassName('SubSettingsList')[1].children[6].innerHTML = 'SORTING BY ' + Object.keys(currentOBJ)[2] + '↑';
+    document.getElementsByClassName('SubSettingsList')[1].children[7].innerHTML = 'SORTING BY ' + Object.keys(currentOBJ)[3] + '↓';
+    document.getElementsByClassName('SubSettingsList')[1].children[8].innerHTML = 'SORTING BY ' + Object.keys(currentOBJ)[3] + '↑';
 }
 
 function showToChosenInfo(ID) {
@@ -352,12 +382,12 @@ function updateListOfColors(name, colorPickerId) {
 }
 
 function zoomIn() {
-    zoomF += 0.1;
+    zoomF += 0.05;
     document.getElementsByClassName('grid')[0].style.scale = String(zoomF);
 }
 
 function zoomOut() {
-    zoomF -= 0.1;
+    zoomF -= 0.05;
     document.getElementsByClassName('grid')[0].style.scale = String(zoomF);
 }
 
@@ -366,7 +396,7 @@ function AddColorsToDefault() {
         let currentOBJ = CONFIG[i];
         let named = currentOBJ[Object.keys(currentOBJ)[1]];
         if (DEFAULT_COLORS.find(o => o.name === named)) {
-            console.log("FOUND" + name);
+            console.log("FOUND" + named);
         } else {
             console.log("DIDN'T FOUND");
             let OBJECT = {name: named, color: getRandomColor() };
@@ -387,7 +417,10 @@ function CONFIGPARSER() {
                 console.log("Finished:", results.data);
                 resultOfImport(true);
                 CONFIG = results.data;
-                ORIGINAL_CONFIG = results.data;
+                console.log("CONFIG IS DATA");
+                TYPE_OF_CROPS.length = 0;
+                console.log("CHOO IS DATA");
+                restoreToDefault();
                 DamagedEraser();
                 INITIALIZATION();
             }
@@ -400,7 +433,11 @@ function CONFIGPARSER() {
 }
 }
 
-document.getElementById("fileReceiver").addEventListener('change', CONFIGPARSER);
+document.getElementById("fileReceiver").addEventListener('change', function(){
+
+
+    CONFIGPARSER();
+});
 window.addEventListener('resize', function(){GridOfFieldsRender()});
 
 

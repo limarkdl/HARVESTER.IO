@@ -66,6 +66,8 @@ p {
 
 .chosenInfo {
     width: 20%;
+    display: flex;
+    flex-direction: column;
 }
 
 
@@ -140,6 +142,11 @@ button:hover {
     z-index: 4;
 }
 
+.flexInfo {
+    display: flex;
+    flex-direction: column;
+}
+
 @media only screen and (max-width: 800px) {
     .mainContent {
         flex-direction: column;
@@ -148,7 +155,11 @@ button:hover {
     }
 
     .chosenInfo {
-        width: 70%;
+        width: 100%;
+        flex-direction: row;
+    }
+    .border {
+        width: 50%;
     }
 
     /*.element_grid {
