@@ -88,11 +88,11 @@ function GridOfFieldsRender(type) {
         if (window.innerWidth < 350) {
             calculatedWidth = '30%';
         } else if (window.innerWidth < 400) {
-             calculatedWidth = '22%';
+             calculatedWidth = '30%';
         } else if (window.innerWidth < 500){
-            calculatedWidth = '19%';
+            calculatedWidth = '23%';
         } else if (window.innerWidth < 600) {
-            calculatedWidth = '17%';
+            calculatedWidth = '19%';
         } else if (window.innerWidth < 700) {
             calculatedWidth = '15%';
         }

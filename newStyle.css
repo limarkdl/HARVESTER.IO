@@ -79,7 +79,10 @@ p {
     padding-top: 50px;
     display: flex;
     flex-direction: row;
-    min-height: 500px;
+    min-height: 400px;
+    max-width: 1920px;
+    margin-left: auto;
+    margin-right: auto;
 }
 
 .waiter {
@@ -103,6 +106,7 @@ p {
     color: #000000;
     aspect-ratio: 1 / 1;
     text-align: center;
+    border: 1px black solid;
 }
 
 .insider {
