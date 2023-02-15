@@ -45,19 +45,10 @@ function getAllTypesMachines() {
 
 function getAllTypesCrops() {
     for(let i = 0;i < CONFIG.length;i++) {
-        let currentField = CONFIG[i].fieldCrop;
-
-        if (!TYPES_OF_CROPS.includes(currentField)) {
-            TYPES_OF_CROPS.push(currentField);
-        }
-
-        let obj = DEFAULT_COLORS.find(o => o.name === currentField);
-        if (obj != undefined) {
-            return obj.color;
-            DEFAULT_COLORS.push(obj);
+        if (!TYPES_OF_CROPS.includes(CONFIG[i].fieldCrop)) {
+            TYPES_OF_CROPS.push(CONFIG[i].fieldCrop);
         }
     }
-
 }
 
 function getAllTypesReapers() {
@@ -71,7 +62,7 @@ function getAllTypesReapers() {
 
 
 function GridOfFieldsRender(type) {
-    /*if(Date.now() - lastUsage < 00) {
+    /*if(Date.now() - lastUsage < 500) {
         console.log("TOO OFTEN");
         return;
     }*/
@@ -116,7 +107,7 @@ function GridOfFieldsRender(type) {
             calculatedWidth = '8%';
         } else if (window.innerWidth < 1500) {
             calculatedWidth = '7%';
-        } else  {
+        } else {
             calculatedWidth = '6%';
         }
 
@@ -272,9 +263,7 @@ function sortByReaper() {
 
 function createListOfColors() {
     document.getElementsByClassName('SubSettingsList')[0].innerHTML = '';
-
-
-    for (let i = 0; i < TYPES_OF_CROPS.length; i++) {
+    for (let i = 0; i < DEFAULT_COLORS.length; i++) {
         let el = document.createElement("label");
         el.innerHTML = `<label><input type="color" id="colorN`+i+`" oninput="updateListOfColors('` + DEFAULT_COLORS[i].name + `','colorN`+i+`')" value="`+ DEFAULT_COLORS[i].color +`"> `+DEFAULT_COLORS[i].name+`</label>`;
         document.getElementsByClassName('SubSettingsList')[0].appendChild(el);
