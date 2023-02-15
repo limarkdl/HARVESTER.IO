@@ -20,6 +20,9 @@ let DEFAULT_COLORS = [
 
 let TOGGLE_ARRAY = ['','mobile'];
 
+
+let lastUsage;
+
 // BASIC INITIALIZATION //
 
 
@@ -30,11 +33,7 @@ let TOGGLE_ARRAY = ['','mobile'];
 
 // DYNAMIC LIST OF FIELDS.CROPS / REAPER.TYPES / MACHINE.TYPES
 
-function fixThisGrid() {
-    TOGGLE_ARRAY.reverse();
-    GridOfFieldsRender(TOGGLE_ARRAY[0]);
-    console.log(TOGGLE_ARRAY[0]);
-}
+
 
 function getAllTypesMachines() {
     for(let i = 0;i < CONFIG.length;i++) {
@@ -63,6 +62,10 @@ function getAllTypesReapers() {
 
 
 function GridOfFieldsRender(type) {
+    if(Date.now() - lastUsage < 1000) {
+        console.log("TOO OFTEN");
+        return;
+    }
     let numOfFields = CONFIG.length;
     if (TOGGLE_ARRAY[0] === "mobile") {
         var CONST_WIDTH_MOBILE = "20vw";
@@ -80,22 +83,39 @@ function GridOfFieldsRender(type) {
             +CONFIG[i].harvesterType+`</p><p>`
             +CONFIG[i].reaperType+`</p></div><div class="bar" style="height:`
             +CONFIG[i].fieldComplexity * 100 +`%"></div></div></div>`;
-        if (CONST_WIDTH_MOBILE != undefined) {
 
-            div.style.width = CONST_WIDTH_MOBILE;
+        let calculatedWidth;
+
+        if (window.innerWidth < 500){
+            calculatedWidth = '19%';
+        } else if (window.innerWidth < 600) {
+            calculatedWidth = '17%';
+        } else if (window.innerWidth < 700) {
+            calculatedWidth = '15%';
+        }
+        else if  (window.innerWidth < 800) {
+            calculatedWidth = '12%';
+        } else if (window.innerWidth < 1000) {
+            calculatedWidth = '10%';
+        } else if(window.innerWidth < 1100) {
+            calculatedWidth = '9%';
+        }
+        else if (window.innerWidth < 1300) {
+            calculatedWidth = '8%';
         } else {
-            let flexWidth =  Math.round(100/Math.sqrt(numOfFields));
-            div.style.width = '7%';
-
+            calculatedWidth = '6%';
         }
 
+
+
+        div.style.width = calculatedWidth;
 
         div.id = "div" + String(i);
 
         document.getElementsByClassName("grid")[0].appendChild(div);
+        lastUsage = Date.now();
     }
 }
-
 
 function getColor(cropName) {
     let obj = DEFAULT_COLORS.find(o => o.name === cropName);
@@ -283,3 +303,6 @@ function CONFIGPARSER() {
 }
 
 document.getElementById("fileReceiver").addEventListener('change', CONFIGPARSER);
+window.addEventListener('resize', function(){GridOfFieldsRender()});
+
+
