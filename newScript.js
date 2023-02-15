@@ -113,10 +113,12 @@ function INITIALIZATION() {
     getAllTypesCrops();
     getAllTypesMachines();
     getAllTypesReapers();
-    GridOfFieldsRender();
-    showToChosenInfo(1);
     AddColorsToDefault();
     createListOfColors();
+    GridOfFieldsRender();
+    showToChosenInfo(1);
+
+
     button_update();
 
 }
@@ -344,7 +346,7 @@ function zoomOut() {
 function AddColorsToDefault() {
     for (let i = 0; i < CONFIG.length;i++) {
         let currentOBJ = CONFIG[i];
-        let named = String(currentOBJ[Object.keys(currentOBJ)[1]]);
+        let named = currentOBJ[Object.keys(currentOBJ)[1]];
         if (DEFAULT_COLORS.find(o => o.name === named)) {
             console.log("FOUND" + name);
         } else {
