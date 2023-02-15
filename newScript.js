@@ -85,8 +85,11 @@ function GridOfFieldsRender(type) {
             +CONFIG[i].fieldComplexity * 100 +`%"></div></div></div>`;
 
         let calculatedWidth;
-
-        if (window.innerWidth < 500){
+        if (window.innerWidth < 350) {
+            calculatedWidth = '30%';
+        } else if (window.innerWidth < 400) {
+             calculatedWidth = '22%';
+        } else if (window.innerWidth < 500){
             calculatedWidth = '19%';
         } else if (window.innerWidth < 600) {
             calculatedWidth = '17%';

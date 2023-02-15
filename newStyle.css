@@ -96,7 +96,7 @@ p {
     align-content: center;
     min-height: 300px;
     width: 100%;
-
+    min-width: 350px;
 }
 
 .element_grid {
