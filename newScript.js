@@ -45,10 +45,19 @@ function getAllTypesMachines() {
 
 function getAllTypesCrops() {
     for(let i = 0;i < CONFIG.length;i++) {
-        if (!TYPES_OF_CROPS.includes(CONFIG[i].fieldCrop)) {
-            TYPES_OF_CROPS.push(CONFIG[i].fieldCrop);
+        let currentField = CONFIG[i].fieldCrop;
+
+        if (!TYPES_OF_CROPS.includes(currentField)) {
+            TYPES_OF_CROPS.push(currentField);
+        }
+
+        let obj = DEFAULT_COLORS.find(o => o.name === currentField);
+        if (obj != undefined) {
+            return obj.color;
+            DEFAULT_COLORS.push(obj);
         }
     }
+
 }
 
 function getAllTypesReapers() {
@@ -62,10 +71,10 @@ function getAllTypesReapers() {
 
 
 function GridOfFieldsRender(type) {
-    if(Date.now() - lastUsage < 1000) {
+    /*if(Date.now() - lastUsage < 00) {
         console.log("TOO OFTEN");
         return;
-    }
+    }*/
     let numOfFields = CONFIG.length;
     if (TOGGLE_ARRAY[0] === "mobile") {
         var CONST_WIDTH_MOBILE = "20vw";
@@ -94,19 +103,22 @@ function GridOfFieldsRender(type) {
             calculatedWidth = '15%';
         }
         else if  (window.innerWidth < 800) {
+            calculatedWidth = '13%';
+        } else if (window.innerWidth < 900) {
             calculatedWidth = '12%';
         } else if (window.innerWidth < 1000) {
-            calculatedWidth = '10%';
+            calculatedWidth = '11%';
         } else if(window.innerWidth < 1100) {
+            calculatedWidth = '10%';
+        } else if (window.innerWidth < 1300) {
             calculatedWidth = '9%';
-        }
-        else if (window.innerWidth < 1300) {
+        } else if (window.innerWidth < 1400) {
             calculatedWidth = '8%';
-        } else {
+        } else if (window.innerWidth < 1500) {
+            calculatedWidth = '7%';
+        } else  {
             calculatedWidth = '6%';
         }
-
-
 
         div.style.width = calculatedWidth;
 
@@ -260,7 +272,9 @@ function sortByReaper() {
 
 function createListOfColors() {
     document.getElementsByClassName('SubSettingsList')[0].innerHTML = '';
-    for (let i = 0; i < DEFAULT_COLORS.length; i++) {
+
+
+    for (let i = 0; i < TYPES_OF_CROPS.length; i++) {
         let el = document.createElement("label");
         el.innerHTML = `<label><input type="color" id="colorN`+i+`" oninput="updateListOfColors('` + DEFAULT_COLORS[i].name + `','colorN`+i+`')" value="`+ DEFAULT_COLORS[i].color +`"> `+DEFAULT_COLORS[i].name+`</label>`;
         document.getElementsByClassName('SubSettingsList')[0].appendChild(el);
