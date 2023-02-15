@@ -6,7 +6,7 @@ let CONFIG = [];
 let currentOBJ;
 let CHOO;
 
-
+setTimeout(setBackground(),10000);
 let DEFAULT_COLORS = [
     {name: "oats", color: "#C4BA9E"},
     {name: "wheat", color: "#F5DEB3"},
@@ -137,6 +137,7 @@ function INITIALIZATION() {
     createListOfColors();
     button_update();
     GridOfFieldsRender();
+
 }
 
 function BackUp() {
@@ -148,18 +149,27 @@ function clearListOfColors() {
 
 }
 
+function setBackground() {
+    for(let i = 0; i < CONFIG.length;i++) {
+        let nameOfRequiredColor = document.getElementsByClassName('insiderMainContent')[i].classList[1];
+        let requiredIndexOfColor = DEFAULT_COLORS.findIndex( c => c.name === nameOfRequiredColor);
+        if(typeof(requiredIndexOfColor) != 'undefined') {
+            document.getElementsByClassName('insiderMainContent')[i].style.backgroundColor = DEFAULT_COLORS[requiredIndexOfColor].color;
+        }
+
+
+    }
+}
+
 function GridOfFieldsRender(type) {
-    /*if (type === 'ini') {
-        CONFIG = ORIGINAL_CONFIG;
-    }*/
+
     document.getElementsByClassName("grid")[0].innerHTML = "";
     for(let i = 0;i < CONFIG.length;i++) {
         currentOBJ = CONFIG[i];
 
         let div = document.createElement("div");
         div.innerHTML = `<div onclick="showToChosenInfo(`
-            +currentOBJ[Object.keys(currentOBJ)[0]]+`)" class="element_grid"><div class="insider"><div style="background-color:`
-            +getColorFromDEFAULT(currentOBJ[Object.keys(currentOBJ)[1]])+`" class="insiderMainContent `
+            +currentOBJ[Object.keys(currentOBJ)[0]]+`)" class="element_grid"><div class="insider"><div  class="insiderMainContent `
             +currentOBJ[Object.keys(currentOBJ)[1]]+`"><p>ID:`
             +currentOBJ[Object.keys(currentOBJ)[0]]+`</p><p class="`
             +Object.keys(currentOBJ)[1]+`">`
@@ -174,10 +184,15 @@ function GridOfFieldsRender(type) {
             +currentOBJ[Object.keys(currentOBJ)[6]]+`</p></div><div class="bar" style="height:`
             +currentOBJ[Object.keys(currentOBJ)[3]] * 100 +`%"></div></div></div>`;
 
+
         div.style.width = calculateWidthForelement();
         div.id = "div" + String(i);
         document.getElementsByClassName("grid")[0].appendChild(div);
     }
+    if(type != 'resize') {
+        setTimeout(function(){setBackground()},50);
+    }
+
 }
 
 function getColorFromDEFAULT(cropName) {
@@ -378,7 +393,8 @@ function createListOfColors() {
 function updateListOfColors(name, colorPickerId) {
     let itemIndex = DEFAULT_COLORS.findIndex(x => x.name === name)
     DEFAULT_COLORS[itemIndex].color = document.getElementById(colorPickerId).value;
-    GridOfFieldsRender();
+    setTimeout(function(){setBackground()},200);
+
 }
 
 function zoomIn() {
@@ -423,6 +439,7 @@ function CONFIGPARSER() {
                 restoreToDefault();
                 DamagedEraser();
                 INITIALIZATION();
+
             }
         });
 
