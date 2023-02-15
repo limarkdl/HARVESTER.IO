@@ -1,8 +1,9 @@
-let TYPES_OF_CROPS = [];
+let TYPE_OF_CROPS = [];
 let TYPE_OF_MACHINES = [];
-let TYPES_OF_REAPERS = [];
+let TYPE_OF_REAPERS = [];
 
 let CONFIG = [];
+let currentOBJ;
 
 let DEFAULT_COLORS = [
     {name: "oats", color: "#C4BA9E"},
@@ -18,10 +19,6 @@ let DEFAULT_COLORS = [
     {name: "rice", color: "#FFFFFF"}
 ];
 
-let TOGGLE_ARRAY = ['','mobile'];
-
-
-let lastUsage;
 
 // BASIC INITIALIZATION //
 
@@ -37,113 +34,129 @@ let lastUsage;
 
 function getAllTypesMachines() {
     for(let i = 0;i < CONFIG.length;i++) {
-        if (!TYPE_OF_MACHINES.includes(CONFIG[i].harvesterName)) {
-            TYPE_OF_MACHINES.push(CONFIG[i].harvesterName);
+        currentOBJ = CONFIG[i];
+        if (!TYPE_OF_MACHINES.includes(currentOBJ[Object.keys(currentOBJ)[4]])) {
+            TYPE_OF_MACHINES.push(currentOBJ[Object.keys(currentOBJ)[4]]);
         }
     }
 }
 
 function getAllTypesCrops() {
     for(let i = 0;i < CONFIG.length;i++) {
-        if (!TYPES_OF_CROPS.includes(CONFIG[i].fieldCrop)) {
-            TYPES_OF_CROPS.push(CONFIG[i].fieldCrop);
+        currentOBJ = CONFIG[i];
+        if (!TYPE_OF_CROPS.includes(currentOBJ[Object.keys(currentOBJ)[1]])) {
+            TYPE_OF_CROPS.push(currentOBJ[Object.keys(currentOBJ)[1]]);
         }
     }
 }
 
 function getAllTypesReapers() {
     for(let i = 0; i < CONFIG.length;i++) {
-        if (!TYPES_OF_REAPERS.includes(CONFIG[i].reaperType)) {
-            TYPES_OF_REAPERS.push(CONFIG[i].reaperType);
+        currentOBJ = CONFIG[i];
+        if (!TYPE_OF_REAPERS.includes(currentOBJ[Object.keys(currentOBJ)[6]])) {
+            TYPE_OF_REAPERS.push(currentOBJ[Object.keys(currentOBJ)[6]]);
         }
     }
 }
 
-
-
-function GridOfFieldsRender(type) {
-    /*if(Date.now() - lastUsage < 500) {
-        console.log("TOO OFTEN");
-        return;
-    }*/
-    let numOfFields = CONFIG.length;
-    if (TOGGLE_ARRAY[0] === "mobile") {
-        var CONST_WIDTH_MOBILE = "20vw";
+function calculateWidthForelement() {
+    let calculatedWidth;
+    if (window.innerWidth < 350) {
+        calculatedWidth = '30%';
+    } else if (window.innerWidth < 400) {
+        calculatedWidth = '30%';
+    } else if (window.innerWidth < 500){
+        calculatedWidth = '23%';
+    } else if (window.innerWidth < 600) {
+        calculatedWidth = '19%';
+    } else if (window.innerWidth < 700) {
+        calculatedWidth = '15%';
     }
+    else if  (window.innerWidth < 800) {
+        calculatedWidth = '13%';
+    } else if (window.innerWidth < 900) {
+        calculatedWidth = '12%';
+    } else if (window.innerWidth < 1000) {
+        calculatedWidth = '11%';
+    } else if(window.innerWidth < 1100) {
+        calculatedWidth = '10%';
+    } else if (window.innerWidth < 1300) {
+        calculatedWidth = '9%';
+    } else if (window.innerWidth < 1400) {
+        calculatedWidth = '8%';
+    } else if (window.innerWidth < 1550) {
+        calculatedWidth = '7%';
+    } else {
+        calculatedWidth = '6%';
+    }
+    return calculatedWidth;
+}
+
+
+function INITIALIZATION() {
+    getAllTypesCrops();
+    getAllTypesMachines();
+    getAllTypesReapers();
+    GridOfFieldsRender();
+    showToChosenInfo(1);
+    createListOfColors();
+    button_update();
+
+}
+
+
+
+function GridOfFieldsRender() {
     document.getElementsByClassName("grid")[0].innerHTML = "";
-
-    for(let i = 0;i < numOfFields;i++) {
+    for(let i = 0;i < CONFIG.length;i++) {
+        currentOBJ = CONFIG[i];
         let div = document.createElement("div");
-        div.innerHTML = `<div onclick="showToChosenInfo(`+ CONFIG[i].fieldId+`)" class="element_grid"><div class="insider"><div style="background-color: `+getColor(CONFIG[i].fieldCrop)+`" class="insiderMainContent `
-            +CONFIG[i].fieldCrop +`"><p>ID:`
-            +CONFIG[i].fieldId+`</p><p>`
-            +CONFIG[i].fieldCrop+`</p><p>`
-            +CONFIG[i].fieldDensity+`</p><p>`
-            +CONFIG[i].harvesterName+`</p><p>`
-            +CONFIG[i].harvesterType+`</p><p>`
-            +CONFIG[i].reaperType+`</p></div><div class="bar" style="height:`
-            +CONFIG[i].fieldComplexity * 100 +`%"></div></div></div>`;
+        div.innerHTML = `<div onclick="showToChosenInfo(`
+            +currentOBJ[Object.keys(currentOBJ)[0]]+`)" class="element_grid"><div class="insider"><div style="background-color:`
+            +getColorFromDEFAULT(currentOBJ[Object.keys(currentOBJ)[1]])+`" class="insiderMainContent `
+            +currentOBJ[Object.keys(currentOBJ)[1]]+`"><p>ID:`
+            +currentOBJ[Object.keys(currentOBJ)[0]]+`</p><p>`
+            +currentOBJ[Object.keys(currentOBJ)[1]]+`</p><p>`
+            +currentOBJ[Object.keys(currentOBJ)[2]]+`</p><p>`
+            +currentOBJ[Object.keys(currentOBJ)[4]]+`</p><p>`
+            +currentOBJ[Object.keys(currentOBJ)[5]]+`</p><p>`
+            +currentOBJ[Object.keys(currentOBJ)[6]]+`</p></div><div class="bar" style="height:`
+            +currentOBJ[Object.keys(currentOBJ)[3]] * 100 +`%"></div></div></div>`;
 
-        let calculatedWidth;
-        if (window.innerWidth < 350) {
-            calculatedWidth = '30%';
-        } else if (window.innerWidth < 400) {
-             calculatedWidth = '30%';
-        } else if (window.innerWidth < 500){
-            calculatedWidth = '23%';
-        } else if (window.innerWidth < 600) {
-            calculatedWidth = '19%';
-        } else if (window.innerWidth < 700) {
-            calculatedWidth = '15%';
-        }
-        else if  (window.innerWidth < 800) {
-            calculatedWidth = '13%';
-        } else if (window.innerWidth < 900) {
-            calculatedWidth = '12%';
-        } else if (window.innerWidth < 1000) {
-            calculatedWidth = '11%';
-        } else if(window.innerWidth < 1100) {
-            calculatedWidth = '10%';
-        } else if (window.innerWidth < 1300) {
-            calculatedWidth = '9%';
-        } else if (window.innerWidth < 1400) {
-            calculatedWidth = '8%';
-        } else if (window.innerWidth < 1550) {
-            calculatedWidth = '7%';
-        } else {
-            calculatedWidth = '6%';
-        }
-
-        div.style.width = calculatedWidth;
-
+        div.style.width = calculateWidthForelement();
         div.id = "div" + String(i);
-
         document.getElementsByClassName("grid")[0].appendChild(div);
-        lastUsage = Date.now();
     }
 }
 
-function getColor(cropName) {
+function getColorFromDEFAULT(cropName) {
     let obj = DEFAULT_COLORS.find(o => o.name === cropName);
-    if (obj != undefined) {
+    if (typeof obj != "undefined") {
         return obj.color;
     }
+}
+function button_update() {
+    document.getElementsByClassName('SubSettingsList')[1].children[0].innerHTML = 'SORTING BY ' + Object.keys(currentOBJ)[0] + '↓';
+    document.getElementsByClassName('SubSettingsList')[1].children[1].innerHTML = 'SORTING BY ' + Object.keys(currentOBJ)[0] + '↑';
+    document.getElementsByClassName('SubSettingsList')[1].children[2].innerHTML = 'SORTING BY ' + Object.keys(currentOBJ)[1] + '↓';
+    document.getElementsByClassName('SubSettingsList')[1].children[3].innerHTML = 'SORTING BY ' + Object.keys(currentOBJ)[1] + '↑';
+    document.getElementsByClassName('SubSettingsList')[1].children[4].innerHTML = 'SORTING BY ' + Object.keys(currentOBJ)[2] + '↓';
+    document.getElementsByClassName('SubSettingsList')[1].children[5].innerHTML = 'SORTING BY ' + Object.keys(currentOBJ)[2] + '↑';
+    document.getElementsByClassName('SubSettingsList')[1].children[6].innerHTML = 'SORTING BY ' + Object.keys(currentOBJ)[3] + '↓';
+    document.getElementsByClassName('SubSettingsList')[1].children[7].innerHTML = 'SORTING BY ' + Object.keys(currentOBJ)[3] + '↑';
 }
 
 function showToChosenInfo(ID) {
     document.getElementsByClassName('chosenInfoElement')[1].innerText = '';
-
-
-
-    let obj = CONFIG.find(c => c.fieldId == ID);
-    document.getElementsByClassName('chosenInfoElement')[1].innerText = 'fID: ' + obj.fieldId;
-    document.getElementsByClassName('chosenInfoElement')[2].innerText = 'fCrop: ' + obj.fieldCrop;
-    document.getElementsByClassName('chosenInfoElement')[3].innerText = 'fDensity: ' + obj.fieldDensity;
-    document.getElementsByClassName('chosenInfoElement')[4].innerText = 'fCompl: ' + obj.fieldComplexity;
-    document.getElementsByClassName('chosenInfoElement')[5].innerText = 'hModel: ' + obj.harvesterName;
-    document.getElementsByClassName('chosenInfoElement')[6].innerText = 'hType: ' + obj.harvesterType;
-    document.getElementsByClassName('chosenInfoElement')[7].innerText = 'rType: ' + obj.reaperType;
-    document.getElementsByClassName('chosenInfoElement')[0].style.backgroundColor = getColor(obj.fieldCrop);
+    let obj = CONFIG.find(c => c[Object.keys(c)[0]] === String(ID));
+    document.getElementsByClassName('chosenInfoElement')[1].innerText = Object.keys(currentOBJ)[0] + ': '+ obj[Object.keys(obj)[0]];
+    document.getElementsByClassName('chosenInfoElement')[2].innerText = Object.keys(currentOBJ)[1] + ': '+ obj[Object.keys(obj)[1]];
+    document.getElementsByClassName('chosenInfoElement')[3].innerText = Object.keys(currentOBJ)[2] + ': '+ obj[Object.keys(obj)[2]];
+    document.getElementsByClassName('chosenInfoElement')[4].innerText = Object.keys(currentOBJ)[3] + ': '+ obj[Object.keys(obj)[3]];
+    document.getElementsByClassName('chosenInfoElement')[5].innerText = Object.keys(currentOBJ)[4] + ': '+ obj[Object.keys(obj)[4]];
+    document.getElementsByClassName('chosenInfoElement')[6].innerText = Object.keys(currentOBJ)[5] + ': '+ obj[Object.keys(obj)[5]];
+    document.getElementsByClassName('chosenInfoElement')[7].innerText = Object.keys(currentOBJ)[6] + ': '+ obj[Object.keys(obj)[6]];
+    document.getElementsByClassName('chosenInfoElement')[0].style.backgroundColor = getColorFromDEFAULT(obj[Object.keys(obj)[1]]);
 
 }
 
@@ -158,7 +171,7 @@ function toggleChosenInfo() {
 function resultOfImport(status) {
     let resultOfImport = document.getElementById('resultOfImport');
     resultOfImport.innerText = '';
-    if (status == true) {
+    if (status === true) {
        resultOfImport.innerText = 'SUCCESSFULLY LOADED AND PARSED';
 
 
@@ -171,10 +184,10 @@ function resultOfImport(status) {
 }
 
 function sortByCrop(type) {
-    if (type == 'asc') {
+    if (type === 'asc') {
         CONFIG.sort(function(a, b) {
-            const cropA = a.fieldCrop.toUpperCase();
-            const cropB = b.fieldCrop.toUpperCase();
+            const cropA = a[Object.keys(a)[1]].toUpperCase();
+            const cropB = b[Object.keys(b)[1]].toUpperCase();
             if (cropA < cropB) {
                 return -1;
             }
@@ -185,8 +198,8 @@ function sortByCrop(type) {
         });
     } else {
         CONFIG.sort(function(a, b) {
-            const cropA = a.fieldCrop.toUpperCase();
-            const cropB = b.fieldCrop.toUpperCase();
+            const cropA = a[Object.keys(a)[1]].toUpperCase();
+            const cropB = b[Object.keys(b)[1]].toUpperCase();
             if (cropA > cropB) {
                 return -1;
             }
@@ -201,13 +214,14 @@ function sortByCrop(type) {
 }
 
 function sortByID(type) {
-    if (type === 'desc') {CONFIG.sort(
+    if (type === 'desc') {
+        CONFIG.sort(
         (p1, p2) =>
-            (parseInt(p1.fieldId) < parseInt(p2.fieldId)) ? 1 : (parseInt(p1.fieldId) > parseInt(p2.fieldId)) ? -1 : 0);
+            (parseInt(p1[Object.keys(p1)[0]]) < parseInt(p2[Object.keys(p2)[0]])) ? 1 : (parseInt(p1[Object.keys(p1)[0]]) > parseInt(p2[Object.keys(p2)[0]])) ? -1 : 0);
     } else {
         CONFIG.sort(
             (p1, p2) =>
-                (parseInt(p1.fieldId) > parseInt(p2.fieldId)) ? 1 : (parseInt(p1.fieldId) < parseInt(p2.fieldId)) ? -1 : 0);
+                (parseInt(p1[Object.keys(p1)[0]]) > parseInt(p2[Object.keys(p2)[0]])) ? 1 : (parseInt(p1[Object.keys(p1)[0]]) < parseInt(p2[Object.keys(p2)[0]])) ? -1 : 0);
     }
     GridOfFieldsRender();
 }
@@ -215,10 +229,10 @@ function sortByID(type) {
 function sortByDensity(type) {
     if (type === 'desc') {
         CONFIG.sort(
-            (p1, p2) => (p1.fieldDensity > p2.fieldDensity) ? 1 : (p1.fieldDensity < p2.fieldDensity) ? -1 : 0);
+            (p1, p2) => ((p1[Object.keys(p1)[2]]) > (p2[Object.keys(p2)[2]])) ? 1 : ((p1[Object.keys(p1)[2]]) < (p2[Object.keys(p2)[2]])) ? -1 : 0);
     } else {
         CONFIG.sort(
-            (p1, p2) => (p1.fieldDensity < p2.fieldDensity) ? 1 : (p1.fieldDensity > p2.fieldDensity) ? -1 : 0);
+            (p1, p2) => ((p1[Object.keys(p1)[2]]) < (p2[Object.keys(p2)[2]])) ? 1 : ((p1[Object.keys(p1)[2]]) > (p2[Object.keys(p2)[2]])) ? -1 : 0);
     }
     GridOfFieldsRender();
 }
@@ -226,18 +240,18 @@ function sortByDensity(type) {
 function sortByComplexity(type) {
     if (type === 'desc') {
         CONFIG.sort(
-            (p1, p2) => (p1.fieldComplexity < p2.fieldComplexity) ? 1 : (p1.fieldComplexity > p2.fieldComplexity) ? -1 : 0);
+            (p1, p2) => ((p1[Object.keys(p1)[3]]) < (p2[Object.keys(p2)[3]])) ? 1 : ((p1[Object.keys(p1)[3]]) > (p2[Object.keys(p2)[3]])) ? -1 : 0);
     } else {
         CONFIG.sort(
-            (p1, p2) => (p1.fieldComplexity > p2.fieldComplexity) ? 1 : (p1.fieldComplexity < p2.fieldComplexity) ? -1 : 0);
+            (p1, p2) => ((p1[Object.keys(p1)[3]]) > (p2[Object.keys(p2)[3]])) ? 1 : ((p1[Object.keys(p1)[3]]) < (p2[Object.keys(p2)[3]])) ? -1 : 0);
     }
     GridOfFieldsRender();
 }
 
 function sortByHarvester() {
     CONFIG.sort(function(a, b) {
-        const harvestA = a.harvesterName.toUpperCase();
-        const harvestB = b.harvesterName.toUpperCase();
+        const harvestA = a[Object.keys(a)[4]].toUpperCase();
+        const harvestB = b[Object.keys(b)[4]].toUpperCase();
         if (harvestA > harvestB) {
             return -1;
         }
@@ -274,9 +288,22 @@ function createListOfColors() {
 }
 
 function updateListOfColors(name, colorPickerId) {
-    var itemIndex = DEFAULT_COLORS.findIndex(x => x.name === name)
+    let itemIndex = DEFAULT_COLORS.findIndex(x => x.name === name)
     DEFAULT_COLORS[itemIndex].color = document.getElementById(colorPickerId).value;
 
+}
+
+function AddColorsToDefault() {
+    for (let i = 0; i < CONFIG.length;i++) {
+        let currentOBJ = CONFIG[i];
+        let name = String(currentOBJ[Object.keys(currentOBJ)[1]]);
+        if (DEFAULT_COLORS.find(o => o.name === name)) {
+            console.log("FOUND" + name);
+        } else {
+            console.log("DIDN'T FOUND");
+
+        }
+    }
 }
 
 function CONFIGPARSER() {
@@ -291,13 +318,7 @@ function CONFIGPARSER() {
                 console.log("Finished:", results.data);
                 resultOfImport(true);
                 CONFIG = results.data;
-                getAllTypesCrops();
-                getAllTypesMachines();
-                getAllTypesReapers();
-                /*sideBarRender();*/
-                GridOfFieldsRender();
-                showToChosenInfo(1);
-                createListOfColors();
+                INITIALIZATION();
             }
         });
 
