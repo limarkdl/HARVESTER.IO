@@ -23,7 +23,7 @@ let TOGGLE_ARRAY = ['','mobile'];
 // BASIC INITIALIZATION //
 
 
-toggleChosenInfo();
+
 
 
 //// FUNCTIONS LIST
@@ -86,6 +86,7 @@ function GridOfFieldsRender(type) {
         } else {
             let flexWidth =  Math.round(100/Math.sqrt(numOfFields));
             div.style.width = '7%';
+
         }
 
 
@@ -133,13 +134,13 @@ function resultOfImport(status) {
     resultOfImport.innerText = '';
     if (status == true) {
        resultOfImport.innerText = 'SUCCESSFULLY LOADED AND PARSED';
-       resultOfImport.style.color = 'white';
-       resultOfImport.style.backgroundColor = 'green';
+
+
 
     } else {
         resultOfImport.innerText = 'AN ERROR HAS OCCURRED';
-        resultOfImport.style.color = 'white';
-        resultOfImport.style.backgroundColor = 'red';
+
+
     }
 }
 
@@ -271,7 +272,6 @@ function CONFIGPARSER() {
                 GridOfFieldsRender();
                 showToChosenInfo(1);
                 createListOfColors();
-                alert('Если некорректно и/или слишком крупно/мелко отображаются поля, то, пожалуйста, нажмите кнопку OPTIMIZE GRID в разделе MISC в меню. Это временное решение для удобства проверки работоспособности с любого устройства');
             }
         });
 
