@@ -58,7 +58,7 @@ p {
 
 
 .isShowed {
-    display: block !important;
+    display: block;
 }
 
 .isHidden {

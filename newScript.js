@@ -259,11 +259,11 @@ function showToChosenInfo(ID) {
 }
 
 function toggleTools() {
-    document.getElementsByClassName("tools")[0].classList.toggle('isShowed');
+    document.getElementsByClassName("tools")[0].classList.toggle('isHidden');
 }
 
 function toggleChosenInfo() {
-    document.getElementsByClassName("chosenInfo")[0].classList.toggle('isShowed');
+    document.getElementsByClassName("chosenInfo")[0].classList.toggle('isHidden');
 }
 
 function resultOfImport(status) {
