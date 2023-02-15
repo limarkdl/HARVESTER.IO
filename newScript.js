@@ -113,15 +113,15 @@ function calculateWidthForelement() {
     } else if (window.innerWidth < 1000) {
         calculatedWidth = '13%';
     } else if(window.innerWidth < 1100) {
-        calculatedWidth = '10%';
+        calculatedWidth = '12%';
     } else if (window.innerWidth < 1300) {
-        calculatedWidth = '9%';
+        calculatedWidth = '11%';
     } else if (window.innerWidth < 1400) {
         calculatedWidth = '8%';
     } else if (window.innerWidth < 1550) {
-        calculatedWidth = '7%';
+        calculatedWidth = '8%';
     } else {
-        calculatedWidth = '6%';
+        calculatedWidth = '7%';
     }
     return calculatedWidth;
 }
