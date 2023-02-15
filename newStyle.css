@@ -62,7 +62,7 @@ p {
 }
 
 .isHidden {
-    display: none;
+    display: none !important;
 }
 
 .chosenInfo {
@@ -159,7 +159,7 @@ button:hover {
         flex-direction: row;
     }
     .flexInfo {
-        display: flex !important;
+        display: flex;
 
         flex-direction: row;
         width: 50%;
