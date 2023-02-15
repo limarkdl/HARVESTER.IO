@@ -99,6 +99,7 @@ function INITIALIZATION() {
     getAllTypesReapers();
     GridOfFieldsRender();
     showToChosenInfo(1);
+    AddColorsToDefault();
     createListOfColors();
     button_update();
 
@@ -296,12 +297,13 @@ function updateListOfColors(name, colorPickerId) {
 function AddColorsToDefault() {
     for (let i = 0; i < CONFIG.length;i++) {
         let currentOBJ = CONFIG[i];
-        let name = String(currentOBJ[Object.keys(currentOBJ)[1]]);
-        if (DEFAULT_COLORS.find(o => o.name === name)) {
+        let named = String(currentOBJ[Object.keys(currentOBJ)[1]]);
+        if (DEFAULT_COLORS.find(o => o.name === named)) {
             console.log("FOUND" + name);
         } else {
             console.log("DIDN'T FOUND");
-
+            let OBJECT = {name: String(named), color: "#FFFFFF" };
+            DEFAULT_COLORS.push(OBJECT);
         }
     }
 }
