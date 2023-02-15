@@ -39,6 +39,7 @@ p {
     background-color: #FFAD4D;
     padding: 10px;
     z-index: 2000;
+    position: sticky;
 }
 
 .SubSettingsList {

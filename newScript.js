@@ -154,12 +154,22 @@ function setBackground() {
         let nameOfRequiredColor = document.getElementsByClassName('insiderMainContent')[i].classList[1];
         let requiredIndexOfColor = DEFAULT_COLORS.findIndex( c => c.name === nameOfRequiredColor);
         if(typeof(requiredIndexOfColor) != 'undefined') {
-            document.getElementsByClassName('insiderMainContent')[i].style.backgroundColor = DEFAULT_COLORS[requiredIndexOfColor].color;
+            document.getElementsByClassName('insiderMainContent')[i].style.backgroundColor = getSafe(() => DEFAULT_COLORS[requiredIndexOfColor].color);
         }
 
 
     }
 }
+
+function getSafe(fn, defaultVal) {
+    try {
+        return fn();
+    } catch (e) {
+        return defaultVal;
+    }
+}
+
+
 
 function GridOfFieldsRender(type) {
 
