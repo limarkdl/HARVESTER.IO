@@ -20,7 +20,6 @@ let DEFAULT_COLORS = [
     {name: "rice", color: "#FFFFFF"}
 ];
 // TRICK
-window.onerror = stoperror;
 //
 let zoomF = 1.0;
 
@@ -115,13 +114,11 @@ function INITIALIZATION() {
     getAllTypesReapers();
     AddColorsToDefault();
     createListOfColors();
-    GridOfFieldsRender();
-    showToChosenInfo(1);
-
-
     button_update();
-
+    GridOfFieldsRender();
 }
+
+
 
 
 
@@ -158,8 +155,22 @@ function getColorFromDEFAULT(cropName) {
     let obj = DEFAULT_COLORS.find(o => o.name === cropName);
     if (typeof obj != "undefined") {
         return obj.color;
+    } else {
+        let test = getRandomColor();
+        console.log(test);
     }
 }
+
+function getRandomColor() {
+    let letters = '0123456789ABCDEF';
+    let color = '#';
+    for (let i = 0; i < 6; i++) {
+        color += letters[Math.floor(Math.random() * 16)];
+    }
+    return color;
+}
+
+
 function button_update() {
     document.getElementsByClassName('SubSettingsList')[1].children[0].innerHTML = 'SORTING BY ' + Object.keys(currentOBJ)[0] + '↓';
     document.getElementsByClassName('SubSettingsList')[1].children[1].innerHTML = 'SORTING BY ' + Object.keys(currentOBJ)[0] + '↑';
@@ -351,7 +362,7 @@ function AddColorsToDefault() {
             console.log("FOUND" + name);
         } else {
             console.log("DIDN'T FOUND");
-            let OBJECT = {name: String(named), color: "#FFFFFF" };
+            let OBJECT = {name: named, color: getRandomColor() };
             DEFAULT_COLORS.push(OBJECT);
         }
     }
