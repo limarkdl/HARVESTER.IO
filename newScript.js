@@ -104,14 +104,14 @@ function calculateWidthForelement() {
     } else if (window.innerWidth < 600) {
         calculatedWidth = '19%';
     } else if (window.innerWidth < 700) {
-        calculatedWidth = '15%';
+        calculatedWidth = '18%';
     }
     else if  (window.innerWidth < 800) {
-        calculatedWidth = '13%';
+        calculatedWidth = '16%';
     } else if (window.innerWidth < 900) {
-        calculatedWidth = '12%';
+        calculatedWidth = '15%';
     } else if (window.innerWidth < 1000) {
-        calculatedWidth = '11%';
+        calculatedWidth = '13%';
     } else if(window.innerWidth < 1100) {
         calculatedWidth = '10%';
     } else if (window.innerWidth < 1300) {
