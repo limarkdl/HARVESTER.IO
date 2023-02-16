@@ -16,6 +16,7 @@ body {
     display: flex;
     flex-direction: column;
     height: 100vh;
+    background-color: white;
 }
 
 header {
@@ -45,14 +46,17 @@ p {
 .SubSettingsList {
     padding: 10px;
     background-color: #FFAD4D;
-    max-height: 100px;
+    max-height: 150px;
     overflow: auto;
     display: flex;
     justify-content: left;
     align-items: center;
-    flex-direction: row;
-    flex-wrap: wrap;
     gap: 10px;
+}
+
+.SubSettingsList.colorList {
+    max-width: fit-content;
+    display: grid;
 }
 
 
@@ -106,6 +110,7 @@ p {
     width: 100%;
     min-width: 350px;
     z-index: 1;
+    background-color: white;
 }
 
 .element_grid {
@@ -113,7 +118,7 @@ p {
     aspect-ratio: 1 / 1;
     text-align: center;
     border: 1px black solid;
-    z-index: 2;
+    z-index: 2;background-color: white;
     transition: 2s;
 }
 button:hover {
