@@ -4,9 +4,9 @@ let TYPE_OF_REAPERS = [];
 
 let CONFIG = [];
 let currentOBJ;
-let CHOO;
+let zoomF = 1.0;
+let DEFAULT_COLORS_INI;
 
-setTimeout(setBackground(),10000);
 let DEFAULT_COLORS = [
     {name: "oats", color: "#C4BA9E"},
     {name: "wheat", color: "#F5DEB3"},
@@ -21,26 +21,11 @@ let DEFAULT_COLORS = [
     {name: "rice", color: "#FFFFFF"}
 ];
 
-let DEFAULT_COLORS_INI;
-
 BackUp();
 
-// TRICK
-//
-let zoomF = 1.0;
 
-// BASIC INITIALIZATION //
-
-let showOnly;
-
-
-
-//// FUNCTIONS LIST
-
-// DYNAMIC LIST OF FIELDS.CROPS / REAPER.TYPES / MACHINE.TYPES
-
+// DELETE OBJECT IF IT HAS 'empty' ID //
 function DamagedEraser() {
-
     for(let i = 0; i < CONFIG.length; i++) {
         let current = CONFIG[i];
         if(current[Object.keys(current)[0]] === '') {
@@ -49,7 +34,7 @@ function DamagedEraser() {
     }
 }
 
-
+// GET ALL TYPES OF MACHINES THAT ARE LISTED IN THE PARSED CSV TABLE
 function getAllTypesMachines() {
     for(let i = 0;i < CONFIG.length;i++) {
         currentOBJ = CONFIG[i];
@@ -59,6 +44,7 @@ function getAllTypesMachines() {
     }
 }
 
+// GET ALL TYPES OF CROP TYPES THAT ARE LISTED IN THE PARSED CSV TABLE
 function getAllTypesCrops() {
     for(let i = 0;i < CONFIG.length;i++) {
         currentOBJ = CONFIG[i];
@@ -68,6 +54,7 @@ function getAllTypesCrops() {
     }
 }
 
+// GET ALL TYPES OF REAPER TYPES THAT ARE LISTED IN THE PARSED CSV TABLE
 function getAllTypesReapers() {
     for(let i = 0; i < CONFIG.length;i++) {
         currentOBJ = CONFIG[i];
@@ -77,6 +64,7 @@ function getAllTypesReapers() {
     }
 }
 
+// RESTORING DEFAULT_COLOR TO THE ORIGINAL VALUES
 function restoreToDefault() {
     DEFAULT_COLORS = [
         {name: "oats", color: "#C4BA9E"},
@@ -93,7 +81,8 @@ function restoreToDefault() {
     ];
 }
 
-function calculateWidthForelement() {
+// CALCULATE THE WIDTH FOR AN ELEMENT IN THE GRID ACCORDING TO THE VIEWPORT.WIDTH
+function calculateWidthForElement() {
     let calculatedWidth;
     if (window.innerWidth < 350) {
         calculatedWidth = '30%';
@@ -126,29 +115,40 @@ function calculateWidthForelement() {
     return calculatedWidth;
 }
 
-
+// FIRST INITIALIZATION AFTER FILE LOADING
 function INITIALIZATION() {
+    // ERASE ALL DAMAGED ROWS
     DamagedEraser();
+    // GET ALL TYPES OF CROP
     getAllTypesCrops();
+    // GET ALL TYPES OF MACHINES
     getAllTypesMachines();
+    // GET ALL TYPES OF REAPERS
     getAllTypesReapers();
+    // CLEAR COLOR LIST ON THE PAGE
     clearListOfColors();
+    // PARSE PARSED CSV FILE AND SEE IF DEFAULT_COLOR INCLUDES ALL VALUES THAT ARE IN THE TABLE
     AddColorsToDefault();
-    createListOfColors();
+    // RENDER COLOR LIST ON THE PAGE FROM DEFAULT_COLOR
+    renderListOfColors();
+    // APPLY HEADER NAMES FROM THE FILE TO THE SORTING BUTTON
     button_update();
+    // FINAL GRID OF FIELDS RENDER
     GridOfFieldsRender();
-
 }
 
+// BACKING UP DEFAULT_COLORS TO BE ABLE TO RESTORE
 function BackUp() {
     DEFAULT_COLORS_INI = DEFAULT_COLORS;
 }
 
+// CLEAR COLOR LIST ON THE PAGE
 function clearListOfColors() {
     document.getElementsByClassName('SubSettingsList')[0].innerHTML = '';
-
 }
 
+// SET BACKGROUND OF THE GRID ELEMENT ACCORDING TO THE CLASS NAME WHICH IS THE SAME AS FIELD'S CROP TYPE
+// !!! CONTAINS LOGICAL ERROR, FIX IT ASAP !!!
 function setBackground() {
     for(let i = 0; i < CONFIG.length;i++) {
         let nameOfRequiredColor = document.getElementsByClassName('insiderMainContent')[i].classList[1];
@@ -156,11 +156,10 @@ function setBackground() {
         if(typeof(requiredIndexOfColor) != 'undefined') {
             document.getElementsByClassName('insiderMainContent')[i].style.backgroundColor = getSafe(() => DEFAULT_COLORS[requiredIndexOfColor].color);
         }
-
-
     }
 }
 
+// HOT FIX WHEN SOME PROPERTIES OF OBJECT RETURN "ERROR UNDEFIED", ALLOWS TO SKIP SUCH ERRORS
 function getSafe(fn, defaultVal) {
     try {
         return fn();
@@ -169,23 +168,22 @@ function getSafe(fn, defaultVal) {
     }
 }
 
+function fullScreenToggle(element) {
+    document.getElementsByClassName(element)[0].requestFullscreen();
+}
 
-
+// MAIN GRID RENDER ALGORITHM, WHICH RERENDERS THE WHOLE GRID USING SOME EXTERNAL VALUES
 function GridOfFieldsRender(type) {
-
     document.getElementsByClassName("grid")[0].innerHTML = "";
     for(let i = 0;i < CONFIG.length;i++) {
         currentOBJ = CONFIG[i];
-
         let div = document.createElement("div");
         div.innerHTML = `<div onclick="showToChosenInfo(`
             +currentOBJ[Object.keys(currentOBJ)[0]]+`)" class="element_grid"><div class="insider"><div  class="insiderMainContent `
             +currentOBJ[Object.keys(currentOBJ)[1]]+`"><p>ID:`
             +currentOBJ[Object.keys(currentOBJ)[0]]+`</p><p class="`
             +Object.keys(currentOBJ)[1]+`">`
-            +currentOBJ[Object.keys(currentOBJ)[1]]+`</p><p class="`
-            +Object.keys(currentOBJ)[2]+`">`
-            +currentOBJ[Object.keys(currentOBJ)[2]]+`</p><p class="`
+            +currentOBJ[Object.keys(currentOBJ)[1]]+` `+currentOBJ[Object.keys(currentOBJ)[2]]+`</p><p class="`
             +Object.keys(currentOBJ)[4]+`">`
             +currentOBJ[Object.keys(currentOBJ)[4]]+`</p><p class="`
             +Object.keys(currentOBJ)[5]+`">`
@@ -193,18 +191,17 @@ function GridOfFieldsRender(type) {
             +Object.keys(currentOBJ)[6]+`">`
             +currentOBJ[Object.keys(currentOBJ)[6]]+`</p></div><div class="bar" style="height:`
             +currentOBJ[Object.keys(currentOBJ)[3]] * 100 +`%"></div></div></div>`;
-
-
-        div.style.width = calculateWidthForelement();
+        div.style.width = calculateWidthForElement();
         div.id = "div" + String(i);
         document.getElementsByClassName("grid")[0].appendChild(div);
     }
-    if(type != 'resize') {
+    if(type !== 'resize') {
         setTimeout(function(){setBackground()},50);
     }
 
 }
 
+// WE CHECK IF CURRENT CROP HAS A DEFAULT COLOR TO DISPLAY
 function getColorFromDEFAULT(cropName) {
     let obj = DEFAULT_COLORS.find(o => o.name === cropName);
     if (typeof obj != "undefined") {
@@ -215,6 +212,7 @@ function getColorFromDEFAULT(cropName) {
     }
 }
 
+// RETURNS PSEUDO RANDOM COLOR, IS USED WHEN THERE ARE NO DEFAULT COLOR FOR THIS.CROP_TYPE
 function getRandomColor() {
     let letters = '0123456789ABCDEF';
     let color = '#';
@@ -224,9 +222,8 @@ function getRandomColor() {
     return color;
 }
 
-
+// APPLIES HEADER NAMES FROM THE FILE TO THE SORTING BUTTONS
 function button_update() {
-
     document.getElementsByClassName('SubSettingsList')[1].children[1].innerHTML = 'SORTING BY ' + Object.keys(currentOBJ)[0] + '↓';
     document.getElementsByClassName('SubSettingsList')[1].children[2].innerHTML = 'SORTING BY ' + Object.keys(currentOBJ)[0] + '↑';
     document.getElementsByClassName('SubSettingsList')[1].children[3].innerHTML = 'SORTING BY ' + Object.keys(currentOBJ)[1] + '↓';
@@ -237,6 +234,7 @@ function button_update() {
     document.getElementsByClassName('SubSettingsList')[1].children[8].innerHTML = 'SORTING BY ' + Object.keys(currentOBJ)[3] + '↑';
 }
 
+// COPIES PROPERTY OF THE FIELD TO THE "CHOSEN FIELD" ON MOUSE CLICK
 function showToChosenInfo(ID) {
     document.getElementsByClassName('chosenInfoElement')[1].innerText = '';
     let obj = CONFIG.find(c => c[Object.keys(c)[0]] === String(ID));
@@ -248,39 +246,36 @@ function showToChosenInfo(ID) {
     document.getElementsByClassName('chosenInfoElement')[6].innerText = Object.keys(currentOBJ)[5] + ': '+ obj[Object.keys(obj)[5]];
     try{document.getElementsByClassName('chosenInfoElement')[7].innerText = Object.keys(currentOBJ)[6] + ': '+ obj[Object.keys(obj)[6]]}
     catch (err) {
-        let errr = err;
         console.log(Object.keys(currentOBJ)[6]);
         console.log(obj[Object.keys(obj)[6]]);
         console.log(err);
         console.log(document.getElementsByClassName('chosenInfoElement')[6].innerText);
     }
     document.getElementsByClassName('chosenInfoElement')[0].style.backgroundColor = getColorFromDEFAULT(obj[Object.keys(obj)[1]]);
-
 }
 
+// SHOW / HIDE TOOLS PANEL
 function toggleTools() {
     document.getElementsByClassName("tools")[0].classList.toggle('isHidden');
 }
 
+// SHOW / HIDE CHOSEN FIELD PANEL
 function toggleChosenInfo() {
     document.getElementsByClassName("chosenInfo")[0].classList.toggle('isHidden');
 }
 
+// JUST A SMALL BOX UNDER "UPLOAD" BUTTON WHICH OUTPUTS THE RESULT OF READING AND PARSING FILE
 function resultOfImport(status) {
     let resultOfImport = document.getElementById('resultOfImport');
     resultOfImport.innerText = '';
     if (status === true) {
        resultOfImport.innerText = 'SUCCESSFULLY LOADED AND PARSED';
-
-
-
     } else {
         resultOfImport.innerText = 'AN ERROR HAS OCCURRED';
-
-
     }
 }
 
+// SORTS CONFIG BY CROP TYPE
 function sortByCrop(type) {
     if (type === 'asc') {
         CONFIG.sort(function(a, b) {
@@ -307,10 +302,10 @@ function sortByCrop(type) {
             return 0;
         });
     }
-
     GridOfFieldsRender();
 }
 
+// SORTS CONFIG BY ID
 function sortByID(type) {
     if (type === 'desc') {
         CONFIG.sort(
@@ -324,6 +319,7 @@ function sortByID(type) {
     GridOfFieldsRender();
 }
 
+// SORTS CONFIG BY DENSITY
 function sortByDensity(type) {
     if (type === 'desc') {
         CONFIG.sort(
@@ -335,6 +331,7 @@ function sortByDensity(type) {
     GridOfFieldsRender();
 }
 
+// SORT CONFIG BY COMPLEXITY
 function sortByComplexity(type) {
     if (type === 'desc') {
         CONFIG.sort(
@@ -346,6 +343,8 @@ function sortByComplexity(type) {
     GridOfFieldsRender();
 }
 
+// SORT CONFIG BY HARVESTER NAME
+// !!! THIS IS PSEUDO SORTING THAT HAS NO SENSE AND CAN JUST ORDER THE MACHINES IN SOME MORE FANCY WAY. NEEDED TO BE REDESIGNED !!!
 function sortByHarvester() {
     CONFIG.sort(function(a, b) {
         const harvestA = a[Object.keys(a)[4]].toUpperCase();
@@ -361,11 +360,12 @@ function sortByHarvester() {
     GridOfFieldsRender();
 }
 
-
+// SORT CONFIG BY REAPER TYPE
+// !!! THIS IS PSEUDO SORTING THAT HAS NO SENSE AND JUST ORDER THE REAPERS IN SOME MORE FANCY WAY. NEEDED TO BE REDESIGNED !!!
 function sortByReaper() {
     CONFIG.sort(function(a, b) {
-        const reaperA = a.reaperType.toUpperCase();
-        const reaperB = b.reaperType.toUpperCase();
+        const reaperA = a[Object.keys(a)[6]].toUpperCase();
+        const reaperB = b[Object.keys(b)[6]].toUpperCase();
         if (reaperA > reaperB) {
             return -1;
         }
@@ -378,11 +378,11 @@ function sortByReaper() {
 }
 
 
-
-function createListOfColors() {
+// RENDERS LIST OF COLORS ON THE MAIN PAGE
+function renderListOfColors() {
     document.getElementsByClassName('SubSettingsList')[0].innerHTML = '';
     let IsFound = false;
-    let FIndex;
+    let FIndex = 0;
     for (let i = 0; i < DEFAULT_COLORS.length; i++) {
         for (let j = 0;j < TYPE_OF_CROPS.length;j++) {
             if (DEFAULT_COLORS.find(c => c.name === TYPE_OF_CROPS[i])) {
@@ -443,16 +443,12 @@ function CONFIGPARSER() {
                 console.log("Finished:", results.data);
                 resultOfImport(true);
                 CONFIG = results.data;
-                console.log("CONFIG IS DATA");
                 TYPE_OF_CROPS.length = 0;
-                console.log("CHOO IS DATA");
                 restoreToDefault();
                 DamagedEraser();
                 INITIALIZATION();
-
             }
         });
-
     }
     reader.onerror = function() {
         console.log(reader.error);
