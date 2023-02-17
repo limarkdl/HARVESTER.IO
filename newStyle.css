@@ -137,7 +137,6 @@ body {
 
 .overFlowOpt {
     white-space: nowrap; /* Отменяем перенос текста */
-
     max-width: 30%;
 }
 
@@ -149,6 +148,12 @@ header {
     padding: 2vh;
     height: 8vh;
     z-index: 10000;
+}
+
+button:disabled,
+button[disabled]{
+    background-color: #cccccc;
+    color: #666666;
 }
 
 img {
@@ -180,16 +185,16 @@ p {
     gap: 10px;
 }
 
-
-
-
-
 .isShowed {
     display: block;
+    opacity: 100%;
+
 }
 
 .isHidden {
     display: none !important;
+    opacity: 0%;
+
 }
 
 .chosenInfo {

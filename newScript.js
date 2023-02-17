@@ -7,6 +7,8 @@ let currentOBJ;
 let zoomF = 1.0;
 let DEFAULT_COLORS_INI;
 
+let temp;
+
 let DEFAULT_COLORS = [
     {name: "oats", color: "#C4BA9E"},
     {name: "wheat", color: "#F5DEB3"},
@@ -38,18 +40,21 @@ function DamagedEraser() {
 function getAllTypesMachines() {
     for(let i = 0;i < CONFIG.length;i++) {
         currentOBJ = CONFIG[i];
-        if (!TYPE_OF_MACHINES.includes(currentOBJ[Object.keys(currentOBJ)[4]])) {
-            TYPE_OF_MACHINES.push(currentOBJ[Object.keys(currentOBJ)[4]]);
+        temp = currentOBJ[Object.keys(currentOBJ)[4]];
+        if (!TYPE_OF_MACHINES.includes(temp)) {
+            TYPE_OF_MACHINES.push(temp);
         }
     }
 }
 
 // GET ALL TYPES OF CROP TYPES THAT ARE LISTED IN THE PARSED CSV TABLE
 function getAllTypesCrops() {
+
     for(let i = 0;i < CONFIG.length;i++) {
         currentOBJ = CONFIG[i];
-        if (!TYPE_OF_CROPS.includes(currentOBJ[Object.keys(currentOBJ)[1]])) {
-            TYPE_OF_CROPS.push(currentOBJ[Object.keys(currentOBJ)[1]]);
+        temp = currentOBJ[Object.keys(currentOBJ)[1]];
+        if (!TYPE_OF_CROPS.includes(temp)) {
+            TYPE_OF_CROPS.push(temp);
         }
     }
 }
@@ -58,8 +63,9 @@ function getAllTypesCrops() {
 function getAllTypesReapers() {
     for(let i = 0; i < CONFIG.length;i++) {
         currentOBJ = CONFIG[i];
-        if (!TYPE_OF_REAPERS.includes(currentOBJ[Object.keys(currentOBJ)[6]])) {
-            TYPE_OF_REAPERS.push(currentOBJ[Object.keys(currentOBJ)[6]]);
+        temp = currentOBJ[Object.keys(currentOBJ)[6]];
+        if (!TYPE_OF_REAPERS.includes(temp)) {
+            TYPE_OF_REAPERS.push(temp);
         }
     }
 }
@@ -135,7 +141,6 @@ function INITIALIZATION() {
     button_update();
     // FINAL GRID OF FIELDS RENDER
     GridOfFieldsRender();
-
 }
 
 
@@ -177,8 +182,11 @@ function fullScreenToggle(element) {
 
 // MAIN GRID RENDER ALGORITHM, WHICH RERENDERS THE WHOLE GRID USING SOME EXTERNAL VALUES
 function GridOfFieldsRender(type) {
-    document.getElementsByClassName('waiterInfo')[0].innerHTML = '';
-    document.getElementsByClassName("grid")[0].innerHTML = '';
+    if (CONFIG.length > 0) {
+        document.getElementsByClassName('waiterInfo')[0].innerHTML = '';
+        document.getElementsByClassName("grid")[0].innerHTML = '';
+    }
+
 
     for(let i = 0;i < CONFIG.length;i++) {
         currentOBJ = CONFIG[i];
@@ -213,7 +221,7 @@ function getColorFromDEFAULT(cropName) {
         return obj.color;
     } else {
         let test = getRandomColor();
-        console.log(test);
+
     }
 }
 
@@ -229,35 +237,31 @@ function getRandomColor() {
 
 // APPLIES HEADER NAMES FROM THE FILE TO THE SORTING BUTTONS
 function button_update() {
-    document.getElementsByClassName('SubSettingsList')[1].children[1].innerHTML = Object.keys(currentOBJ)[0] + ' ↓';
-    document.getElementsByClassName('SubSettingsList')[1].children[2].innerHTML = Object.keys(currentOBJ)[0] + ' ↑';
-    document.getElementsByClassName('SubSettingsList')[1].children[3].innerHTML = Object.keys(currentOBJ)[1] + ' ↓';
-    document.getElementsByClassName('SubSettingsList')[1].children[4].innerHTML = Object.keys(currentOBJ)[1] + ' ↑';
-    document.getElementsByClassName('SubSettingsList')[1].children[5].innerHTML = Object.keys(currentOBJ)[2] + ' ↓';
-    document.getElementsByClassName('SubSettingsList')[1].children[6].innerHTML = Object.keys(currentOBJ)[2] + ' ↑';
-    document.getElementsByClassName('SubSettingsList')[1].children[7].innerHTML = Object.keys(currentOBJ)[3] + ' ↓';
-    document.getElementsByClassName('SubSettingsList')[1].children[8].innerHTML = Object.keys(currentOBJ)[3] + ' ↑';
-    document.getElementsByClassName('SubSettingsList')[1].children[9].innerHTML = Object.keys(currentOBJ)[4];
-    document.getElementsByClassName('SubSettingsList')[1].children[10].innerHTML = Object.keys(currentOBJ)[6];
+    temp = document.getElementsByClassName('SubSettingsList')[1];
+    temp.children[1].innerHTML = Object.keys(currentOBJ)[0] + ' ↓';
+    temp.children[2].innerHTML = Object.keys(currentOBJ)[0] + ' ↑';
+    temp.children[3].innerHTML = Object.keys(currentOBJ)[1] + ' ↓';
+    temp.children[4].innerHTML = Object.keys(currentOBJ)[1] + ' ↑';
+    temp.children[5].innerHTML = Object.keys(currentOBJ)[2] + ' ↓';
+    temp.children[6].innerHTML = Object.keys(currentOBJ)[2] + ' ↑';
+    temp.children[7].innerHTML = Object.keys(currentOBJ)[3] + ' ↓';
+    temp.children[8].innerHTML = Object.keys(currentOBJ)[3] + ' ↑';
+    temp.children[9].innerHTML = Object.keys(currentOBJ)[4];
+    temp.children[10].innerHTML = Object.keys(currentOBJ)[6];
 }
 
 // COPIES PROPERTY OF THE FIELD TO THE "CHOSEN FIELD" ON MOUSE CLICK
 function showToChosenInfo(ID) {
     document.getElementsByClassName('chosenInfoElement')[1].innerText = '';
     let obj = CONFIG.find(c => c[Object.keys(c)[0]] === String(ID));
-    document.getElementsByClassName('chosenInfoElement')[1].innerText = Object.keys(currentOBJ)[0] + ': '+ obj[Object.keys(obj)[0]];
-    document.getElementsByClassName('chosenInfoElement')[2].innerText = Object.keys(currentOBJ)[1] + ': '+ obj[Object.keys(obj)[1]];
-    document.getElementsByClassName('chosenInfoElement')[3].innerText = Object.keys(currentOBJ)[2] + ': '+ obj[Object.keys(obj)[2]];
-    document.getElementsByClassName('chosenInfoElement')[4].innerText = Object.keys(currentOBJ)[3] + ': '+ obj[Object.keys(obj)[3]];
-    document.getElementsByClassName('chosenInfoElement')[5].innerText = Object.keys(currentOBJ)[4] + ': '+ obj[Object.keys(obj)[4]];
-    document.getElementsByClassName('chosenInfoElement')[6].innerText = Object.keys(currentOBJ)[5] + ': '+ obj[Object.keys(obj)[5]];
-    try{document.getElementsByClassName('chosenInfoElement')[7].innerText = Object.keys(currentOBJ)[6] + ': '+ obj[Object.keys(obj)[6]]}
-    catch (err) {
-        console.log(Object.keys(currentOBJ)[6]);
-        console.log(obj[Object.keys(obj)[6]]);
-        console.log(err);
-        console.log(document.getElementsByClassName('chosenInfoElement')[6].innerText);
-    }
+    temp = Object.keys(currentOBJ);
+    document.getElementsByClassName('chosenInfoElement')[1].innerText = temp[0] + ': '+ obj[Object.keys(obj)[0]];
+    document.getElementsByClassName('chosenInfoElement')[2].innerText = temp[1] + ': '+ obj[Object.keys(obj)[1]];
+    document.getElementsByClassName('chosenInfoElement')[3].innerText = temp[2] + ': '+ obj[Object.keys(obj)[2]];
+    document.getElementsByClassName('chosenInfoElement')[4].innerText = temp[3] + ': '+ obj[Object.keys(obj)[3]];
+    document.getElementsByClassName('chosenInfoElement')[5].innerText = temp[4] + ': '+ obj[Object.keys(obj)[4]];
+    document.getElementsByClassName('chosenInfoElement')[6].innerText = temp[5] + ': '+ obj[Object.keys(obj)[5]];
+    document.getElementsByClassName('chosenInfoElement')[7].innerText = Object.keys(currentOBJ)[6] + ': '+ obj[Object.keys(obj)[6]]
     document.getElementsByClassName('chosenInfoElement')[0].style.backgroundColor = getColorFromDEFAULT(obj[Object.keys(obj)[1]]);
 }
 
@@ -423,9 +427,7 @@ function AddColorsToDefault() {
         let currentOBJ = CONFIG[i];
         let named = currentOBJ[Object.keys(currentOBJ)[1]];
         if (DEFAULT_COLORS.find(o => o.name === named)) {
-            console.log("FOUND" + named);
         } else {
-            console.log("DIDN'T FOUND");
             let OBJECT = {name: named, color: getRandomColor() };
             DEFAULT_COLORS.push(OBJECT);
         }
