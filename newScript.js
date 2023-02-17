@@ -135,8 +135,7 @@ function INITIALIZATION() {
     button_update();
     // FINAL GRID OF FIELDS RENDER
     GridOfFieldsRender();
-    // CHOOSE THE 1ST FIELD
-    showToChosenInfo(CONFIG[Object.keys(CONFIG)[0]]);
+
 }
 
 
@@ -465,8 +464,10 @@ document.getElementById("fileReceiver").addEventListener('change', function(){
 });
 window.addEventListener('resize', function(){
     GridOfFieldsRender();
-    if (document.getElementsByClassName('mainContent')[0].offsetWidth >= 1920) {
-        document.getElementsByClassName('mainContent')[0].style.left = (window.innerWidth - document.getElementsByClassName('mainContent')[0].offsetWidth) / 2 + 'px';
+    if (window.innerWidth >= 1920) {
+        document.getElementsByClassName('mainContent')[0].style.left = (window.innerWidth - document.getElementsByClassName('mainContent')[0].offsetWidth) / 2 + "px";
+    } else {
+        document.getElementsByClassName('mainContent')[0].style.left = 0;
     }
 });
 
