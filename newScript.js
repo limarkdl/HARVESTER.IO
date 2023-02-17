@@ -239,6 +239,7 @@ function button_update() {
     document.getElementsByClassName('SubSettingsList')[1].children[7].innerHTML = Object.keys(currentOBJ)[3] + ' ↓';
     document.getElementsByClassName('SubSettingsList')[1].children[8].innerHTML = Object.keys(currentOBJ)[3] + ' ↑';
     document.getElementsByClassName('SubSettingsList')[1].children[9].innerHTML = Object.keys(currentOBJ)[4];
+    document.getElementsByClassName('SubSettingsList')[1].children[10].innerHTML = Object.keys(currentOBJ)[6];
 }
 
 // COPIES PROPERTY OF THE FIELD TO THE "CHOSEN FIELD" ON MOUSE CLICK
@@ -398,6 +399,7 @@ function renderListOfColors() {
             document.getElementsByClassName('SubSettingsList')[0].appendChild(el);
         }
     }
+    document.getElementsByClassName('listOfColors')[0].classList.toggle('isHidden');
 }
 
 function updateListOfColors(name, colorPickerId) {
