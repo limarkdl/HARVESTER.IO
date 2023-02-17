@@ -135,7 +135,11 @@ function INITIALIZATION() {
     button_update();
     // FINAL GRID OF FIELDS RENDER
     GridOfFieldsRender();
+    // CHOOSE THE 1ST FIELD
+    showToChosenInfo(CONFIG[Object.keys(CONFIG)[0]]);
 }
+
+
 
 // BACKING UP DEFAULT_COLORS TO BE ABLE TO RESTORE
 function BackUp() {
@@ -174,7 +178,9 @@ function fullScreenToggle(element) {
 
 // MAIN GRID RENDER ALGORITHM, WHICH RERENDERS THE WHOLE GRID USING SOME EXTERNAL VALUES
 function GridOfFieldsRender(type) {
-    document.getElementsByClassName("grid")[0].innerHTML = "";
+    document.getElementsByClassName('waiterInfo')[0].innerHTML = '';
+    document.getElementsByClassName("grid")[0].innerHTML = '';
+
     for(let i = 0;i < CONFIG.length;i++) {
         currentOBJ = CONFIG[i];
         let div = document.createElement("div");
@@ -224,14 +230,15 @@ function getRandomColor() {
 
 // APPLIES HEADER NAMES FROM THE FILE TO THE SORTING BUTTONS
 function button_update() {
-    document.getElementsByClassName('SubSettingsList')[1].children[1].innerHTML = 'SORTING BY ' + Object.keys(currentOBJ)[0] + '↓';
-    document.getElementsByClassName('SubSettingsList')[1].children[2].innerHTML = 'SORTING BY ' + Object.keys(currentOBJ)[0] + '↑';
-    document.getElementsByClassName('SubSettingsList')[1].children[3].innerHTML = 'SORTING BY ' + Object.keys(currentOBJ)[1] + '↓';
-    document.getElementsByClassName('SubSettingsList')[1].children[4].innerHTML = 'SORTING BY ' + Object.keys(currentOBJ)[1] + '↑';
-    document.getElementsByClassName('SubSettingsList')[1].children[5].innerHTML = 'SORTING BY ' + Object.keys(currentOBJ)[2] + '↓';
-    document.getElementsByClassName('SubSettingsList')[1].children[6].innerHTML = 'SORTING BY ' + Object.keys(currentOBJ)[2] + '↑';
-    document.getElementsByClassName('SubSettingsList')[1].children[7].innerHTML = 'SORTING BY ' + Object.keys(currentOBJ)[3] + '↓';
-    document.getElementsByClassName('SubSettingsList')[1].children[8].innerHTML = 'SORTING BY ' + Object.keys(currentOBJ)[3] + '↑';
+    document.getElementsByClassName('SubSettingsList')[1].children[1].innerHTML = Object.keys(currentOBJ)[0] + ' ↓';
+    document.getElementsByClassName('SubSettingsList')[1].children[2].innerHTML = Object.keys(currentOBJ)[0] + ' ↑';
+    document.getElementsByClassName('SubSettingsList')[1].children[3].innerHTML = Object.keys(currentOBJ)[1] + ' ↓';
+    document.getElementsByClassName('SubSettingsList')[1].children[4].innerHTML = Object.keys(currentOBJ)[1] + ' ↑';
+    document.getElementsByClassName('SubSettingsList')[1].children[5].innerHTML = Object.keys(currentOBJ)[2] + ' ↓';
+    document.getElementsByClassName('SubSettingsList')[1].children[6].innerHTML = Object.keys(currentOBJ)[2] + ' ↑';
+    document.getElementsByClassName('SubSettingsList')[1].children[7].innerHTML = Object.keys(currentOBJ)[3] + ' ↓';
+    document.getElementsByClassName('SubSettingsList')[1].children[8].innerHTML = Object.keys(currentOBJ)[3] + ' ↑';
+    document.getElementsByClassName('SubSettingsList')[1].children[9].innerHTML = Object.keys(currentOBJ)[4];
 }
 
 // COPIES PROPERTY OF THE FIELD TO THE "CHOSEN FIELD" ON MOUSE CLICK
@@ -266,15 +273,7 @@ function toggleChosenInfo() {
 }
 
 // JUST A SMALL BOX UNDER "UPLOAD" BUTTON WHICH OUTPUTS THE RESULT OF READING AND PARSING FILE
-function resultOfImport(status) {
-    let resultOfImport = document.getElementById('resultOfImport');
-    resultOfImport.innerText = '';
-    if (status === true) {
-       resultOfImport.innerText = 'SUCCESSFULLY LOADED AND PARSED';
-    } else {
-        resultOfImport.innerText = 'AN ERROR HAS OCCURRED';
-    }
-}
+
 
 // SORTS CONFIG BY CROP TYPE
 function sortByCrop(type) {
@@ -442,7 +441,7 @@ function CONFIGPARSER() {
             header: true,
             complete: function(results) {
                 console.log("Finished:", results.data);
-                resultOfImport(true);
+
                 CONFIG = results.data;
                 TYPE_OF_CROPS.length = 0;
                 restoreToDefault();
@@ -453,15 +452,22 @@ function CONFIGPARSER() {
     }
     reader.onerror = function() {
         console.log(reader.error);
-        resultOfImport(false);
+
 }
 }
 
 document.getElementById("fileReceiver").addEventListener('change', function(){
-
-
     CONFIGPARSER();
+    document.getElementsByClassName('input-file')[0].children[1].innerText = this.files[0].name;
+    document.getElementsByClassName('input-file')[0].children[1].style.fontSize = "10px";
 });
-window.addEventListener('resize', function(){GridOfFieldsRender()});
+window.addEventListener('resize', function(){
+    GridOfFieldsRender();
+    if (document.getElementsByClassName('mainContent')[0].offsetWidth >= 1920) {
+        document.getElementsByClassName('mainContent')[0].style.left = (window.innerWidth - document.getElementsByClassName('mainContent')[0].offsetWidth) / 2 + 'px';
+    }
+});
+
+
 
 

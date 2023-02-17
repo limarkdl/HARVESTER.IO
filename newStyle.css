@@ -4,13 +4,111 @@
     box-sizing: border-box;
 }
 
-.SubSettingsList.colorList {
 
-    max-height: 200px;
-    justify-content: start;
+
+
+.header-element {
+    min-width: 12vw;
+    display: flex;
+    gap: 5px;
+    justify-content: space-between;
+    align-items: center;
+    z-index: inherit;
 }
 
 
+
+.input-file {
+    position: relative;
+    display: inline-block;
+
+}
+
+.SubSettingsList::-webkit-scrollbar {
+    width: 12px;               /* ширина scrollbar */
+}
+.SubSettingsList::-webkit-scrollbar-track {
+    background: rgba(255, 255, 255, 0);        /* цвет дорожки */
+}
+.SubSettingsList::-webkit-scrollbar-thumb {
+    background-color: #fd8901;    /* цвет плашки */
+    /* закругления плашки */
+
+
+}
+
+.grid::-webkit-scrollbar {
+    width: 12px;               /* ширина scrollbar */
+}
+.grid::-webkit-scrollbar-track {
+    background: #ffffff;        /* цвет дорожки */
+}
+.grid::-webkit-scrollbar-thumb {
+    background-color: #fbab4d;    /* цвет плашки */
+      /* закругления плашки */
+
+
+}
+
+
+label {
+    display: grid;
+    justify-items: center;
+}
+
+.SubSettingsList.colorList {
+    overflow: auto;
+    max-height: 100px;
+    display: flex;
+    justify-content: center;
+}
+
+
+
+.input-file span {
+    position: relative;
+    display: inline-block;
+    cursor: pointer;
+    outline: none;
+
+    text-decoration: none;
+    vertical-align: middle;
+    color: rgb(0, 0, 0);
+    text-align: center;
+    border-radius: 4px;
+    background-color: #ff8a00;
+    line-height: 22px;
+    height: 40px;
+    padding: 10px 20px;
+    box-sizing: border-box;
+    border: none;
+    margin: 0;
+    transition: background-color 0.2s;
+}
+.input-file input[type=file] {
+    position: absolute;
+    z-index: -1;
+    opacity: 0;
+    display: block;
+    width: 0;
+    height: 0;
+}
+
+/* Focus */
+
+
+/* Hover/active */
+.input-file:hover span {
+    background-color: #ffad4d;
+}
+.input-file:active span {
+    background-color: #ff8a00;
+}
+
+/* Disabled */
+.input-file input[type=file]:disabled + span {
+    background-color: #eee;
+}
 
 body {
     font-family: 'Open Sans', sans-serif;
@@ -23,6 +121,14 @@ body {
     flex-direction: column;
     height: 100vh;
     background-color: white;
+
+}
+
+
+.overFlowOpt {
+    white-space: nowrap; /* Отменяем перенос текста */
+
+    max-width: 30%;
 }
 
 header {
@@ -32,7 +138,7 @@ header {
     justify-content: space-between;
     padding: 2vh;
     height: 8vh;
-
+    z-index: 10000;
 }
 
 img {
@@ -49,7 +155,9 @@ p {
     background-color: #FFAD4D;
     padding: 10px;
     z-index: 2000;
-    position: sticky;
+    position: relative;
+    max-height: 85vh;
+    text-align: left;
 }
 
 .SubSettingsList {
@@ -76,17 +184,20 @@ p {
 
 .chosenInfo {
     width: 20%;
+    padding-top: 20px;
 }
 
-
+.waiterInfo {
+    padding-top: 100px;
+    height: 300px;
+    width: 100%;
+    text-align: center;
+}
 
 .chosenInfoElement {
     width: 90%;
-    margin: auto auto;
     margin-top: 0;
-
     border: 2px solid #494949;
-
 }
 
 .mainContent {
@@ -95,11 +206,12 @@ p {
     max-width: 1920px;
     margin-left: auto;
     margin-right: auto;
+    position: absolute;
+    top: 8vh;
 }
 
 .waiter {
     min-height: 400px;
-    text-align: center;
 }
 
 .grid {

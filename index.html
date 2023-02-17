@@ -16,15 +16,20 @@
     <div class="wrapper">
         <header>
             <h2>HARVESTER.IO</h2>
-            <img src="menu_icon_flaticon_com.png" alt="MENU" onclick="toggleTools()">
+            <div class="header-element">
+                <form method="post" class="overFlowOpt" enctype="multipart/form-data">
+                    <label class="input-file">
+                        <input type="file" name="file" id="fileReceiver">
+                        <span>UPLOAD FILE</span>
+                    </label>
+                </form>
+                <img src="menu_icon_flaticon_com.png" alt="MENU" onclick="toggleTools()">
+            </div>
         </header>
         <main>
             <div class="tools isHidden">
-                <div>IMPORT FILE: <div>Select .CSV/.TXT file: <input type="file" id="fileReceiver">
-                        <p id="resultOfImport"></p>
-                    </div>
-                </div>
-                <br>
+
+
                 <div>COLORS:<br>
                     <div class="SubSettingsList colorList">
                     </div>
@@ -32,16 +37,16 @@
                 <br>
                 <div>SORTING:<div class="SubSettingsList">
                         <button onclick="CONFIGPARSER()">RESET</button>
-                        <button onclick="sortByID('asc')">SORT BY ID ↓</button>
-                        <button onclick="sortByID('desc')">SORT BY ID ↑</button>
-                        <button onclick="sortByCrop('asc')">SORT BY CROP ↓</button>
-                        <button onclick="sortByCrop('desc')">SORT BY CROP ↑</button>
-                        <button onclick="sortByDensity('desc')">SORT BY DENSITY ↓</button>
-                        <button onclick="sortByDensity('asc')">SORT BY DENSITY ↑</button>
-                        <button onclick="sortByComplexity('desc')">SORT BY COMPLEXITY ↓</button>
-                        <button onclick="sortByComplexity('asc')">SORT BY COMPLEXITY ↑</button>
-                        <button onclick="sortByHarvester()">SORT BY HARVESTER</button>
-                        <button onclick="sortByReaper()">SORT BY REAPER</button>
+                        <button onclick="sortByID('asc')">ID ↓</button>
+                        <button onclick="sortByID('desc')">ID ↑</button>
+                        <button onclick="sortByCrop('asc')">CROP ↓</button>
+                        <button onclick="sortByCrop('desc')">CROP ↑</button>
+                        <button onclick="sortByDensity('desc')">DENSITY ↓</button>
+                        <button onclick="sortByDensity('asc')">DENSITY ↑</button>
+                        <button onclick="sortByComplexity('desc')">COMPLEXITY ↓</button>
+                        <button onclick="sortByComplexity('asc')">COMPLEXITY ↑</button>
+                        <button onclick="sortByHarvester()">HARVESTER</button>
+                        <button onclick="sortByReaper()">REAPER</button>
                     </div>
                 </div>
                 <br>
@@ -59,10 +64,12 @@
                     </div>
                 </div>
             </div>
+            <div class="waiterInfo"><b>AWAITING FOR TABLE IMPORT...</b></div>
             <div class="mainContent">
                 <div class="chosenInfo flexInfo isHidden">
                    <div class="chosenInfoElement" style="aspect-ratio: 1/1;">Chosen field:</div>
-                    <div class="border"> <div class="chosenInfoElement">Waiting...</div>
+                    <div class="border">
+                        <div class="chosenInfoElement">Waiting...</div>
                        <div class="chosenInfoElement">Waiting...</div>
                        <div class="chosenInfoElement">Waiting...</div>
                        <div class="chosenInfoElement">Waiting...</div>
@@ -70,8 +77,9 @@
                        <div class="chosenInfoElement">Waiting...</div>
                        <div class="chosenInfoElement">Waiting...</div></div>
                 </div>
+
                 <div class="grid">
-                    <b>AWAITING FOR TABLE IMPORT...</b>
+
                 </div>
             </div>
 
