@@ -84,6 +84,8 @@ label {
     border: none;
     margin: 0;
     transition: background-color 0.2s;
+    max-width: 30vw;
+    overflow: hidden;
 }
 .input-file input[type=file] {
     position: absolute;
