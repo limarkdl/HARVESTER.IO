@@ -4,6 +4,12 @@
     box-sizing: border-box;
 }
 
+.SubSettingsList.colorList {
+
+    max-height: 200px;
+    justify-content: start;
+}
+
 
 
 body {
@@ -24,12 +30,15 @@ header {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding: 15px;
+    padding: 2vh;
+    height: 8vh;
+
 }
 
 img {
     height: 25px;
 }
+
 
 p {
     font-size: xx-small;
@@ -46,18 +55,14 @@ p {
 .SubSettingsList {
     padding: 10px;
     background-color: #FFAD4D;
-    max-height: 150px;
     overflow: auto;
     display: flex;
-    justify-content: left;
-    align-items: center;
+    flex-wrap: wrap;
+    justify-content: center;
     gap: 10px;
 }
 
-.SubSettingsList.colorList {
-    max-width: fit-content;
-    display: grid;
-}
+
 
 
 
@@ -85,10 +90,8 @@ p {
 }
 
 .mainContent {
-    padding-top: 50px;
     display: flex;
     flex-direction: row;
-    min-height: 400px;
     max-width: 1920px;
     margin-left: auto;
     margin-right: auto;
@@ -105,12 +108,13 @@ p {
     flex-wrap: wrap;
     gap: 5px;
     justify-content: center;
-    align-content: center;
-    min-height: 300px;
     width: 100%;
-    min-width: 350px;
     z-index: 1;
     background-color: white;
+    overflow: auto;
+    max-height: 92vh;
+    align-content: start;
+    padding: 20px 0 20px 0;
 }
 
 .element_grid {
@@ -179,3 +183,4 @@ button {
     padding: 5px;
     border-radius: 10px;
 }
+

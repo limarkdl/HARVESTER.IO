@@ -257,6 +257,7 @@ function showToChosenInfo(ID) {
 // SHOW / HIDE TOOLS PANEL
 function toggleTools() {
     document.getElementsByClassName("tools")[0].classList.toggle('isHidden');
+
 }
 
 // SHOW / HIDE CHOSEN FIELD PANEL
