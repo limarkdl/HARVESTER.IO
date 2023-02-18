@@ -78,7 +78,7 @@ label {
     display: inline-block;
     cursor: pointer;
     outline: none;
-
+    font-size: smaller;
     text-decoration: none;
     vertical-align: middle;
     color: rgb(0, 0, 0);
