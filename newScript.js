@@ -177,7 +177,16 @@ function getSafe(fn, defaultVal) {
 }
 
 function fullScreenToggle(element) {
-    document.getElementsByClassName(element)[0].requestFullscreen();
+        let el = document.getElementsByClassName(element)[0];
+        if (document.fullscreenElement) {
+            document.exitFullscreen();
+        } else {
+            el.requestFullscreen();
+        }
+
+
+
+
 }
 
 // MAIN GRID RENDER ALGORITHM, WHICH RERENDERS THE WHOLE GRID USING SOME EXTERNAL VALUES
