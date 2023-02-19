@@ -38,9 +38,7 @@
 
 .input-file {
     position: relative;
-    display: inline-block;
-
-    max-width: 30vw;
+    max-height: 8vh;
 }
 
 
@@ -74,6 +72,7 @@
 label {
     display: grid;
     justify-items: center;
+    overflow: clip;
 }
 
 .SubSettingsList.colorList {
@@ -114,6 +113,8 @@ label {
 }
 
 
+
+
 .input-file:hover span {
     background-color: var(--second-color);
 }
@@ -142,8 +143,8 @@ body {
 
 
 .overFlowOpt {
-    white-space: nowrap; /* Отменяем перенос текста */
-    max-width: 30%;
+    white-space: nowrap;
+    max-width: 40vw;
 }
 
 header {
@@ -357,6 +358,16 @@ button:hover {
     .flexInfo {
         flex-direction: row;
         width: 50%;
+    }
+}
+
+
+@media only screen and (max-width: 360px) {
+    #name {
+        display: none;
+    }
+    header {
+        justify-content: center;
     }
 }
 
