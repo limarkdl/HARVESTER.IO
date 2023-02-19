@@ -206,7 +206,7 @@ function GridOfFieldsRender(type) {
         document.getElementsByClassName('waiterInfo')[0].innerHTML = '';
         document.getElementsByClassName("grid")[0].innerHTML = '';
     }
-
+    document.body.style.cursor = 'wait';
 
     for(let i = 0;i < CONFIG.length;i++) {
         currentOBJ = CONFIG[i];
@@ -231,7 +231,7 @@ function GridOfFieldsRender(type) {
     if(type !== 'resize') {
         setTimeout(function(){setBackground()},50);
     }
-
+    document.body.style.cursor = 'default';
 }
 
 // WE CHECK IF CURRENT CROP HAS A DEFAULT COLOR TO DISPLAY

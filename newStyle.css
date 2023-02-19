@@ -39,7 +39,7 @@
 .input-file {
     position: relative;
     display: inline-block;
-    overflow: hidden;
+
     max-width: 30vw;
 }
 
@@ -364,5 +364,6 @@ button {
     border: 2px black solid;
     padding: 5px;
     border-radius: 10px;
+
 }
 
