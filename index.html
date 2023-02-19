@@ -29,14 +29,16 @@
         </header>
         <main>
             <div class="tools isHidden">
-
-
-                <div class="listOfColors isHidden">COLORS:<br>
+                <div class="toolsChosenType"><div class="toolsChosenTypeElement" id="colorContent" onclick="currentTab('colorContent')">VISUAL</div>
+                    <div class="toolsChosenTypeElement" id="sortingContent" onclick="currentTab('sortingContent')">SORTING</div>
+                    <div class="toolsChosenTypeElement" id="miscContent" onclick="currentTab('miscContent')">MISC</div></div>
+                <div class="toolsContent"><div class="colorContent">COLORS:
                     <div class="SubSettingsList colorList">
+                        <b class="waiterColor">Awaiting for table import</b>
                     </div>
                 </div>
-                <br>
-                <div>SORTING:<div class="SubSettingsList">
+
+                    <div class="sortingContent"><div class="SubSettingsList">
                         <button onclick="CONFIGPARSER()">RESET</button>
                         <button onclick="sortByID('asc')">ID ↓</button>
                         <button onclick="sortByID('desc')">ID ↑</button>
@@ -49,21 +51,20 @@
                         <button onclick="sortByHarvester()">HARVESTER</button>
                         <button onclick="sortByReaper()">REAPER</button>
                     </div>
-                </div>
-                <br>
-                <div>MISC:<div class="SubSettingsList">
+                    </div>
+
+                    <div class="miscContent"><div class="SubSettingsList">
                         <button onclick="toggleChosenInfo()">SHOW/HIDE CHOSEN FIELD PANEL</button>
                         <a href="https://drive.google.com/drive/folders/1-1BsWHmAPLlKFSVmH_53C2A3-IqfXkpM?usp=sharing" target="_blank"><button>CSV EXAMPLES - Google Drive</button></a>
-                    </div>
-                </div>
-
-                <div>EXPERIMENTAL: <div class="SubSettingsList">
-                        <button onclick="fullScreenToggle('wrapper')">FULL SCREEN WRAPPER</button>
+                        <button onclick="fullScreenToggle('wrapper')">FULL SCREEN MODE</button>
                         <button onclick="fullScreenToggle('grid')">FULL SCREEN GRID</button>
-                    ZOOM: <button onclick="zoomIn()">IN</button>
-                    <button onclick="zoomOut()">OUT</button>
+                        ZOOM: <button onclick="zoomIn()"><b>+</b></button>
+                        <button onclick="zoomOut()"><b>-</b></button>
                     </div>
-                </div>
+                    </div>
+
+                   </div>
+
             </div>
             <div class="waiterInfo"><b>AWAITING FOR TABLE IMPORT...</b></div>
             <div class="mainContent">

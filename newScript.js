@@ -1,3 +1,11 @@
+
+
+// THIS CODE HAS NEVER BEEN REFACTORED !!! //
+
+// REFACTORING COMING SOON //
+
+
+
 let TYPE_OF_CROPS = [];
 let TYPE_OF_MACHINES = [];
 let TYPE_OF_REAPERS = [];
@@ -25,6 +33,7 @@ let DEFAULT_COLORS = [
 
 BackUp();
 
+resetSettingsList();
 
 // DELETE OBJECT IF IT HAS 'empty' ID //
 function DamagedEraser() {
@@ -141,6 +150,8 @@ function INITIALIZATION() {
     button_update();
     // FINAL GRID OF FIELDS RENDER
     GridOfFieldsRender();
+
+    currentTab('colorContent');
 }
 
 
@@ -411,8 +422,32 @@ function renderListOfColors() {
             document.getElementsByClassName('SubSettingsList')[0].appendChild(el);
         }
     }
-    document.getElementsByClassName('listOfColors')[0].classList.toggle('isHidden');
+
 }
+
+
+function resetSettingsList () {
+    let node = document.getElementsByClassName('toolsContent')[0];
+    for (let i = 0; i < node.childNodes.length; i++) {
+        let child = node.childNodes[i];
+        if (node.childNodes[i].nodeName === 'DIV') {
+            child.classList.add('isHidden');
+        }
+
+    }
+
+    for (let i = 0; i < 3;i++) {
+        document.getElementsByClassName('toolsChosenTypeElement')[i].style.backgroundColor = '';
+    }
+}
+
+function currentTab(type) {
+        resetSettingsList();
+        document.getElementsByClassName(type)[0].classList.toggle('isHidden');
+
+        document.getElementById(type).style.backgroundColor = '#fd8901';
+}
+
 
 function updateListOfColors(name, colorPickerId) {
     let itemIndex = DEFAULT_COLORS.findIndex(x => x.name === name)
@@ -422,7 +457,10 @@ function updateListOfColors(name, colorPickerId) {
 }
 
 function zoomIn() {
-    zoomF += 0.05;
+    if (zoomF < 1.00) {
+        zoomF += 0.05;
+    }
+
     document.getElementsByClassName('grid')[0].style.scale = String(zoomF);
 }
 
