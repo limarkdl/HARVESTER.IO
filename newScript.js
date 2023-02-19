@@ -239,9 +239,6 @@ function getColorFromDEFAULT(cropName) {
     let obj = DEFAULT_COLORS.find(o => o.name === cropName);
     if (typeof obj != "undefined") {
         return obj.color;
-    } else {
-        let test = getRandomColor();
-
     }
 }
 
@@ -287,8 +284,7 @@ function showToChosenInfo(ID) {
 
 // SHOW / HIDE TOOLS PANEL
 function toggleTools() {
-    document.getElementsByClassName("tools")[0].classList.toggle('isHidden');
-
+    document.getElementsByClassName("tools")[0].classList.toggle('disabled');
 }
 
 // SHOW / HIDE CHOSEN FIELD PANEL
@@ -445,7 +441,7 @@ function currentTab(type) {
         resetSettingsList();
         document.getElementsByClassName(type)[0].classList.toggle('isHidden');
 
-        document.getElementById(type).style.backgroundColor = '#fd8901';
+        document.getElementById(type).style.backgroundColor = 'var(--main-color)';
 }
 
 
