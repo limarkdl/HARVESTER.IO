@@ -13,6 +13,9 @@ let DEFAULT_COLORS_INI;
 
 let temp;
 
+let fontSize = 10;
+let fontWeight = 'normal';
+
 let fullScreenMode;
 
 let DEFAULT_COLORS = [
@@ -217,6 +220,22 @@ function getColorFromDEFAULT(cropName) {
     }
 }
 
+function changeFont(type) {
+    if (type === 'add') {
+        fontSize++;
+    } else if (type === 'sub') {
+        fontSize--;
+    }
+    let result = '--font-size: ' + String(fontSize) + 'px';
+    if (type === 'bold') {
+        result = '--font-weight: 800';
+    } else if (type === 'normal') {
+        result = '--font-weight: 500';
+    }
+
+    document.documentElement.style.cssText += result;
+}
+
 // RETURNS PSEUDO RANDOM COLOR, IS USED WHEN THERE ARE NO DEFAULT COLOR FOR THIS.CROP_TYPE
 function getRandomColor() {
     let letters = '0123456789ABCDEF';
@@ -229,25 +248,25 @@ function getRandomColor() {
 
 // APPLIES HEADER NAMES FROM THE FILE TO THE SORTING BUTTONS
 function button_update() {
-    temp = document.getElementsByClassName('SubSettingsList')[1];
-    temp.children[1].innerHTML = Object.keys(currentOBJ)[0] + ' ↓';
-    temp.children[2].innerHTML = Object.keys(currentOBJ)[0] + ' ↑';
-    temp.children[3].innerHTML = Object.keys(currentOBJ)[1] + ' ↓';
-    temp.children[4].innerHTML = Object.keys(currentOBJ)[1] + ' ↑';
-    temp.children[5].innerHTML = Object.keys(currentOBJ)[2] + ' ↓';
-    temp.children[6].innerHTML = Object.keys(currentOBJ)[2] + ' ↑';
-    temp.children[7].innerHTML = Object.keys(currentOBJ)[3] + ' ↓';
-    temp.children[8].innerHTML = Object.keys(currentOBJ)[3] + ' ↑';
-    temp.children[9].innerHTML = Object.keys(currentOBJ)[4];
+    temp = document.getElementsByClassName('SubSettingsList')[2];
+    temp.children[0].innerHTML = Object.keys(currentOBJ)[0] + ' ↓';
+    temp.children[1].innerHTML = Object.keys(currentOBJ)[0] + ' ↑';
+    temp.children[2].innerHTML = Object.keys(currentOBJ)[1] + ' ↓';
+    temp.children[3].innerHTML = Object.keys(currentOBJ)[1] + ' ↑';
+    temp.children[4].innerHTML = Object.keys(currentOBJ)[2] + ' ↓';
+    temp.children[5].innerHTML = Object.keys(currentOBJ)[2] + ' ↑';
+    temp.children[6].innerHTML = Object.keys(currentOBJ)[3] + ' ↓';
+    temp.children[7].innerHTML = Object.keys(currentOBJ)[3] + ' ↑';
+    temp.children[8].innerHTML = Object.keys(currentOBJ)[4];
     if (typeof(Object.keys(currentOBJ)[5]) !== 'undefined') {
-        temp.children[10].innerHTML = Object.keys(currentOBJ)[5];
+        temp.children[9].innerHTML = Object.keys(currentOBJ)[5];
     } else {
-        temp.children[10].remove();
+        temp.children[9].remove();
     }
     if (typeof(Object.keys(currentOBJ)[6]) !== 'undefined') {
-        temp.children[10].innerHTML = Object.keys(currentOBJ)[6];
+        temp.children[9].innerHTML = Object.keys(currentOBJ)[6];
     } else {
-        temp.children[10].remove();
+        temp.children[9].remove();
     }
     
 }

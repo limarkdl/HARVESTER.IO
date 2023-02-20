@@ -7,7 +7,8 @@
     --second-color: #FFAD4D;
     --background-color: #FFFFFF;
     --hover-color: #B6B6B6;
-    --pane-padding: 5px 42px;
+    --font-size: 10px;
+    --font-weight: 500;
 }
 
 .isShowed {
@@ -44,7 +45,7 @@ header {
 
 button {
     cursor: pointer;
-    padding: 5px;
+    padding: 8px;
     border: 2px black solid;
     border-radius: 10px;
     transition: 0.2s;
@@ -66,8 +67,9 @@ img {
 }
 
 p {
-    font-size: xx-small;
+    font-size: var(--font-size) !important;
     padding-left: 5px;
+    font-weight: var(--font-weight) !important;
 }
 
 label {
@@ -151,7 +153,7 @@ label {
     flex-wrap: wrap;
     justify-content: center;
     gap: 10px;
-    padding-top: 10px;
+    padding: 10px 0 10px;
 }
 
 .SubSettingsList::-webkit-scrollbar {
@@ -166,15 +168,15 @@ label {
     background-color: var(--main-color);
 }
 
-.grid::-webkit-scrollbar {
+.grid::-webkit-scrollbar, .chosenInfo::-webkit-scrollbar {
     width: 12px;
 }
 
-.grid::-webkit-scrollbar-track {
+.grid::-webkit-scrollbar-track, .chosenInfo::-webkit-scrollbar-track {
     background: #ffffff;
 }
 
-.grid::-webkit-scrollbar-thumb {
+.grid::-webkit-scrollbar-thumb, .chosenInfo::-webkit-scrollbar-thumb {
     background-color: var(--second-color);
 }
 
@@ -232,7 +234,9 @@ label {
 
 .chosenInfo {
     width: 20%;
-    padding-top: 20px;
+    padding: 20px 0 0 20px;
+    max-height: 90vh;
+    overflow: auto;
 }
 
 .waiterInfo {
@@ -330,12 +334,17 @@ label {
 
     .chosenInfo {
         width: 100%;
+        height: fit-content;
         flex-direction: row;
     }
+    #chosenFieldColor {
+        height: 10vh;
 
+    }
     .flexInfo {
         flex-direction: row;
-        width: 50%;
+
+        width: 100%;
     }
 }
 

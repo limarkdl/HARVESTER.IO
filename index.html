@@ -40,11 +40,18 @@
                         <div class="SubSettingsList colorList">
                             <b class="waiterColor">Awaiting for table import</b>
                         </div>
+                        FONT:
+                        <div class="SubSettingsList">
+                            <button onclick="changeFont('add')">Bigger</button>
+                            <button onclick="changeFont('sub')">Smaller</button>
+                            <button onclick="changeFont('bold')">Bold</button>
+                            <button onclick="changeFont('normal')">Normal</button>
+                        </div>
+
                     </div>
 
                     <div class="sortingContent">
                         <div class="SubSettingsList">
-                            <button onclick="CONFIGPARSER()">RESET</button>
                             <button onclick="sortByID('asc')">ID ↓</button>
                             <button onclick="sortByID('desc')">ID ↑</button>
                             <button onclick="sortByCrop('asc')">CROP ↓</button>
@@ -76,7 +83,7 @@
             <div class="waiterInfo"><b>AWAITING FOR TABLE IMPORT...</b></div>
             <div class="mainContent">
                 <div class="chosenInfo flexInfo isHidden">
-                    <div class="chosenInfoElement" style="aspect-ratio: 1/1;">Chosen field:</div>
+                    <div class="chosenInfoElement" id="chosenFieldColor" style="aspect-ratio: 1/1;"></div>
                     <div class="border">
                         <div class="chosenInfoElement">Waiting...</div>
                         <div class="chosenInfoElement">Waiting...</div>
