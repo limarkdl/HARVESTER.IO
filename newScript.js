@@ -156,7 +156,7 @@ function setBackground() {
 }
 
 // HOT FIX WHEN SOME PROPERTIES OF OBJECT RETURN "ERROR UNDEFIED", ALLOWS TO SKIP SUCH ERRORS
-function getSafe(fn) {
+function getSafe(fn, defaulVal) {
     try {
         if (typeof(fn()) === 'undefined') {
             return '';
