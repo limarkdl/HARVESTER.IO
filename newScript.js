@@ -281,7 +281,9 @@ function showToChosenInfo(ID) {
         if (typeof(temp[i-1]) !== 'undefined') {
             el[i].innerHTML = temp[i-1] + ': ' + obj[Object.keys(obj)[i-1]];
         } else {
-            el[i].remove();
+            try {el[i].remove();} catch (e) {
+                console.log('Fix me!');
+            }
         }
     }
     el[0].style.backgroundColor = getColorFromDEFAULT(obj[Object.keys(obj)[1]]);
