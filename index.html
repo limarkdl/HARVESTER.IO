@@ -7,7 +7,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="newStyle.css">
     <link rel="icon" href="favicon.ico" type="image/x-icon">
-    <link rel="preload" href="Metro.woff2" as="font" type="font/woff2" crossorigin>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@500;600;800&display=swap" rel="stylesheet">
@@ -24,60 +23,69 @@
                         <span>UPLOAD FILE</span>
                     </label>
                 </form>
-                <img src="menu_icon_flaticon_com.png" alt="MENU" onclick="toggleTools()">
+                <img src="menuIcon.png" alt="MENU" onclick="toggleTools()">
             </div>
         </header>
         <main>
             <div class="tools disabled">
-                <div class="toolsChosenType"><div class="toolsChosenTypeElement" id="colorContent" onclick="currentTab('colorContent')">VISUAL</div>
-                    <div class="toolsChosenTypeElement" id="sortingContent" onclick="currentTab('sortingContent')">SORTING</div>
-                    <div class="toolsChosenTypeElement" id="miscContent" onclick="currentTab('miscContent')">MISC</div></div>
-                <div class="toolsContent"><div class="colorContent">COLORS:
-                    <div class="SubSettingsList colorList">
-                        <b class="waiterColor">Awaiting for table import</b>
+                <div class="toolsChosenType">
+                    <div class="toolsChosenTypeElement" id="visualContent" onclick="currentTab('visualContent')">VISUAL
                     </div>
+                    <div class="toolsChosenTypeElement" id="sortingContent" onclick="currentTab('sortingContent')">
+                        SORTING</div>
+                    <div class="toolsChosenTypeElement" id="miscContent" onclick="currentTab('miscContent')">MISC</div>
                 </div>
-
-                    <div class="sortingContent"><div class="SubSettingsList">
-                        <button onclick="CONFIGPARSER()">RESET</button>
-                        <button onclick="sortByID('asc')">ID ↓</button>
-                        <button onclick="sortByID('desc')">ID ↑</button>
-                        <button onclick="sortByCrop('asc')">CROP ↓</button>
-                        <button onclick="sortByCrop('desc')">CROP ↑</button>
-                        <button onclick="sortByDensity('desc')">DENSITY ↓</button>
-                        <button onclick="sortByDensity('asc')">DENSITY ↑</button>
-                        <button onclick="sortByComplexity('desc')">COMPLEXITY ↓</button>
-                        <button onclick="sortByComplexity('asc')">COMPLEXITY ↑</button>
-                        <button onclick="sortByHarvester()">HARVESTER</button>
-                        <button onclick="sortByReaper()">REAPER</button>
-                    </div>
+                <div class="toolsContent">
+                    <div class="visualContent">COLORS:
+                        <div class="SubSettingsList colorList">
+                            <b class="waiterColor">Awaiting for table import</b>
+                        </div>
                     </div>
 
-                    <div class="miscContent"><div class="SubSettingsList">
-                        <button onclick="toggleChosenInfo()">SHOW/HIDE CHOSEN FIELD PANEL</button>
-                        <a href="https://drive.google.com/drive/folders/1-1BsWHmAPLlKFSVmH_53C2A3-IqfXkpM?usp=sharing" target="_blank"><button>CSV EXAMPLES - Google Drive</button></a>
-                        <button onclick="fullScreenToggle('wrapper')">FULL SCREEN MODE</button>
-                        <button onclick="fullScreenToggle('grid')">FULL SCREEN GRID</button>
-                        ZOOM: <button onclick="zoomIn()"><b>+</b></button>
-                        <button onclick="zoomOut()"><b>-</b></button>
-                    </div>
+                    <div class="sortingContent">
+                        <div class="SubSettingsList">
+                            <button onclick="CONFIGPARSER()">RESET</button>
+                            <button onclick="sortByID('asc')">ID ↓</button>
+                            <button onclick="sortByID('desc')">ID ↑</button>
+                            <button onclick="sortByCrop('asc')">CROP ↓</button>
+                            <button onclick="sortByCrop('desc')">CROP ↑</button>
+                            <button onclick="sortByDensity('desc')">DENSITY ↓</button>
+                            <button onclick="sortByDensity('asc')">DENSITY ↑</button>
+                            <button onclick="sortByComplexity('desc')">COMPLEXITY ↓</button>
+                            <button onclick="sortByComplexity('asc')">COMPLEXITY ↑</button>
+                            <button onclick="sortByHarvester()">HARVESTER</button>
+                            <button onclick="sortByReaper()">REAPER</button>
+                        </div>
                     </div>
 
-                   </div>
+                    <div class="miscContent">
+                        <div class="SubSettingsList">
+                            <button onclick="toggleChosenInfo()">SHOW/HIDE CHOSEN FIELD PANEL</button>
+                            <a href="https://drive.google.com/drive/folders/1-1BsWHmAPLlKFSVmH_53C2A3-IqfXkpM?usp=sharing"
+                                target="_blank"><button>CSV EXAMPLES - Google Drive</button></a>
+                            <button onclick="fullScreenToggle('wrapper')">FULL SCREEN MODE</button>
+                            <button onclick="fullScreenToggle('grid')">FULL SCREEN GRID</button>
+                            ZOOM: <button onclick="zoomIn()"><b>+</b></button>
+                            <button onclick="zoomOut()"><b>-</b></button>
+                        </div>
+                    </div>
+
+                </div>
 
             </div>
             <div class="waiterInfo"><b>AWAITING FOR TABLE IMPORT...</b></div>
             <div class="mainContent">
                 <div class="chosenInfo flexInfo isHidden">
-                   <div class="chosenInfoElement" style="aspect-ratio: 1/1;">Chosen field:</div>
+                    <div class="chosenInfoElement" style="aspect-ratio: 1/1;">Chosen field:</div>
                     <div class="border">
                         <div class="chosenInfoElement">Waiting...</div>
-                       <div class="chosenInfoElement">Waiting...</div>
-                       <div class="chosenInfoElement">Waiting...</div>
-                       <div class="chosenInfoElement">Waiting...</div>
-                       <div class="chosenInfoElement">Waiting...</div>
-                       <div class="chosenInfoElement">Waiting...</div>
-                       <div class="chosenInfoElement">Waiting...</div></div>
+                        <div class="chosenInfoElement">Waiting...</div>
+                        <div class="chosenInfoElement">Waiting...</div>
+                        <div class="chosenInfoElement">Waiting...</div>
+                        <div class="chosenInfoElement">Waiting...</div>
+                        <div class="chosenInfoElement">Waiting...</div>
+                        <div class="chosenInfoElement">Waiting...</div>
+                    </div>
                 </div>
 
                 <div class="grid">
@@ -86,7 +94,6 @@
             </div>
 
         </main>
-        <!--<footer></footer>-->
 
     </div>
 </body>

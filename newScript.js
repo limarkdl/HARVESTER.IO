@@ -1,16 +1,12 @@
-
-
 // THIS CODE HAS NEVER BEEN REFACTORED !!! //
 
 // REFACTORING COMING SOON //
 
-
-
 let TYPE_OF_CROPS = [];
 let TYPE_OF_MACHINES = [];
 let TYPE_OF_REAPERS = [];
-
 let CONFIG = [];
+
 let currentOBJ;
 let zoomF = 1.0;
 let DEFAULT_COLORS_INI;
@@ -18,17 +14,17 @@ let DEFAULT_COLORS_INI;
 let temp;
 
 let DEFAULT_COLORS = [
-    {name: "oats", color: "#C4BA9E"},
-    {name: "wheat", color: "#F5DEB3"},
-    {name: "corn", color: "#FBEC5D"},
-    {name: "sunflower", color: "#FFC512"},
-    {name: "sugar beet", color: "#D8D8D8"},
-    {name: "beans", color: "#811E1E"},
-    {name: "soy", color: "#D2C82E"},
-    {name: "cotton", color: "#EEEDDE"},
-    {name: "rye", color: "#DAE71E"},
-    {name: "buckwheat", color: "#9C6217"},
-    {name: "rice", color: "#FFFFFF"}
+    { name: "oats", color: "#C4BA9E" },
+    { name: "wheat", color: "#F5DEB3" },
+    { name: "corn", color: "#FBEC5D" },
+    { name: "sunflower", color: "#FFC512" },
+    { name: "sugar beet", color: "#D8D8D8" },
+    { name: "beans", color: "#811E1E" },
+    { name: "soy", color: "#D2C82E" },
+    { name: "cotton", color: "#EEEDDE" },
+    { name: "rye", color: "#DAE71E" },
+    { name: "buckwheat", color: "#9C6217" },
+    { name: "rice", color: "#FFFFFF" }
 ];
 
 BackUp();
@@ -37,9 +33,9 @@ resetSettingsList();
 
 // DELETE OBJECT IF IT HAS 'empty' ID //
 function DamagedEraser() {
-    for(let i = 0; i < CONFIG.length; i++) {
+    for (let i = 0; i < CONFIG.length; i++) {
         let current = CONFIG[i];
-        if(current[Object.keys(current)[0]] === '') {
+        if (current[Object.keys(current)[0]] === '') {
             CONFIG.splice(i, 1);
         }
     }
@@ -47,7 +43,7 @@ function DamagedEraser() {
 
 // GET ALL TYPES OF MACHINES THAT ARE LISTED IN THE PARSED CSV TABLE
 function getAllTypesMachines() {
-    for(let i = 0;i < CONFIG.length;i++) {
+    for (let i = 0; i < CONFIG.length; i++) {
         currentOBJ = CONFIG[i];
         temp = currentOBJ[Object.keys(currentOBJ)[4]];
         if (!TYPE_OF_MACHINES.includes(temp)) {
@@ -58,8 +54,7 @@ function getAllTypesMachines() {
 
 // GET ALL TYPES OF CROP TYPES THAT ARE LISTED IN THE PARSED CSV TABLE
 function getAllTypesCrops() {
-
-    for(let i = 0;i < CONFIG.length;i++) {
+    for (let i = 0; i < CONFIG.length; i++) {
         currentOBJ = CONFIG[i];
         temp = currentOBJ[Object.keys(currentOBJ)[1]];
         if (!TYPE_OF_CROPS.includes(temp)) {
@@ -70,7 +65,7 @@ function getAllTypesCrops() {
 
 // GET ALL TYPES OF REAPER TYPES THAT ARE LISTED IN THE PARSED CSV TABLE
 function getAllTypesReapers() {
-    for(let i = 0; i < CONFIG.length;i++) {
+    for (let i = 0; i < CONFIG.length; i++) {
         currentOBJ = CONFIG[i];
         temp = currentOBJ[Object.keys(currentOBJ)[6]];
         if (!TYPE_OF_REAPERS.includes(temp)) {
@@ -82,52 +77,36 @@ function getAllTypesReapers() {
 // RESTORING DEFAULT_COLOR TO THE ORIGINAL VALUES
 function restoreToDefault() {
     DEFAULT_COLORS = [
-        {name: "oats", color: "#C4BA9E"},
-        {name: "wheat", color: "#F5DEB3"},
-        {name: "corn", color: "#FBEC5D"},
-        {name: "sunflower", color: "#FFC512"},
-        {name: "sugar beet", color: "#D8D8D8"},
-        {name: "beans", color: "#811E1E"},
-        {name: "soy", color: "#D2C82E"},
-        {name: "cotton", color: "#EEEDDE"},
-        {name: "rye", color: "#DAE71E"},
-        {name: "buckwheat", color: "#9C6217"},
-        {name: "rice", color: "#FFFFFF"}
+        { name: "oats", color: "#C4BA9E" },
+        { name: "wheat", color: "#F5DEB3" },
+        { name: "corn", color: "#FBEC5D" },
+        { name: "sunflower", color: "#FFC512" },
+        { name: "sugar beet", color: "#D8D8D8" },
+        { name: "beans", color: "#811E1E" },
+        { name: "soy", color: "#D2C82E" },
+        { name: "cotton", color: "#EEEDDE" },
+        { name: "rye", color: "#DAE71E" },
+        { name: "buckwheat", color: "#9C6217" },
+        { name: "rice", color: "#FFFFFF" }
     ];
 }
 
 // CALCULATE THE WIDTH FOR AN ELEMENT IN THE GRID ACCORDING TO THE VIEWPORT.WIDTH
 function calculateWidthForElement() {
-    let calculatedWidth;
-    if (window.innerWidth < 350) {
-        calculatedWidth = '30%';
-    } else if (window.innerWidth < 400) {
-        calculatedWidth = '30%';
-    } else if (window.innerWidth < 500){
-        calculatedWidth = '23%';
-    } else if (window.innerWidth < 600) {
-        calculatedWidth = '19%';
-    } else if (window.innerWidth < 700) {
-        calculatedWidth = '18%';
-    }
-    else if  (window.innerWidth < 800) {
-        calculatedWidth = '16%';
-    } else if (window.innerWidth < 900) {
-        calculatedWidth = '15%';
-    } else if (window.innerWidth < 1000) {
-        calculatedWidth = '13%';
-    } else if(window.innerWidth < 1100) {
-        calculatedWidth = '12%';
-    } else if (window.innerWidth < 1300) {
-        calculatedWidth = '11%';
-    } else if (window.innerWidth < 1400) {
-        calculatedWidth = '8%';
-    } else if (window.innerWidth < 1550) {
-        calculatedWidth = '8%';
-    } else {
-        calculatedWidth = '7%';
-    }
-    return calculatedWidth;
+    let width = window.innerWidth;
+    return calculatedWidth = (width < 350) ? '30%' : 
+        (width < 400) ? '30%' : 
+        (width < 500) ? '23%' :
+        (width < 600) ? '19%' :
+        (width < 700) ? '18%' :
+        (width < 800) ? '16%' :
+        (width < 900) ? '15%' :
+        (width < 1000) ? '13%' :
+        (width < 1100) ? '12%' :
+        (width < 1300) ? '11%' :
+        (width < 1400) ? '8%' :
+        (width < 1550) ? '8%' :
+        '13%';
 }
 
 // FIRST INITIALIZATION AFTER FILE LOADING
@@ -150,11 +129,9 @@ function INITIALIZATION() {
     button_update();
     // FINAL GRID OF FIELDS RENDER
     GridOfFieldsRender();
-
-    currentTab('colorContent');
+    // DEFAULT CHOSEN VISUAL TAB
+    currentTab('visualContent');
 }
-
-
 
 // BACKING UP DEFAULT_COLORS TO BE ABLE TO RESTORE
 function BackUp() {
@@ -166,13 +143,12 @@ function clearListOfColors() {
     document.getElementsByClassName('SubSettingsList')[0].innerHTML = '';
 }
 
-// SET BACKGROUND OF THE GRID ELEMENT ACCORDING TO THE CLASS NAME WHICH IS THE SAME AS FIELD'S CROP TYPE
-// !!! CONTAINS LOGICAL ERROR, FIX IT ASAP !!!
+// SET BACKGROUND OF THE GRID ELEMENT ACCORDING TO THE CLASS NAME WHICH IS THE SAME AS FIELD'S CROP TYPE // !!! CONTAINS LOGICAL ERROR, FIX IT ASAP !!!
 function setBackground() {
-    for(let i = 0; i < CONFIG.length;i++) {
+    for (let i = 0; i < CONFIG.length; i++) {
         let nameOfRequiredColor = document.getElementsByClassName('insiderMainContent')[i].classList[1];
-        let requiredIndexOfColor = DEFAULT_COLORS.findIndex( c => c.name === nameOfRequiredColor);
-        if(typeof(requiredIndexOfColor) != 'undefined') {
+        let requiredIndexOfColor = DEFAULT_COLORS.findIndex(c => c.name === nameOfRequiredColor);
+        if (typeof (requiredIndexOfColor) != 'undefined') {
             document.getElementsByClassName('insiderMainContent')[i].style.backgroundColor = getSafe(() => DEFAULT_COLORS[requiredIndexOfColor].color);
         }
     }
@@ -188,16 +164,12 @@ function getSafe(fn, defaultVal) {
 }
 
 function fullScreenToggle(element) {
-        let el = document.getElementsByClassName(element)[0];
-        if (document.fullscreenElement) {
-            document.exitFullscreen();
-        } else {
-            el.requestFullscreen();
-        }
-
-
-
-
+    let el = document.getElementsByClassName(element)[0];
+    if (document.fullscreenElement) {
+        document.exitFullscreen();
+    } else {
+        el.requestFullscreen();
+    }
 }
 
 // MAIN GRID RENDER ALGORITHM, WHICH RERENDERS THE WHOLE GRID USING SOME EXTERNAL VALUES
@@ -207,29 +179,28 @@ function GridOfFieldsRender(type) {
         document.getElementsByClassName("grid")[0].innerHTML = '';
     }
     document.body.style.cursor = 'wait';
-
-    for(let i = 0;i < CONFIG.length;i++) {
+    for (let i = 0; i < CONFIG.length; i++) {
         currentOBJ = CONFIG[i];
         let div = document.createElement("div");
         div.innerHTML = `<div onclick="showToChosenInfo(`
-            +currentOBJ[Object.keys(currentOBJ)[0]]+`)" class="element_grid"><div class="insider"><div  class="insiderMainContent `
-            +currentOBJ[Object.keys(currentOBJ)[1]]+`"><p>ID:`
-            +currentOBJ[Object.keys(currentOBJ)[0]]+`</p><p class="`
-            +Object.keys(currentOBJ)[1]+`">`
-            +currentOBJ[Object.keys(currentOBJ)[1]]+` `+currentOBJ[Object.keys(currentOBJ)[2]]+`</p><p class="`
-            +Object.keys(currentOBJ)[4]+`">`
-            +currentOBJ[Object.keys(currentOBJ)[4]]+`</p><p class="`
-            +Object.keys(currentOBJ)[5]+`">`
-            +currentOBJ[Object.keys(currentOBJ)[5]]+`</p><p class="`
-            +Object.keys(currentOBJ)[6]+`">`
-            +currentOBJ[Object.keys(currentOBJ)[6]]+`</p></div><div class="bar" style="height:`
-            +currentOBJ[Object.keys(currentOBJ)[3]] * 100 +`%"></div></div></div>`;
+            + currentOBJ[Object.keys(currentOBJ)[0]] + `)" class="element_grid"><div class="insider"><div  class="insiderMainContent `
+            + currentOBJ[Object.keys(currentOBJ)[1]] + `"><p>ID:`
+            + currentOBJ[Object.keys(currentOBJ)[0]] + `</p><p class="`
+            + Object.keys(currentOBJ)[1] + `">`
+            + currentOBJ[Object.keys(currentOBJ)[1]] + ` ` + currentOBJ[Object.keys(currentOBJ)[2]] + `</p><p class="`
+            + Object.keys(currentOBJ)[4] + `">`
+            + currentOBJ[Object.keys(currentOBJ)[4]] + `</p><p class="`
+            + Object.keys(currentOBJ)[5] + `">`
+            + currentOBJ[Object.keys(currentOBJ)[5]] + `</p><p class="`
+            + Object.keys(currentOBJ)[6] + `">`
+            + currentOBJ[Object.keys(currentOBJ)[6]] + `</p></div><div class="bar" style="height:`
+            + currentOBJ[Object.keys(currentOBJ)[3]] * 100 + `%"></div></div></div>`;
         div.style.width = calculateWidthForElement();
         div.id = "div" + String(i);
         document.getElementsByClassName("grid")[0].appendChild(div);
     }
-    if(type !== 'resize') {
-        setTimeout(function(){setBackground()},50);
+    if (type !== 'resize') {
+        setTimeout(function () { setBackground() }, 50);
     }
     document.body.style.cursor = 'default';
 }
@@ -269,17 +240,18 @@ function button_update() {
 
 // COPIES PROPERTY OF THE FIELD TO THE "CHOSEN FIELD" ON MOUSE CLICK
 function showToChosenInfo(ID) {
-    document.getElementsByClassName('chosenInfoElement')[1].innerText = '';
+    let el = document.getElementsByClassName('chosenInfoElement');
     let obj = CONFIG.find(c => c[Object.keys(c)[0]] === String(ID));
+    el[1].innerText = '';
     temp = Object.keys(currentOBJ);
-    document.getElementsByClassName('chosenInfoElement')[1].innerText = temp[0] + ': '+ obj[Object.keys(obj)[0]];
-    document.getElementsByClassName('chosenInfoElement')[2].innerText = temp[1] + ': '+ obj[Object.keys(obj)[1]];
-    document.getElementsByClassName('chosenInfoElement')[3].innerText = temp[2] + ': '+ obj[Object.keys(obj)[2]];
-    document.getElementsByClassName('chosenInfoElement')[4].innerText = temp[3] + ': '+ obj[Object.keys(obj)[3]];
-    document.getElementsByClassName('chosenInfoElement')[5].innerText = temp[4] + ': '+ obj[Object.keys(obj)[4]];
-    document.getElementsByClassName('chosenInfoElement')[6].innerText = temp[5] + ': '+ obj[Object.keys(obj)[5]];
-    document.getElementsByClassName('chosenInfoElement')[7].innerText = Object.keys(currentOBJ)[6] + ': '+ obj[Object.keys(obj)[6]]
-    document.getElementsByClassName('chosenInfoElement')[0].style.backgroundColor = getColorFromDEFAULT(obj[Object.keys(obj)[1]]);
+    el[1].innerText = temp[0] + ': ' + obj[Object.keys(obj)[0]];
+    el[2].innerText = temp[1] + ': ' + obj[Object.keys(obj)[1]];
+    el[3].innerText = temp[2] + ': ' + obj[Object.keys(obj)[2]];
+    el[4].innerText = temp[3] + ': ' + obj[Object.keys(obj)[3]];
+    el[5].innerText = temp[4] + ': ' + obj[Object.keys(obj)[4]];
+    el[6].innerText = temp[5] + ': ' + obj[Object.keys(obj)[5]];
+    el[7].innerText = Object.keys(currentOBJ)[6] + ': ' + obj[Object.keys(obj)[6]]
+    el[0].style.backgroundColor = getColorFromDEFAULT(obj[Object.keys(obj)[1]]);
 }
 
 // SHOW / HIDE TOOLS PANEL
@@ -292,13 +264,10 @@ function toggleChosenInfo() {
     document.getElementsByClassName("chosenInfo")[0].classList.toggle('isHidden');
 }
 
-// JUST A SMALL BOX UNDER "UPLOAD" BUTTON WHICH OUTPUTS THE RESULT OF READING AND PARSING FILE
-
-
 // SORTS CONFIG BY CROP TYPE
 function sortByCrop(type) {
     if (type === 'asc') {
-        CONFIG.sort(function(a, b) {
+        CONFIG.sort(function (a, b) {
             const cropA = a[Object.keys(a)[1]].toUpperCase();
             const cropB = b[Object.keys(b)[1]].toUpperCase();
             if (cropA < cropB) {
@@ -310,7 +279,7 @@ function sortByCrop(type) {
             return 0;
         });
     } else {
-        CONFIG.sort(function(a, b) {
+        CONFIG.sort(function (a, b) {
             const cropA = a[Object.keys(a)[1]].toUpperCase();
             const cropB = b[Object.keys(b)[1]].toUpperCase();
             if (cropA > cropB) {
@@ -329,8 +298,8 @@ function sortByCrop(type) {
 function sortByID(type) {
     if (type === 'desc') {
         CONFIG.sort(
-        (p1, p2) =>
-            (parseInt(p1[Object.keys(p1)[0]]) < parseInt(p2[Object.keys(p2)[0]])) ? 1 : (parseInt(p1[Object.keys(p1)[0]]) > parseInt(p2[Object.keys(p2)[0]])) ? -1 : 0);
+            (p1, p2) =>
+                (parseInt(p1[Object.keys(p1)[0]]) < parseInt(p2[Object.keys(p2)[0]])) ? 1 : (parseInt(p1[Object.keys(p1)[0]]) > parseInt(p2[Object.keys(p2)[0]])) ? -1 : 0);
     } else {
         CONFIG.sort(
             (p1, p2) =>
@@ -363,10 +332,9 @@ function sortByComplexity(type) {
     GridOfFieldsRender();
 }
 
-// SORT CONFIG BY HARVESTER NAME
-// !!! THIS IS PSEUDO SORTING THAT HAS NO SENSE AND CAN JUST ORDER THE MACHINES IN SOME MORE FANCY WAY. NEEDED TO BE REDESIGNED !!!
+// SORT CONFIG BY HARVESTER NAME // !!! THIS IS A PSEUDO SORTING THAT HAS NO SENSE AND CAN JUST ORDER THE MACHINES IN SOME MORE FANCY WAY. NEEDED TO BE REDESIGNED !!!
 function sortByHarvester() {
-    CONFIG.sort(function(a, b) {
+    CONFIG.sort(function (a, b) {
         const harvestA = a[Object.keys(a)[4]].toUpperCase();
         const harvestB = b[Object.keys(b)[4]].toUpperCase();
         if (harvestA > harvestB) {
@@ -380,10 +348,9 @@ function sortByHarvester() {
     GridOfFieldsRender();
 }
 
-// SORT CONFIG BY REAPER TYPE
-// !!! THIS IS PSEUDO SORTING THAT HAS NO SENSE AND JUST ORDER THE REAPERS IN SOME MORE FANCY WAY. NEEDED TO BE REDESIGNED !!!
+// SORT CONFIG BY REAPER TYPE // !!! THIS IS A PSEUDO SORTING THAT HAS NO SENSE AND JUST ORDER THE REAPERS IN SOME MORE FANCY WAY. NEEDED TO BE REDESIGNED !!!
 function sortByReaper() {
-    CONFIG.sort(function(a, b) {
+    CONFIG.sort(function (a, b) {
         const reaperA = a[Object.keys(a)[6]].toUpperCase();
         const reaperB = b[Object.keys(b)[6]].toUpperCase();
         if (reaperA > reaperB) {
@@ -397,14 +364,13 @@ function sortByReaper() {
     GridOfFieldsRender();
 }
 
-
 // RENDERS LIST OF COLORS ON THE MAIN PAGE
 function renderListOfColors() {
     document.getElementsByClassName('SubSettingsList')[0].innerHTML = '';
     let IsFound = false;
     let FIndex = 0;
     for (let i = 0; i < DEFAULT_COLORS.length; i++) {
-        for (let j = 0;j < TYPE_OF_CROPS.length;j++) {
+        for (let j = 0; j < TYPE_OF_CROPS.length; j++) {
             if (DEFAULT_COLORS.find(c => c.name === TYPE_OF_CROPS[i])) {
                 IsFound = true;
                 FIndex = DEFAULT_COLORS.findIndex(c => c.name === TYPE_OF_CROPS[i]);
@@ -414,50 +380,42 @@ function renderListOfColors() {
         }
         if (IsFound) {
             let el = document.createElement("label");
-            el.innerHTML = `<label><input type="color" id="colorN`+i+`" onchange="updateListOfColors('` + DEFAULT_COLORS[FIndex].name + `','colorN`+i+`')" value="`+ DEFAULT_COLORS[FIndex].color +`"> `+DEFAULT_COLORS[FIndex].name+`</label>`;
+            el.innerHTML = `<label><input type="color" id="colorN` + i + `" onchange="updateListOfColors('` + DEFAULT_COLORS[FIndex].name + `','colorN` + i + `')" value="` + DEFAULT_COLORS[FIndex].color + `"> ` + DEFAULT_COLORS[FIndex].name + `</label>`;
             document.getElementsByClassName('SubSettingsList')[0].appendChild(el);
         }
     }
-
 }
 
-
-function resetSettingsList () {
+function resetSettingsList() {
     let node = document.getElementsByClassName('toolsContent')[0];
     for (let i = 0; i < node.childNodes.length; i++) {
         let child = node.childNodes[i];
         if (node.childNodes[i].nodeName === 'DIV') {
             child.classList.add('isHidden');
         }
-
     }
-
-    for (let i = 0; i < 3;i++) {
+    for (let i = 0; i < 3; i++) {
         document.getElementsByClassName('toolsChosenTypeElement')[i].style.backgroundColor = '';
     }
 }
 
 function currentTab(type) {
-        resetSettingsList();
-        document.getElementsByClassName(type)[0].classList.toggle('isHidden');
-
-        document.getElementById(type).style.backgroundColor = 'var(--main-color)';
+    resetSettingsList();
+    document.getElementsByClassName(type)[0].classList.toggle('isHidden');
+    document.getElementById(type).style.backgroundColor = 'var(--main-color)';
 }
-
 
 function updateListOfColors(name, colorPickerId) {
     let itemIndex = DEFAULT_COLORS.findIndex(x => x.name === name)
     DEFAULT_COLORS[itemIndex].color = document.getElementById(colorPickerId).value;
-    setTimeout(function(){setBackground()},200);
-
+    setTimeout(function () { setBackground() }, 200);
 }
 
 function zoomIn() {
     if (zoomF < 1.00) {
         zoomF += 0.05;
+        document.getElementsByClassName('grid')[0].style.scale = String(zoomF);
     }
-
-    document.getElementsByClassName('grid')[0].style.scale = String(zoomF);
 }
 
 function zoomOut() {
@@ -466,12 +424,12 @@ function zoomOut() {
 }
 
 function AddColorsToDefault() {
-    for (let i = 0; i < CONFIG.length;i++) {
+    for (let i = 0; i < CONFIG.length; i++) {
         let currentOBJ = CONFIG[i];
         let named = currentOBJ[Object.keys(currentOBJ)[1]];
         if (DEFAULT_COLORS.find(o => o.name === named)) {
         } else {
-            let OBJECT = {name: named, color: getRandomColor() };
+            let OBJECT = { name: named, color: getRandomColor() };
             DEFAULT_COLORS.push(OBJECT);
         }
     }
@@ -481,13 +439,12 @@ function CONFIGPARSER() {
     let file = document.getElementById('fileReceiver').files[0];
     let reader = new FileReader();
     reader.readAsText(file);
-    reader.onload = function() {
+    reader.onload = function () {
         console.log(reader.result);
         Papa.parse(file, {
             header: true,
-            complete: function(results) {
+            complete: function (results) {
                 console.log("Finished:", results.data);
-
                 CONFIG = results.data;
                 TYPE_OF_CROPS.length = 0;
                 restoreToDefault();
@@ -496,18 +453,18 @@ function CONFIGPARSER() {
             }
         });
     }
-    reader.onerror = function() {
+    reader.onerror = function () {
         console.log(reader.error);
-
+    }
 }
-}
 
-document.getElementById("fileReceiver").addEventListener('change', function(){
+document.getElementById("fileReceiver").addEventListener('change', function () {
     CONFIGPARSER();
     document.getElementsByClassName('input-file')[0].children[1].innerText = this.files[0].name;
     document.getElementsByClassName('input-file')[0].children[1].style.fontSize = "10px";
 });
-window.addEventListener('resize', function(){
+
+window.addEventListener('resize', function () {
     GridOfFieldsRender();
     if (window.innerWidth >= 1920) {
         document.getElementsByClassName('mainContent')[0].style.left = (window.innerWidth - document.getElementsByClassName('mainContent')[0].offsetWidth) / 2 + "px";
@@ -515,7 +472,3 @@ window.addEventListener('resize', function(){
         document.getElementsByClassName('mainContent')[0].style.left = 0;
     }
 });
-
-
-
-

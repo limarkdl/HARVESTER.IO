@@ -1,11 +1,24 @@
+/* CSS STYLE FOR HARVESTER VISUALIZER */
+
+/* CORE CSS  */
 
 :root {
     --main-color: #FF8A00;
     --second-color: #FFAD4D;
+    --background-color: #FFFFFF;
+    --hover-color: #B6B6B6;
     --pane-padding: 5px 42px;
 }
 
+.isShowed {
+    display: block;
+}
 
+.isHidden {
+    display: none;
+}
+
+/* GLOBAL HTML ELEMENTS */
 
 * {
     margin: 0 0;
@@ -13,138 +26,10 @@
     box-sizing: border-box;
 }
 
-@font-face {
-    font-family: 'Metro';
-    src: url('Metro.woff2') format('woff2'),
-    url('Metro.woff') format('woff');
-    font-weight: normal;
-    font-style: normal;
-    font-display: swap;
-}
-
-
-.header-element {
-    min-width: 12vw;
-    display: flex;
-    gap: 5px;
-    justify-content: space-between;
-    align-items: center;
-    z-index: inherit;
-
-}
-
-
-
-
-.input-file {
-    position: relative;
-    max-height: 8vh;
-}
-
-
-
-
-.SubSettingsList::-webkit-scrollbar {
-    width: 12px;
-}
-.SubSettingsList::-webkit-scrollbar-track {
-    background: rgba(255, 255, 255, 0);
-}
-.SubSettingsList::-webkit-scrollbar-thumb {
-    background-color: var(--main-color);
-
-
-
-}
-
-.grid::-webkit-scrollbar {
-    width: 12px;
-}
-.grid::-webkit-scrollbar-track {
-    background: #ffffff;
-}
-.grid::-webkit-scrollbar-thumb {
-    background-color: var(--second-color);
-
-}
-
-
-label {
-    display: grid;
-    justify-items: center;
-    overflow: clip;
-}
-
-.SubSettingsList.colorList {
-    overflow: auto;
-
-    display: flex;
-    gap: 10px;
-}
-
-
-
-
-.input-file span {
-    position: relative;
-    cursor: pointer;
-    outline: none;
-    font-size: smaller;
-    text-decoration: none;
-    vertical-align: middle;
-    color: rgb(0, 0, 0);
-    text-align: center;
-    border-radius: 4px;
-    line-height: 22px;
-    height: 40px;
-    padding: 10px 20px;
-    box-sizing: border-box;
-    border: none;
-    margin: 0;
-    transition: background-color 0.2s;
-}
-.input-file input[type=file] {
-    position: absolute;
-    z-index: -1;
-    opacity: 0;
-    display: block;
-    width: 0;
-    height: 0;
-}
-
-
-
-
-.input-file:hover span {
-    background-color: var(--second-color);
-}
-.input-file:active span {
-    background-color: var(--main-color);
-}
-
-
-.input-file input[type=file]:disabled + span {
-    background-color: #ffffff;
-}
-
 body {
     font-family: 'Open Sans', sans-serif;
     font-weight: 500;
     background-color: #ffffff;
-}
-
-.wrapper {
-    display: flex;
-    flex-direction: column;
-    height: 100vh;
-    background-color: #ffffff;
-
-}
-
-
-.overFlowOpt {
-    white-space: nowrap;
-    max-width: 40vw;
 }
 
 header {
@@ -157,26 +42,65 @@ header {
     z-index: 10000;
 }
 
+button {
+    cursor: pointer;
+    padding: 5px;
+    border: 2px black solid;
+    border-radius: 10px;
+    transition: 0.2s;
+}
+
+button:hover {
+    background-color: #b6b6b6;
+}
+
 button:disabled,
-button[disabled]{
+button[disabled] {
     background-color: #cccccc;
     color: #666666;
 }
 
 img {
     height: 25px;
+    cursor: pointer;
 }
-
 
 p {
     font-size: xx-small;
     padding-left: 5px;
 }
-.toolsChosenType {
-    display: flex;
-    justify-content: space-around;
-    font-size: larger;
+
+label {
+    display: grid;
+    justify-items: center;
+    overflow: clip;
 }
+
+
+/* CLASSES' RULES */
+
+.wrapper {
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+    background-color: #ffffff;
+}
+
+
+.header-element {
+    min-width: 12vw;
+    display: flex;
+    gap: 5px;
+    justify-content: space-between;
+    align-items: center;
+    z-index: inherit;
+}
+
+.input-file {
+    position: relative;
+    max-height: 8vh;
+}
+
 .tools {
     background-color: var(--second-color);
     padding: 10px;
@@ -199,26 +123,16 @@ p {
     visibility: hidden;
 }
 
-
-
-
-
 .toolsChosenTypeElement {
     width: 33%;
     text-align: center;
     transition: 0.2s;
 }
 
-img {
-    cursor: pointer;
-}
-
-button {
-    cursor: pointer;
-    transition: 0.2s;
-}
-button:hover {
-    background-color: #b6b6b6;
+.toolsChosenType {
+    display: flex;
+    justify-content: space-around;
+    font-size: larger;
 }
 
 .toolsChosenTypeElement:hover {
@@ -240,16 +154,80 @@ button:hover {
     padding-top: 10px;
 }
 
-.isShowed {
-    display:block;
-    visibility: visible;
-
-
+.SubSettingsList::-webkit-scrollbar {
+    width: 12px;
 }
 
-.isHidden {
-    display: none;
-    animation: moveBack 2s linear;
+.SubSettingsList::-webkit-scrollbar-track {
+    background: rgba(255, 255, 255, 0);
+}
+
+.SubSettingsList::-webkit-scrollbar-thumb {
+    background-color: var(--main-color);
+}
+
+.grid::-webkit-scrollbar {
+    width: 12px;
+}
+
+.grid::-webkit-scrollbar-track {
+    background: #ffffff;
+}
+
+.grid::-webkit-scrollbar-thumb {
+    background-color: var(--second-color);
+}
+
+
+.SubSettingsList.colorList {
+    overflow: auto;
+    display: flex;
+    gap: 10px;
+}
+
+.input-file span {
+    position: relative;
+    cursor: pointer;
+    outline: none;
+    font-size: smaller;
+    text-decoration: none;
+    vertical-align: middle;
+    color: rgb(0, 0, 0);
+    text-align: center;
+    border-radius: 4px;
+    line-height: 22px;
+    height: 40px;
+    padding: 10px 20px;
+    box-sizing: border-box;
+    border: none;
+    margin: 0;
+    transition: background-color 0.2s;
+}
+
+.input-file input[type=file] {
+    position: absolute;
+    z-index: -1;
+    opacity: 0;
+    display: block;
+    width: 0;
+    height: 0;
+}
+
+.input-file:hover span {
+    background-color: var(--second-color);
+}
+
+.input-file:active span {
+    background-color: var(--main-color);
+}
+
+.input-file input[type=file]:disabled+span {
+    background-color: #ffffff;
+}
+
+.overFlowOpt {
+    white-space: nowrap;
+    max-width: 40vw;
 }
 
 .chosenInfo {
@@ -272,6 +250,14 @@ button:hover {
     border: 2px solid #494949;
 }
 
+.waiterColor {
+    overflow: hidden;
+}
+
+.waiter {
+    min-height: 400px;
+}
+
 .mainContent {
     display: flex;
     flex-direction: row;
@@ -281,16 +267,6 @@ button:hover {
     margin-right: auto;
     position: absolute;
     top: 8vh;
-
-}
-
-.waiterColor {
-    overflow: hidden;
-}
-
-.waiter {
-    min-height: 400px;
-
 }
 
 .grid {
@@ -315,9 +291,8 @@ button:hover {
     border: 1px black solid;
     z-index: 2;
     transition: 2s;
-    background: linear-gradient(90deg, var(--main-color) 95%, rgba(255,255,255,0) 95%);
+    background: linear-gradient(90deg, var(--main-color) 95%, rgba(255, 255, 255, 0) 95%);
 }
-
 
 .insider {
     height: 100%;
@@ -344,6 +319,8 @@ button:hover {
     z-index: 4;
 }
 
+/* ADAPTIVE MEDIA */
+
 @media only screen and (max-width: 800px) {
     .mainContent {
         flex-direction: column;
@@ -355,26 +332,19 @@ button:hover {
         width: 100%;
         flex-direction: row;
     }
+
     .flexInfo {
         flex-direction: row;
         width: 50%;
     }
 }
 
-
 @media only screen and (max-width: 360px) {
     #name {
         display: none;
     }
+
     header {
         justify-content: center;
     }
 }
-
-button {
-    border: 2px black solid;
-    padding: 5px;
-    border-radius: 10px;
-
-}
-
