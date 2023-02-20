@@ -13,6 +13,8 @@ let DEFAULT_COLORS_INI;
 
 let temp;
 
+let fullScreenMode;
+
 let DEFAULT_COLORS = [
     { name: "oats", color: "#C4BA9E" },
     { name: "wheat", color: "#F5DEB3" },
@@ -104,7 +106,6 @@ function calculateWidthForElement() {
         (width < 1000) ? '13%' :
         (width < 1100) ? '12%' :
         (width < 1300) ? '11%' :
-        (width < 1400) ? '8%' :
         (width < 1550) ? '8%' :
         '7%';
 }
@@ -155,19 +156,22 @@ function setBackground() {
 }
 
 // HOT FIX WHEN SOME PROPERTIES OF OBJECT RETURN "ERROR UNDEFIED", ALLOWS TO SKIP SUCH ERRORS
-function getSafe(fn, defaultVal) {
+function getSafe(fn) {
     try {
+        if (typeof(fn()) === 'undefined') {
+            return '';
+        }
         return fn();
     } catch (e) {
-        return defaultVal;
+        return '';
     }
 }
 
 function fullScreenToggle(element) {
     let el = document.getElementsByClassName(element)[0];
-    if (document.fullscreenElement) {
+    if (document.fullscreenElement === element) {
         document.exitFullscreen();
-    } else {
+    } else  {
         el.requestFullscreen();
     }
 }
@@ -192,8 +196,8 @@ function GridOfFieldsRender(type) {
             + currentOBJ[Object.keys(currentOBJ)[4]] + `</p><p class="`
             + Object.keys(currentOBJ)[5] + `">`
             + currentOBJ[Object.keys(currentOBJ)[5]] + `</p><p class="`
-            + Object.keys(currentOBJ)[6] + `">`
-            + currentOBJ[Object.keys(currentOBJ)[6]] + `</p></div><div class="bar" style="height:`
+            + getSafe(() => Object.keys(currentOBJ)[6]) + `">`
+            + getSafe(() => currentOBJ[Object.keys(currentOBJ)[6]]) + `</p></div><div class="bar" style="height:`
             + currentOBJ[Object.keys(currentOBJ)[3]] * 100 + `%"></div></div></div>`;
         div.style.width = calculateWidthForElement();
         div.id = "div" + String(i);
@@ -235,7 +239,17 @@ function button_update() {
     temp.children[7].innerHTML = Object.keys(currentOBJ)[3] + ' ↓';
     temp.children[8].innerHTML = Object.keys(currentOBJ)[3] + ' ↑';
     temp.children[9].innerHTML = Object.keys(currentOBJ)[4];
-    temp.children[10].innerHTML = Object.keys(currentOBJ)[6];
+    if (typeof(Object.keys(currentOBJ)[5]) !== 'undefined') {
+        temp.children[10].innerHTML = Object.keys(currentOBJ)[5];
+    } else {
+        temp.children[10].remove();
+    }
+    if (typeof(Object.keys(currentOBJ)[6]) !== 'undefined') {
+        temp.children[10].innerHTML = Object.keys(currentOBJ)[6];
+    } else {
+        temp.children[10].remove();
+    }
+    
 }
 
 // COPIES PROPERTY OF THE FIELD TO THE "CHOSEN FIELD" ON MOUSE CLICK
@@ -244,13 +258,13 @@ function showToChosenInfo(ID) {
     let obj = CONFIG.find(c => c[Object.keys(c)[0]] === String(ID));
     el[1].innerText = '';
     temp = Object.keys(currentOBJ);
-    el[1].innerText = temp[0] + ': ' + obj[Object.keys(obj)[0]];
-    el[2].innerText = temp[1] + ': ' + obj[Object.keys(obj)[1]];
-    el[3].innerText = temp[2] + ': ' + obj[Object.keys(obj)[2]];
-    el[4].innerText = temp[3] + ': ' + obj[Object.keys(obj)[3]];
-    el[5].innerText = temp[4] + ': ' + obj[Object.keys(obj)[4]];
-    el[6].innerText = temp[5] + ': ' + obj[Object.keys(obj)[5]];
-    el[7].innerText = Object.keys(currentOBJ)[6] + ': ' + obj[Object.keys(obj)[6]]
+    for (let i = 1; i < 8;i++) {
+        if (typeof(temp[i-1]) !== 'undefined') {
+            el[i].innerHTML = temp[i-1] + ': ' + obj[Object.keys(obj)[i-1]];
+        } else {
+            el[i].remove();
+        }
+    }
     el[0].style.backgroundColor = getColorFromDEFAULT(obj[Object.keys(obj)[1]]);
 }
 
