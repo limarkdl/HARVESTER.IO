@@ -106,7 +106,7 @@ function calculateWidthForElement() {
         (width < 1300) ? '11%' :
         (width < 1400) ? '8%' :
         (width < 1550) ? '8%' :
-        '13%';
+        '7%';
 }
 
 // FIRST INITIALIZATION AFTER FILE LOADING
