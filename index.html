@@ -1,110 +1,73 @@
 <!DOCTYPE html>
-<html lang="en">
-
+<html>
 <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-    <title>Application</title>
+    <meta charset="UTF-8">
+    <title>Random Color Grid</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="newStyle.css">
-    <link rel="icon" href="favicon.ico" type="image/x-icon">
+    <link rel="stylesheet" type="text/css" href="style.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@500;600;800&display=swap" rel="stylesheet">
 </head>
-
 <body>
-    <div class="wrapper">
-        <header>
-            <h2 id="name">HARVESTER.IO</h2>
-            <div class="header-element">
-                <form method="post" class="overFlowOpt" enctype="multipart/form-data">
-                    <label class="input-file">
-                        <input type="file" name="file" id="fileReceiver">
-                        <span>UPLOAD FILE</span>
-                    </label>
-                </form>
-                <img src="menuIcon.png" alt="MENU" onclick="toggleTools()">
-            </div>
-        </header>
-        <main>
-            <div class="tools disabled">
-                <div class="toolsChosenType">
-                    <div class="toolsChosenTypeElement" id="visualContent" onclick="currentTab('visualContent')">VISUAL
-                    </div>
-                    <div class="toolsChosenTypeElement" id="sortingContent" onclick="currentTab('sortingContent')">
-                        SORTING</div>
-                    <div class="toolsChosenTypeElement" id="miscContent" onclick="currentTab('miscContent')">MISC</div>
-                </div>
-                <div class="toolsContent">
-                    <div class="visualContent">COLORS:
-                        <div class="SubSettingsList colorList">
-                            <b class="waiterColor">Awaiting for table import</b>
-                        </div>
-                        FONT:
-                        <div class="SubSettingsList">
-                            <button onclick="changeFont('add')">Bigger</button>
-                            <button onclick="changeFont('sub')">Smaller</button>
-                            <button onclick="changeFont('bold')">Bold</button>
-                            <button onclick="changeFont('normal')">Normal</button>
-                        </div>
+<header>
+    <h1>HARVESTER.IO</h1>
+    <div id="header-container">
+        <div class="fullscreen-button"></div>
+        <div id="settings-btn">
+            <span></span>
+        </div>
+    </div>
 
-                    </div>
-
-                    <div class="sortingContent">
-                        <div class="SubSettingsList">
-                            <button onclick="sortByID('asc')">ID ↓</button>
-                            <button onclick="sortByID('desc')">ID ↑</button>
-                            <button onclick="sortByCrop('asc')">CROP ↓</button>
-                            <button onclick="sortByCrop('desc')">CROP ↑</button>
-                            <button onclick="sortByDensity('desc')">DENSITY ↓</button>
-                            <button onclick="sortByDensity('asc')">DENSITY ↑</button>
-                            <button onclick="sortByComplexity('desc')">COMPLEXITY ↓</button>
-                            <button onclick="sortByComplexity('asc')">COMPLEXITY ↑</button>
-                            <button onclick="sortByHarvester()">HARVESTER</button>
-                            <button onclick="sortByReaper()">REAPER</button>
-                        </div>
-                    </div>
-
-                    <div class="miscContent">
-                        <div class="SubSettingsList">
-                            <button onclick="toggleChosenInfo()">SHOW/HIDE CHOSEN FIELD PANEL</button>
-                            <a href="https://drive.google.com/drive/folders/1-1BsWHmAPLlKFSVmH_53C2A3-IqfXkpM?usp=sharing"
-                                target="_blank"><button>CSV EXAMPLES - Google Drive</button></a>
-                            <button onclick="fullScreenToggle('wrapper')">FULL SCREEN MODE</button>
-                            <button onclick="fullScreenToggle('grid')">FULL SCREEN FIELDS</button>
-                            ZOOM: <button onclick="zoomIn()"><b>+</b></button>
-                            <button onclick="zoomOut()"><b>-</b></button>
-                        </div>
-                    </div>
-
-                </div>
+</header>
+<div id="extraBtnZone"></div>
+<div class="wrapper">
+    <div id="settings">
+        <div id="menuTabs">
+            <div id="visualTab" onclick="changeCurrentTab('visual')">VISUAL</div>
+            <div id="sortingTab" onclick="changeCurrentTab('sorting')">SORTING</div>
+            <div id="miscTab" onclick="changeCurrentTab('misc')">MISC</div>
+        </div>
+        <div id="settingsContent">
+            <div id="visualContent">
+                <div class="settingsButton" onclick="showAll()">Show all</div>
+                <div class="settingsButton" onclick="showOnlyCompleted()">Show completed</div>
+                <div class="settingsButton" onclick="showOnlyUncompleted()">Show uncompleted</div>
+                <div class="settingsButton" onclick="toggleHowMuchDone()">Remove/Show 'Done' layer</div>
 
             </div>
-            <div class="waiterInfo"><b>AWAITING FOR TABLE IMPORT...</b></div>
-            <div class="mainContent">
-                <div class="chosenInfo flexInfo isHidden">
-                    <div class="chosenInfoElement" id="chosenFieldColor" style="aspect-ratio: 1/1;"></div>
-                    <div class="border">
-                        <div class="chosenInfoElement">Waiting...</div>
-                        <div class="chosenInfoElement">Waiting...</div>
-                        <div class="chosenInfoElement">Waiting...</div>
-                        <div class="chosenInfoElement">Waiting...</div>
-                        <div class="chosenInfoElement">Waiting...</div>
-                        <div class="chosenInfoElement">Waiting...</div>
-                        <div class="chosenInfoElement">Waiting...</div>
-                    </div>
-                </div>
+            <div id="sortingContent">
+                <div class="settingsButton" onclick="sortByID('asc')">ID ↑</div>
+                <div class="settingsButton" onclick="sortByID('desc')">ID ↓</div>
+                <div class="settingsButton" onclick="sortByDensity('asc')">Density ↑</div>
+                <div class="settingsButton" onclick="sortByDensity('desc')">Density ↓</div>
+                <div class="settingsButton" onclick="sortByComplexity('asc')">Complexity ↑</div>
+                <div class="settingsButton" onclick="sortByComplexity('desc')">Complexity ↓</div>
+            </div>
+            <div id="miscContent">
+                <label for="file-upload" class="file-upload-label settingsButton">Choose a CSV file:</label>
+                <input id="file-upload" type="file" accept=".csv" onchange="csvFileParse(event)" />
 
-                <div class="grid">
-
+                <button class="big-orange-btn settingsButton" onclick="generateCSV('file')">Generate <span id="slider-value-display">1</span> fields and download CSV</button>
+                <div class="slider-container">
+                    <div class="slider-value">Choose number of fields to generate:</div>
+                    <input type="range" min="1" max="255" value="1" class="slider" id="myRange">
                 </div>
+                <p style="font-size: xx-small">Version v0.4</p>
             </div>
 
-        </main>
+
+        </div>
 
     </div>
-</body>
-<script type="text/javascript" src="papaparse.min.js"></script>
-<script type="text/javascript" src="newScript.js"></script>
+    <main>
 
+        <div id="grid-container"></div>
+
+    </main>
+</div>
+
+
+<script src="script.js"></script>
+</body>
 </html>
