@@ -222,7 +222,7 @@ function generateGrid(data) {
         let LIMITOBJECT = document.getElementsByClassName('textLimit');
         for (let i = 0; i < data.length;i++) {
 
-        if (TEXT_TESTING[i].offsetWidth > (TESTING_CONTAINER[i].offsetWidth - 5)) {
+        if (TEXT_TESTING[i].offsetWidth > (TESTING_CONTAINER[i].offsetWidth - 10)) {
             LIMITOBJECT[i].children[0].style.animation = 'scroll 10s linear infinite';
             console.log('SET SCROLL' + TEXT_TESTING[i].offsetWidth + TESTING_CONTAINER[i].offsetWidth);
         }}},1000);
