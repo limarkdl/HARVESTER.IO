@@ -504,4 +504,5 @@ input[type="file"] {
 
 ::-webkit-scrollbar-thumb {
     background-color: var(--main-color);
+    border-radius: 10px;
 }
