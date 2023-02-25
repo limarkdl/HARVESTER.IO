@@ -72,6 +72,7 @@ function csvFileParse(event) {
         }
         console.log(data);
         console.log("TYPE OF DATA" + typeof(data));
+
         generateGrid(data);
     });
 }
@@ -96,6 +97,7 @@ function parseCsvFile(file, callback) {
             }
             recievedFileHeaders = headers;
             recievedFile = result;
+            showOnlyArray = recievedFile;
             document.getElementsByClassName('file-upload-label')[0].innerText = 'Current file: ' + document.getElementById('file-upload').files[0].name;
 
             callback(null, result);
@@ -128,7 +130,7 @@ function autoColor(temp) {
 function generateGrid(data) {
     let container = document.getElementById("grid-container");
     container.innerHTML = "";
-    if (data.length == 0) {
+    if (data.length === 0) {
         let warning = document.createElement("h1");
         warning.innerText = "NO FIELDS FOUND FOR THIS CONDITION";
         warning.id = "warningNotFound"
@@ -170,23 +172,23 @@ function generateGrid(data) {
         let firstRow = document.createElement("div");
         firstRow.classList.add("first-row");
         secondRow.innerHTML = `<div class="second-row">
-            <div class="fieldCrop"><img src="CropICON.svg"><h5>`+currentCrop+`</h5>
+            <div class="fieldCrop"><img src="CropICON.svg" alt="Crop"><h5>`+currentCrop+`</h5>
             </div>
-            <div class="fieldDensity"><img src="DensityICON.svg"><h5>`+currentDensity+`</h5>
+            <div class="fieldDensity"><img src="DensityICON.svg" alt="Density"><h5>`+currentDensity+`</h5>
             </div>
-            <div class="fieldComplexity"><img src="ComplexityICON.svg">
+            <div class="fieldComplexity"><img src="ComplexityICON.svg" alt="Complexity">
                 <h5>`+currentComplexity+`</h5></div>
-            <div class="fieldHarvester"><img src="HarvesterICON.svg"><div class="textLimit"><h5>`+currentHarvester+`</h5></div></div>
-            <div class="fieldReaper"><img src="ReaperICON.svg"><h5>`+currentReaper+`</h5>
+            <div class="fieldHarvester"><img src="HarvesterICON.svg" alt="Harvester"><div class="textLimit"><h5>`+currentHarvester+`</h5></div></div>
+            <div class="fieldReaper"><img src="ReaperICON.svg" alt="Reaper"><h5>`+currentReaper+`</h5>
             </div>
         </div>`;
         howMuchDoneText.style.display = 'block';
-        if (howMuchDone == 100) {
+        if (howMuchDone === 100) {
             howMuchDoneText.style.mixBlendMode = 'unset';
-            howMuchDoneText.style.opacity = '1';
+            howMuchDoneText.style.opacity = '100% !important';
             howMuchDoneText.style.color = 'green';
         } else {
-            howMuchDoneText.style.mixBlendMode = 'overlay';
+            /*howMuchDoneText.style.mixBlendMode = 'overlay';*/
         }
 
         howMuchDoneText.style.display = 'block';
@@ -197,12 +199,25 @@ function generateGrid(data) {
         item.classList.add("grid-item");
         item.style.transitionDelay = delay+'s';
         fieldBackground.style.transitionDelay = delay+2+'s';
-        let text = document.createElement("p");
         item.style.background = autoColor(temp);
-        console.log(delay+'s');
+
         fieldBackground.classList.add("fieldBackground");
-        let linearGradient =  "linear-gradient(45deg,var(--done-color) "+ howMuchDone +"%, transparent 0%)";
+        let linearGradient;
+        if (howMuchDoneIsShowed) {
+            linearGradient =  "linear-gradient(45deg,var(--done-color) "+ howMuchDone +"%, transparent 0%)";
+        } else {
+            linearGradient =  "linear-gradient(45deg,var(--done-color) "+ howMuchDone +"% 0% !important, transparent 0%)";
+        }
+
+        if (howMuchDone === 100) {
+            linearGradient =  "linear-gradient(45deg,var(--done-color) 99%, transparent 0%)";
+        }
+
+
+        console.log(linearGradient);
         fieldBackground.style.backgroundImage = linearGradient;
+
+
         setTimeout(()=>{item.style.opacity = 1;},100);
         firstRow.appendChild(fieldNum);
         firstRow.appendChild(howMuchDoneText);
@@ -211,11 +226,11 @@ function generateGrid(data) {
         item.appendChild(fieldBackground);
         grid.appendChild(item);
         delay += 0.001;
-        setTimeout(()=>{container.style.opacity = '1';howMuchDoneText.style.opacity = '0.5'},1000)
+        setTimeout(()=>{container.style.opacity = '1';howMuchDoneText.style.opacity = 'var(--done-percent-opacity)'},600)
     }
     container.appendChild(grid);
     document.getElementById('grid-container').style.opacity = '1';
-    howMuchDoneIsShowed = true;
+
     setTimeout(()=>{
         let TEXT_TESTING = document.getElementsByClassName('fieldHarvester');
         let TESTING_CONTAINER = document.getElementsByClassName('second-row');
@@ -224,7 +239,7 @@ function generateGrid(data) {
 
         if (TEXT_TESTING[i].offsetWidth > (TESTING_CONTAINER[i].offsetWidth - 10)) {
             LIMITOBJECT[i].children[0].style.animation = 'scroll 10s linear infinite';
-            console.log('SET SCROLL' + TEXT_TESTING[i].offsetWidth + TESTING_CONTAINER[i].offsetWidth);
+            /*console.log('SET SCROLL' + TEXT_TESTING[i].offsetWidth + TESTING_CONTAINER[i].offsetWidth);*/
         }}},1000);
 }
 
@@ -354,20 +369,23 @@ function test(){
 
 function sortByID(order) {
     sortArrayOfObjects(showOnlyArray,recievedFileHeaders[0],order);
-    document.getElementById('grid-container').style.opacity = '0';
-    setTimeout(()=>{generateGrid(showOnlyArray)},1000);
+    generateGrid(showOnlyArray);
+    /*document.getElementById('grid-container').style.opacity = '0';
+    setTimeout(()=>{generateGrid(showOnlyArray)},1000);*/
 }
 
 function sortByDensity(order) {
     sortArrayOfObjects(showOnlyArray,recievedFileHeaders[2],order);
-    document.getElementById('grid-container').style.opacity = '0';
-    setTimeout(()=>{generateGrid(showOnlyArray)},1000);
+    generateGrid(showOnlyArray);
+    /*document.getElementById('grid-container').style.opacity = '0';
+    setTimeout(()=>{generateGrid(showOnlyArray)},1000);*/
 }
 
 function sortByComplexity(order) {
     sortArrayOfObjects(showOnlyArray,recievedFileHeaders[3],order);
-    document.getElementById('grid-container').style.opacity = '0';
-    setTimeout(()=>{generateGrid(showOnlyArray)},1000);
+    generateGrid(showOnlyArray);
+    /*document.getElementById('grid-container').style.opacity = '0';
+    setTimeout(()=>{generateGrid(showOnlyArray)},1000);*/
 }
 
 function sortArrayOfObjects(arr, prop, order) {
@@ -392,7 +410,6 @@ function changeCurrentTab(tab) {
     sortingTab.style.background = 'var(--second-color)';
     miscTab.style.background = 'var(--second-color)';
     let currentTab = tab + 'Tab';
-    let currentContent = tab + 'Content';
     document.getElementById(currentTab).style.background = 'var(--main-color)';
 
     visualContent.style.display = 'none';
@@ -417,14 +434,15 @@ function toggleHowMuchDone() {
             let str = document.getElementsByClassName('fieldBackground')[i].style.backgroundImage;
             str = str.substring(0, 43) + ' 0% !important' + str.substring(43);
             document.getElementsByClassName('fieldBackground')[i].style.backgroundImage = str;
+            console.log(str);
         }
         howMuchDoneIsShowed = false;
-    } else if (!howMuchDoneIsShowed) {
+    } else  {
         for(let i = 0;i < document.getElementsByClassName('grid')[0].childElementCount;i++) {
             let str = document.getElementsByClassName('fieldBackground')[i].style.backgroundImage;
             str = str.substring(0, 43) + str.substring(57);
             document.getElementsByClassName('fieldBackground')[i].style.backgroundImage = str;
-
+            console.log(str);
         }
         howMuchDoneIsShowed = true;
     }
@@ -438,7 +456,7 @@ function showOnlyCompleted() {
 
         let current = recievedFile[i];
         let howMuchDone = current[recievedFileHeaders[6]];
-        if (howMuchDone == 100) {
+        if (howMuchDone === 100) {
             showOnlyArray[counter] = current;
             counter++;
         }
@@ -460,7 +478,7 @@ function showOnlyUncompleted() {
     for(let i=0;i<recievedFile.length;i++) {
         let current = recievedFile[i];
         let howMuchDone = current[recievedFileHeaders[6]];
-        if (howMuchDone != 100) {
+        if (howMuchDone !== 100) {
             showOnlyArray[counter] = current;
             counter++;
         }

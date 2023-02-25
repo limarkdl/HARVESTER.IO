@@ -4,16 +4,17 @@
     --background: #FFFFFF;
     --hover-color: #B6B6B6;
     --done-color: #a18353;
+    --done-percent-opacity: 0.4;
 }
 
 * {
     margin: 0 0;
-    font-family: 'Open Sans';
+    font-family: 'Open Sans', 'system-ui';
 }
 
 body {
     background-color: var(--background);
-    font-family: 'Open Sans';
+    font-family: 'Open Sans', 'system-ui';
 }
 /*grid-item p {
     color: #fff;
@@ -26,7 +27,6 @@ html {
     background-color: var(--background);
 }
 h1 {
-    font-family: 'Open Sans';
     margin-left: 15px;
 }
 
@@ -45,11 +45,7 @@ h1 {
     color: white;
 }
 
-@media only screen and (max-width: 800px) {
-    nav {
-        display: none;
-    }
-}
+
 
 nav ul {
     list-style: none;
@@ -82,11 +78,12 @@ nav a {
 }
 
 #menuTabs div {
-    padding: 5px 10px 5px 10px;
+    padding: 0 10px 0 10px;
     background: var(--second-color);
-    border-radius: 10px 10px 0 0;
+    border-radius: 10px;
     font-weight: bold;
     text-align: center;
+    cursor: pointer;
 }
 
 
@@ -138,10 +135,13 @@ nav a {
     background-color: var(--second-color);
 }
 
-@media only screen and (max-width: 350px) {
+@media only screen and (max-width: 450px) {
     #settings {
-        width: 60% !important;
-        padding: 10px;
+        width: 100%;
+        padding: 0;
+    }
+    header h1 {
+        font-size: x-large;
     }
 }
 
@@ -270,7 +270,7 @@ nav a {
     display: none;
     mix-blend-mode: unset;
     opacity: 0;
-    transition: 2s;
+    transition: 1s;
 }
 
 
@@ -323,8 +323,7 @@ img {
     color: #ffffff;
     flex-direction: row;
     justify-content: space-around;
-    padding: 10px 0 0 0;
-    cursor: pointer;
+    padding: 10px 0 10px 0;
 }
 
 
