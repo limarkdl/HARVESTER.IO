@@ -132,7 +132,7 @@ function generateGrid(data) {
     container.innerHTML = "";
     if (data.length === 0) {
         let warning = document.createElement("h1");
-        warning.innerText = "NO FIELDS FOUND FOR THIS CONDITION";
+        warning.innerText = "NO FIELDS FOUND FOR THIS FILTER";
         warning.id = "warningNotFound";
         container.appendChild(warning);
         return 0;
