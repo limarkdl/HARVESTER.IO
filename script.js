@@ -294,7 +294,7 @@ function generateCSV(type) {
         // Generate a random harvester name and reaper status
         const harvester = harvesterNames[Math.floor(Math.random() * 20)];
         const reaper = reaperTypes[Math.floor(Math.random() * 4)];
-        const IsDoneFor = (Math.floor(Math.random() * 101));
+        const IsDoneFor = generateProgress();
         // Add the row data to the array
         data.push([fieldID, fieldCrop, fieldDensity, fieldComplexity, harvester, reaper,IsDoneFor]);
     }
@@ -319,6 +319,18 @@ function generateCSV(type) {
     // Download the CSV file
 
 }
+
+
+// RETURN '100' MORE OFTEN FOR VISUALIZATION
+function generateProgress() {
+    const randomNumber = Math.floor(Math.random() * 5);
+    if (randomNumber === 0) {
+        return 100;
+    } else {
+        return Math.floor(Math.random() * 100);
+    }
+}
+
 
 const settingsButton = document.querySelector('#settings-btn');
 const element = document.querySelector('#settings');
