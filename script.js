@@ -183,7 +183,7 @@ function generateGrid(data) {
             </div>
         </div>`;
         howMuchDoneText.style.display = 'block';
-        if (howMuchDone === 100) {
+        if (howMuchDone === '100') {
             howMuchDoneText.style.mixBlendMode = 'unset';
             howMuchDoneText.style.opacity = '100% !important';
             howMuchDoneText.style.color = 'green';
@@ -209,7 +209,7 @@ function generateGrid(data) {
             linearGradient =  "linear-gradient(45deg,var(--done-color) "+ howMuchDone +"% 0% !important, transparent 0%)";
         }
 
-        if (howMuchDone === 100) {
+        if (howMuchDone === '100') {
             linearGradient =  "linear-gradient(45deg,var(--done-color) 99%, transparent 0%)";
         }
 
@@ -226,7 +226,14 @@ function generateGrid(data) {
         item.appendChild(fieldBackground);
         grid.appendChild(item);
         delay += 0.001;
-        setTimeout(()=>{container.style.opacity = '1';howMuchDoneText.style.opacity = 'var(--done-percent-opacity)'},600)
+        setTimeout(()=>{container.style.opacity = '1';
+            if (howMuchDone === '100') {
+                howMuchDoneText.style.opacity = '1';
+            } else {
+                howMuchDoneText.style.opacity = 'var(--done-percent-opacity)';
+            }
+
+        },600)
     }
     container.appendChild(grid);
     document.getElementById('grid-container').style.opacity = '1';
@@ -378,6 +385,13 @@ function sortByComplexity(order) {
     setTimeout(()=>{generateGrid(showOnlyArray)},1000);*/
 }
 
+function sortByProgress(order) {
+    sortArrayOfObjects(showOnlyArray,recievedFileHeaders[6],order);
+    generateGrid(showOnlyArray);
+    /*document.getElementById('grid-container').style.opacity = '0';
+    setTimeout(()=>{generateGrid(showOnlyArray)},1000);*/
+}
+
 function sortArrayOfObjects(arr, prop, order) {
     if (order === 'asc') {
         arr.sort(function(a, b) {
@@ -446,7 +460,7 @@ function showOnlyCompleted() {
 
         let current = recievedFile[i];
         let howMuchDone = current[recievedFileHeaders[6]];
-        if (howMuchDone === 100) {
+        if (howMuchDone === '100') {
             showOnlyArray[counter] = current;
             counter++;
         }
@@ -468,7 +482,7 @@ function showOnlyUncompleted() {
     for(let i=0;i<recievedFile.length;i++) {
         let current = recievedFile[i];
         let howMuchDone = current[recievedFileHeaders[6]];
-        if (howMuchDone !== 100) {
+        if (howMuchDone !== '100') {
             showOnlyArray[counter] = current;
             counter++;
         }
