@@ -9,12 +9,12 @@
 
 * {
     margin: 0 0;
-    font-family: 'Open Sans', 'system-ui';
+    font-family: 'Open Sans';
 }
 
 body {
     background-color: var(--background);
-    font-family: 'Open Sans', 'system-ui';
+    font-family: 'Open Sans';
 }
 /*grid-item p {
     color: #fff;
@@ -384,7 +384,7 @@ img {
     background-color: orange;
     color: white;
     cursor: pointer;
-    width: 93% !important;
+    width: 92% !important;
     border: none;
     border-radius: 10px;
 }
