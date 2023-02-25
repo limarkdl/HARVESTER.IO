@@ -133,7 +133,7 @@ function generateGrid(data) {
     if (data.length === 0) {
         let warning = document.createElement("h1");
         warning.innerText = "NO FIELDS FOUND FOR THIS CONDITION";
-        warning.id = "warningNotFound"
+        warning.id = "warningNotFound";
         container.appendChild(warning);
         return 0;
     }
@@ -153,7 +153,7 @@ function generateGrid(data) {
 
     let grid = document.createElement("div");
     grid.classList.add("grid");
-    delay = 0;
+    let delay = 0;
     for (let i = 0; i < data.length; i++) {
         let item = document.createElement("div");
         let temp = data[i];
@@ -193,7 +193,7 @@ function generateGrid(data) {
 
         howMuchDoneText.style.display = 'block';
         howMuchDoneText.innerText = howMuchDone + '%';
-        fieldNum.innerText = temp[fieldId]
+        fieldNum.innerText = temp[fieldId];
         fieldNum.style.textShadow = '0px -1px #000, 1px -1px #000, 1px 0px #000, 1px 1px #000, 0px 1px #000, -1px 1px #000, -1px 0px #000, -1px -1px #000';
         fieldNum.style.color = '#ffffff';
         item.classList.add("grid-item");
@@ -350,21 +350,11 @@ function toggleFullscreen() {
         body.requestFullscreen();
     }
 }
-let htmlElement = document.getElementsByTagName('html')[0];
-
 
 
 extraBtnZone.addEventListener('click', () => {
     settingsButton.classList.toggle('open');
 });
-
-function test(){
-    let value = 0;
-    for (let i = 0; i < 60;i++) {
-        setTimeout(function(){progressBarrr.style.setProperty('--fill-percent', value + '%');console.log(value);value+=0.5},50 * i)
-    }
-}
-
 
 
 function sortByID(order) {

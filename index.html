@@ -1,10 +1,11 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Random Color Grid</title>
+    <title>Harvester.io</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" type="text/css" href="style.css">
+    <link rel="icon" type="image/ico" href="/favicon.ico">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@500;600;800&display=swap" rel="stylesheet">
@@ -46,7 +47,7 @@
             </div>
             <div id="miscContent">
                 <label for="file-upload" class="file-upload-label settingsButton">Choose a CSV file:</label>
-                <input id="file-upload" type="file" accept=".csv" onchange="csvFileParse(event)" />
+                <input id="file-upload" type="file" accept=".csv" onchange="csvFileParse(event)">
 
                 <button class="big-orange-btn settingsButton" onclick="generateCSV('file')">Generate <span id="slider-value-display">1</span> fields and download CSV</button>
                 <div class="slider-container">

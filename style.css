@@ -118,7 +118,7 @@ nav a {
 
 @media only screen and (max-height: 470px) {
     .fullscreen-button {
-        scale: 0.6;
+        transform: scale(0.6);
     }
 
 }
@@ -137,11 +137,16 @@ nav a {
 
 @media only screen and (max-width: 450px) {
     #settings {
-        width: 100%;
-        padding: 0;
+        width: 90%;
+        margin-left: auto;
+        margin-right: auto;
     }
     header h1 {
         font-size: x-large;
+    }
+    #visualContent, #sortingContent, #miscContent {
+        margin-left: auto;
+        margin-right: auto;
     }
 }
 
@@ -361,7 +366,7 @@ img {
     /* padding: 10px; */
     box-sizing: border-box;
     overflow: hidden;
-    aspect-ratio: 1;
+    aspect-ratio: 1 / 1;
     opacity: 0;
     transition: 0.5s;
 }
