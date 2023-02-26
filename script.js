@@ -152,7 +152,7 @@ function autoColor(temp) {
 }
 
 function generateGrid(data) {
-    getAndDisplayCropTypes();
+
     let container = document.getElementById("grid-container");
     container.innerHTML = "";
     if (data.length === 0) {
@@ -337,6 +337,7 @@ function generateCSV(type) {
 // Convert the data to a CSV string
     const csv = headers.join(",") + "\n" + data.map(row => row.join(",")).join("\n");
     parseCSVStringAndGenerate(csv);
+    getAndDisplayCropTypes();
 // Print the CSV string to the console
     console.log(csv);
     if (type === 'file') {
@@ -383,6 +384,7 @@ function parseCSVStringAndGenerate(csvString) {
     receivedFileHeaders = headers;
     receivedFile = data;
     showOnlyArray = receivedFile;
+    getAndDisplayCropTypes();
     generateGrid(data);
 }
 
