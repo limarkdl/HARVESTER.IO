@@ -1,4 +1,4 @@
-const cropColors = {
+const defaultCropColors = {
     wheat: '#ffd700',
     corn: '#ffdab9',
     rice: '#f4a460',
@@ -31,8 +31,10 @@ const cropColors = {
     hazelnut: '#deb887'
 };
 
-let recievedFile = [];
-let recievedFileHeaders;
+let receivedFile = [];
+let receivedFileHeaders;
+
+let listOfCrops;
 
 let howMuchDoneIsShowed = true;
 
@@ -61,7 +63,22 @@ slider.addEventListener("input", function() {
     sliderValueDisplay.textContent = numToGenerate;
 });
 
+let mySelect = document.getElementById("mySelect");
 
+
+
+
+function getAndDisplayCropTypes() {
+    listOfCrops = [...new Set(receivedFile.map(item => item.fieldCrop))];
+
+    listOfCrops.forEach(function(value) {
+        let option = document.createElement("option");
+        option.value = value;
+        option.text = value;
+        mySelect.appendChild(option);
+    });
+
+}
 
 function csvFileParse(event) {
     let file = event.target.files[0];
@@ -95,11 +112,11 @@ function parseCsvFile(file, callback) {
                 result.push(obj);
 
             }
-            recievedFileHeaders = headers;
-            recievedFile = result;
-            showOnlyArray = recievedFile;
+            receivedFileHeaders = headers;
+            receivedFile = result;
+            showOnlyArray = receivedFile;
             document.getElementsByClassName('file-upload-label')[0].innerText = 'Current file: ' + document.getElementById('file-upload').files[0].name;
-
+            getAndDisplayCropTypes();
             callback(null, result);
         } catch (e) {
             callback(e, null);
@@ -115,10 +132,10 @@ function getProperty(obj, prop) {
     }
 }
 function autoColor(temp) {
-    let test = recievedFileHeaders[1];
+    let test = receivedFileHeaders[1];
     let current = temp[test];
-    if (getProperty(cropColors,current) != null) {
-        return getProperty(cropColors,current);
+    if (getProperty(defaultCropColors,current) != null) {
+        return getProperty(defaultCropColors,current);
     } else {
         return getRandomColor();
     }
@@ -137,18 +154,11 @@ function generateGrid(data) {
         container.appendChild(warning);
         return 0;
     }
-
-
-    const cropType = recievedFileHeaders[1];
-    console.log("CropType"+ cropType);
-    const density = recievedFileHeaders[2];
-    console.log("density"+ density);
-    const complexity = recievedFileHeaders[3];
-    console.log("complexity"+ complexity);
-    const harvester = recievedFileHeaders[4];
-    console.log("harvester"+ harvester);
-    const reaper = recievedFileHeaders[5];
-    console.log("reaper"+ reaper);
+    const cropType = receivedFileHeaders[1];
+    const density = receivedFileHeaders[2];
+    const complexity = receivedFileHeaders[3];
+    const harvester = receivedFileHeaders[4];
+    const reaper = receivedFileHeaders[5];
     let currentCrop,currentDensity,currentComplexity,currentHarvester,currentReaper;
 
     let grid = document.createElement("div");
@@ -163,9 +173,9 @@ function generateGrid(data) {
         currentHarvester = temp[harvester];
         currentReaper = temp[reaper];
         let fieldBackground = document.createElement("div");
-        let howMuchDoneHeader = recievedFileHeaders[6];
+        let howMuchDoneHeader = receivedFileHeaders[6];
         let howMuchDone = temp[howMuchDoneHeader];
-        let fieldId = recievedFileHeaders[0];
+        let fieldId = receivedFileHeaders[0];
         let fieldNum = document.createElement("h2");
         let howMuchDoneText = document.createElement("h2");
         let secondRow = document.createElement("div");
@@ -190,7 +200,6 @@ function generateGrid(data) {
         } else {
             /*howMuchDoneText.style.mixBlendMode = 'overlay';*/
         }
-
         howMuchDoneText.style.display = 'block';
         howMuchDoneText.innerText = howMuchDone + '%';
         fieldNum.innerText = temp[fieldId];
@@ -203,15 +212,14 @@ function generateGrid(data) {
 
         fieldBackground.classList.add("fieldBackground");
         let linearGradient;
+
+        howMuchDone = (howMuchDone === '100') ? '99': howMuchDone;
         if (howMuchDoneIsShowed) {
-            linearGradient =  "linear-gradient(45deg,var(--done-color) "+ howMuchDone +"%, transparent 0%)";
+            linearGradient = "linear-gradient(45deg,var(--done-color) " + howMuchDone + "%  ,transparent 0%)";
         } else {
-            linearGradient =  "linear-gradient(45deg,var(--done-color) "+ howMuchDone +"% 0% !important, transparent 0%)";
+            fieldBackground.style.background = "none !important";
         }
 
-        if (howMuchDone === '100') {
-            linearGradient =  "linear-gradient(45deg,var(--done-color) 99%, transparent 0%)";
-        }
 
 
         console.log(linearGradient);
@@ -239,15 +247,22 @@ function generateGrid(data) {
     document.getElementById('grid-container').style.opacity = '1';
 
     setTimeout(()=>{
-        let TEXT_TESTING = document.getElementsByClassName('fieldHarvester');
+        let fieldHarvester = document.getElementsByClassName('fieldHarvester');
+        let reaperType = document.getElementsByClassName('fieldReaper');
         let TESTING_CONTAINER = document.getElementsByClassName('second-row');
         let LIMITOBJECT = document.getElementsByClassName('textLimit');
         for (let i = 0; i < data.length;i++) {
-
-        if (TEXT_TESTING[i].offsetWidth > (TESTING_CONTAINER[i].offsetWidth - 10)) {
+        let index = i + 1;
+        if (fieldHarvester[i].offsetWidth > (TESTING_CONTAINER[i].offsetWidth - 10)) {
             LIMITOBJECT[i].children[0].style.animation = 'scroll 10s linear infinite';
-            /*console.log('SET SCROLL' + TEXT_TESTING[i].offsetWidth + TESTING_CONTAINER[i].offsetWidth);*/
-        }}},1000);
+            let  overflow = fieldHarvester[i].offsetWidth - TESTING_CONTAINER[i].offsetWidth + 20;
+
+            LIMITOBJECT[i].children[0].style.setProperty('--slide-distance', `-` + overflow + `px`);
+            console.log('SET SCROLL FOR ' + index +` ` + fieldHarvester[i].offsetWidth + ` ` + TESTING_CONTAINER[i].offsetWidth + ` ` + LIMITOBJECT[i].offsetWidth);
+        }
+
+
+        }},1000);
 }
 
 function getRandomColor() {
@@ -285,7 +300,7 @@ function generateCSV(type) {
         const fieldID = i + 1;
 
         // Generate a random crop from the list of 30 most popular crops
-        const crops = Object.keys(cropColors);
+        const crops = Object.keys(defaultCropColors);
         const fieldCrop = crops[Math.floor(Math.random() * crops.length)];
         // Generate a random field density and complexity with 2 decimal points
         const fieldDensity = randomFloat();
@@ -377,28 +392,28 @@ extraBtnZone.addEventListener('click', () => {
 
 
 function sortByID(order) {
-    sortArrayOfObjects(showOnlyArray,recievedFileHeaders[0],order);
+    sortArrayOfObjects(showOnlyArray,receivedFileHeaders[0],order);
     generateGrid(showOnlyArray);
     /*document.getElementById('grid-container').style.opacity = '0';
     setTimeout(()=>{generateGrid(showOnlyArray)},1000);*/
 }
 
 function sortByDensity(order) {
-    sortArrayOfObjects(showOnlyArray,recievedFileHeaders[2],order);
+    sortArrayOfObjects(showOnlyArray,receivedFileHeaders[2],order);
     generateGrid(showOnlyArray);
     /*document.getElementById('grid-container').style.opacity = '0';
     setTimeout(()=>{generateGrid(showOnlyArray)},1000);*/
 }
 
 function sortByComplexity(order) {
-    sortArrayOfObjects(showOnlyArray,recievedFileHeaders[3],order);
+    sortArrayOfObjects(showOnlyArray,receivedFileHeaders[3],order);
     generateGrid(showOnlyArray);
     /*document.getElementById('grid-container').style.opacity = '0';
     setTimeout(()=>{generateGrid(showOnlyArray)},1000);*/
 }
 
 function sortByProgress(order) {
-    sortArrayOfObjects(showOnlyArray,recievedFileHeaders[6],order);
+    sortArrayOfObjects(showOnlyArray,receivedFileHeaders[6],order);
     generateGrid(showOnlyArray);
     /*document.getElementById('grid-container').style.opacity = '0';
     setTimeout(()=>{generateGrid(showOnlyArray)},1000);*/
@@ -447,31 +462,43 @@ function changeCurrentTab(tab) {
 function toggleHowMuchDone() {
     if (howMuchDoneIsShowed) {
         for(let i = 0;i < document.getElementsByClassName('grid')[0].childElementCount;i++) {
-            let str = document.getElementsByClassName('fieldBackground')[i].style.backgroundImage;
-            str = str.substring(0, 43) + ' 0% !important' + str.substring(43);
-            document.getElementsByClassName('fieldBackground')[i].style.backgroundImage = str;
-            console.log(str);
+           document.getElementsByClassName('fieldBackground')[i].classList.add('doneLayerIsHidden');
         }
         howMuchDoneIsShowed = false;
     } else  {
         for(let i = 0;i < document.getElementsByClassName('grid')[0].childElementCount;i++) {
-            let str = document.getElementsByClassName('fieldBackground')[i].style.backgroundImage;
-            str = str.substring(0, 43) + str.substring(57);
-            document.getElementsByClassName('fieldBackground')[i].style.backgroundImage = str;
-            console.log(str);
+            document.getElementsByClassName('fieldBackground')[i].classList.remove('doneLayerIsHidden');
         }
         howMuchDoneIsShowed = true;
     }
 }
 
 
+function showOnlyCrop(crop) {
+    let counter = 0;
+    showOnlyArray = [];
+    for(let i=0;i<receivedFile.length;i++) {
+        let current = receivedFile[i];
+        let howMuchDone = current[receivedFileHeaders[6]];
+        if (howMuchDone === '100') {
+            showOnlyArray[counter] = current;
+            counter++;
+        }
+    }
+    console.log(showOnlyArray);
+    generateGrid(showOnlyArray);
+}
+
+
+
+
 function showOnlyCompleted() {
     let counter = 0;
     showOnlyArray = [];
-    for(let i=0;i<recievedFile.length;i++) {
+    for(let i=0;i<receivedFile.length;i++) {
 
-        let current = recievedFile[i];
-        let howMuchDone = current[recievedFileHeaders[6]];
+        let current = receivedFile[i];
+        let howMuchDone = current[receivedFileHeaders[6]];
         if (howMuchDone === '100') {
             showOnlyArray[counter] = current;
             counter++;
@@ -483,7 +510,7 @@ function showOnlyCompleted() {
 }
 
 function showAll() {
-    showOnlyArray = recievedFile;
+    showOnlyArray = receivedFile;
     generateGrid(showOnlyArray);
 
 }
@@ -491,9 +518,9 @@ function showAll() {
 function showOnlyUncompleted() {
     let counter = 0;
     showOnlyArray = [];
-    for(let i=0;i<recievedFile.length;i++) {
-        let current = recievedFile[i];
-        let howMuchDone = current[recievedFileHeaders[6]];
+    for(let i=0;i<receivedFile.length;i++) {
+        let current = receivedFile[i];
+        let howMuchDone = current[receivedFileHeaders[6]];
         if (howMuchDone !== '100') {
             showOnlyArray[counter] = current;
             counter++;

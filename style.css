@@ -12,6 +12,7 @@
     font-family: 'Open Sans';
 }
 
+
 body {
     background-color: var(--background);
     font-family: 'Open Sans';
@@ -45,7 +46,25 @@ h1 {
     color: white;
 }
 
+label {
+    font-size: small;
+    padding: 5px;
+}
+#mySelect {
+    border: none;
+    background: initial;
+    outline: none;
+    color: white;
+    font-size: small;
+}
 
+#mySelect option {
+    background: orange;
+}
+
+#mySelect option:hover {
+    background-color: var(--second-color);
+}
 
 nav ul {
     list-style: none;
@@ -284,10 +303,10 @@ nav a {
         transform: translateX(0);
     }
     25% {
-        transform:  translateX(-40%);
+        transform:  translateX(var(--slide-distance));
     }
     50% {
-        transform: translateX(-40%);
+        transform: translateX(var(--slide-distance));
     }
     75% {
         transform: translateX(0);
@@ -297,11 +316,16 @@ nav a {
     }
 }
 
+.doneLayerIsHidden {
+    background: none !important;
+}
+
 .second-row h5 {
     overflow: hidden;
     max-width: 100%;
     width: fit-content;
     white-space: nowrap;
+    --slide-distance: 0;
     /*text-shadow: 0px -1px #000, 1px -1px #000, 1px 0px #000, 1px 1px #000, 0px 1px #000, -1px 1px #000, -1px 0px #000, -1px -1px #000;*/
 }
 
@@ -496,6 +520,21 @@ input[type="file"] {
     height: 100%;
 }
 
+
+
+#mySelect::-webkit-scrollbar {
+    width: 12px;
+    background: orange;
+}
+
+#mySelect::-webkit-scrollbar-track {
+    background: rgba(255, 255, 255, 0);
+}
+
+#mySelect::-webkit-scrollbar-thumb {
+    background-color: var(--main-color);
+    border-radius: 10px;
+}
 
 
 ::-webkit-scrollbar {
