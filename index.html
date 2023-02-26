@@ -31,30 +31,45 @@
         </div>
         <div id="settingsContent">
             <div id="visualContent">
-                <div class="settingsButton" onclick="showAll()">Show all</div>
-                <div class="settingsButton" onclick="showOnlyCompleted()">Completed</div>
-                <div class="settingsButton" onclick="showOnlyUncompleted()">In progress</div>
-                <div class="settingsButton" onclick="toggleHowMuchDone()">Remove/Show 'Done' layer</div>
-                <div class="settingsButton"><label for="mySelect">Display crop:</label>
-                    <select id="mySelect">
-                        <option value="All">All</option>
-                    </select></div>
+                <div class="settingsRow">
+                    <div onclick="showAll()">Show All</div>
+                    <div onclick="showOnlyCompleted()">Completed</div>
+                    <div onclick="showOnlyUncompleted()">In progress</div>
+                </div>
+                <div class="settingsRow">
+                    <div onclick="toggleHowMuchDone()">Remove/Show 'Done' layer</div>
+
+
+                </div>
+                <div class="settingsRow">
+                    <label for="mySelect">Display crop:</label>
+                    <select id="mySelect" oninput="showOnlyThisCrop(value)">
+                        <option>None</option>
+                    </select>
+                </div>
+
+                <div class="settingsRow">'COMPLETED' Layer:
+                    <div onclick="setDoneLayerDegree('+')">+45°</div>
+                    <div class="doneLayerPosition"></div>
+                    <div onclick="setDoneLayerDegree('-')">-45°</div>
+                    <input id="doneLayerColor" type="color" value="#A18353" onchange="updateDoneColor(value)">
+                </div>
             </div>
             <div id="sortingContent">
-                <div class="settingsButton" onclick="sortByID('asc')">ID ↑</div>
-                <div class="settingsButton" onclick="sortByID('desc')">ID ↓</div>
-                <div class="settingsButton" onclick="sortByDensity('asc')">Density ↑</div>
-                <div class="settingsButton" onclick="sortByDensity('desc')">Density ↓</div>
-                <div class="settingsButton" onclick="sortByComplexity('asc')">Complexity ↑</div>
-                <div class="settingsButton" onclick="sortByComplexity('desc')">Complexity ↓</div>
-                <div class="settingsButton" onclick="sortByProgress('asc')">Progress ↑</div>
-                <div class="settingsButton" onclick="sortByProgress('desc')">Progress ↓</div>
+                <div onclick="sortByID('asc')">ID ↑</div>
+                <div onclick="sortByID('desc')">ID ↓</div>
+                <div onclick="sortByDensity('asc')">Density ↑</div>
+                <div onclick="sortByDensity('desc')">Density ↓</div>
+                <div onclick="sortByComplexity('asc')">Complexity ↑</div>
+                <div onclick="sortByComplexity('desc')">Complexity ↓</div>
+                <div onclick="sortByProgress('asc')">Progress ↑</div>
+                <div onclick="sortByProgress('desc')">Progress ↓</div>
             </div>
             <div id="miscContent">
                 <label for="file-upload" class="file-upload-label settingsButton">Choose a CSV file:</label>
-                <input id="file-upload" type="file" accept=".csv, .CSV, .txt" onchange="csvFileParse(event)">
+                    <input id="file-upload" type="file" accept=".csv, .CSV, .txt" onchange="csvFileParse(event)">
 
-                <button class="big-orange-btn settingsButton" onclick="generateCSV('file')">Generate <span id="slider-value-display">1</span> fields and download CSV</button>
+                <div onclick="generateCSV('file')">Generate <span id="slider-value-display">1</span> fields and download mockup CSV </div>
                 <div class="slider-container">
                     <label for="myRange" class="slider-value">Choose number of fields to generate:</label>
                     <input type="range" min="1" max="255" value="1" class="slider" id="myRange">

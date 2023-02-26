@@ -5,6 +5,8 @@
     --hover-color: #B6B6B6;
     --done-color: #a18353;
     --done-percent-opacity: 0.4;
+    --bt-color: orange;
+    --done-degree: 45deg;
 }
 
 * {
@@ -48,18 +50,19 @@ h1 {
 
 label {
     font-size: small;
-    padding: 5px;
 }
 #mySelect {
     border: none;
-    background: initial;
+    border-radius: 10px;
+    padding: 5px;
+    background: var(--bt-color);
     outline: none;
     color: white;
     font-size: small;
 }
 
 #mySelect option {
-    background: orange;
+    background: var(--bt-color);
 }
 
 #mySelect option:hover {
@@ -73,11 +76,31 @@ nav ul {
     display: flex;
 }
 
-#visualContent, #sortingContent, #miscContent {
+#visualContent {
+    flex-direction: column;
+}
+
+#sortingContent, #miscContent {
     flex-direction: column;
     gap: 10px;
     overflow: hidden;
-    max-width: 280px;
+    width: 100%;
+}
+
+#visualContent div:hover, #sortingContent div:hover, #miscContent div:hover {
+    background-color: var(--second-color);
+}
+
+#visualContent div, #sortingContent div, #miscContent div {
+    color:white;
+    cursor: pointer;
+    padding: 10px;
+    text-align: left;
+    font-size: 12px !important;
+    background-color: var(--bt-color);
+    border-radius: 10px;
+    border: none;
+
 }
 
 #sortingContent, #visualContent {
@@ -131,7 +154,7 @@ nav a {
     opacity: 0;
     right: 0;
     min-width: 320px;
-    max-width: 100%;
+    max-width: 400px;
     overflow: hidden;
 }
 
@@ -141,18 +164,7 @@ nav a {
     }
 
 }
-.settingsButton {
-    cursor: pointer;
-    padding: 10px;
-    text-align: left;
-    font-size: 12px !important;
-    background-color: orange;
-    border-radius: 10px;
-}
 
-.settingsButton:hover {
-    background-color: var(--second-color);
-}
 
 @media only screen and (max-width: 450px) {
     #settings {
@@ -168,6 +180,34 @@ nav a {
         margin-right: auto;
     }
 }
+
+.sortingContent div {
+
+}
+input[type="color"] {
+    border: none;
+    outline: none;
+}
+
+.settingsRow {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    align-content: stretch;
+    gap: 10px;
+    width: 100%;
+    background: none !important;
+    cursor: unset !important;
+    padding:  0  0 10px 0 !important;
+}
+
+.doneLayerPosition {
+    height:20px;
+    width:20px;
+    background-image: linear-gradient(var(--done-degree), var(--done-color) 50%, transparent 0%);
+}
+
+
 
 #extraBtnZone {
     position: absolute;
@@ -302,6 +342,7 @@ nav a {
     0% {
         transform: translateX(0);
     }
+
     25% {
         transform:  translateX(var(--slide-distance));
     }
@@ -329,7 +370,7 @@ nav a {
     /*text-shadow: 0px -1px #000, 1px -1px #000, 1px 0px #000, 1px 1px #000, 0px 1px #000, -1px 1px #000, -1px 0px #000, -1px -1px #000;*/
 }
 
-.textLimit {
+.textLimit, .textLimitR {
     overflow: hidden;
     width: 100%;
 }
@@ -372,6 +413,7 @@ img {
     background-repeat: no-repeat;
     opacity: 1;
     display: flex;
+    transition-duration: 2s;
     /* justify-content: space-between; */
     flex-direction: column;
 }
@@ -405,12 +447,13 @@ img {
 }
 
 .file-upload-label {
-    background-color: orange;
+    background-color: var(--bt-color);
     color: white;
     cursor: pointer;
-    width: 92% !important;
     border: none;
+    padding:5px;
     border-radius: 10px;
+    text-align: center;
 }
 
 .file-upload-label:hover {
@@ -426,15 +469,6 @@ input[type="file"] {
     color: red;
 }
 
-.big-orange-btn {
-    background-color: orange;
-    color: white;
-    font-size: 15px;
-    border: none;
-    border-radius: 10px;
-    cursor: pointer;
-    width: 100% !important;
-}
 
 
 .slider-value {
@@ -524,7 +558,7 @@ input[type="file"] {
 
 #mySelect::-webkit-scrollbar {
     width: 12px;
-    background: orange;
+    background: var(--bt-color);
 }
 
 #mySelect::-webkit-scrollbar-track {
