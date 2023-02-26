@@ -152,6 +152,7 @@ function autoColor(temp) {
 }
 
 function generateGrid(data) {
+    getAndDisplayCropTypes();
     let container = document.getElementById("grid-container");
     container.innerHTML = "";
     if (data.length === 0) {
