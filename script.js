@@ -35,7 +35,7 @@ let doneColor = '#A18353';
 
 let receivedFile = [];
 let receivedFileHeaders;
-
+let TESTPARSE;
 let listOfCrops;
 
 let howMuchDoneIsShowed = true;
@@ -335,7 +335,7 @@ function generateCSV(type) {
 
 // Convert the data to a CSV string
     const csv = headers.join(",") + "\n" + data.map(row => row.join(",")).join("\n");
-
+    parseCSVStringAndGenerate(csv);
 // Print the CSV string to the console
     console.log(csv);
     if (type === 'file') {
@@ -346,7 +346,7 @@ function generateCSV(type) {
         link.click();
         document.body.removeChild(link);
     } else {
-        parseCsvFile(csv);
+
 
         generateGrid(data);
     }
@@ -365,7 +365,25 @@ function generateProgress() {
     }
 }
 
+function parseCSVStringAndGenerate(csvString) {
+    const rows = csvString.split('\n');
+    const headers = rows[0].split(',');
+    const data = [];
 
+    for (let i = 1; i < rows.length; i++) {
+        const values = rows[i].split(',');
+        const obj = {};
+        for (let j = 0; j < headers.length; j++) {
+            obj[headers[j]] = values[j];
+        }
+        data.push(obj);
+    }
+
+    receivedFileHeaders = headers;
+    receivedFile = data;
+    showOnlyArray = receivedFile;
+    generateGrid(data);
+}
 
 function updateDoneColor(value) {
     doneColor = value;
@@ -559,7 +577,7 @@ function showCurrentField(field) {
     let reapers = document.createElement('h4');
     reapers.innerText = 'Reaper: ' + (field[Object.keys(field)[5]]);
     let doneFor = document.createElement('h4');
-    doneFor.innerText = 'Completed for: ' + (field[Object.keys(field)[6]]) + '%';
+    doneFor.innerText = 'Completed: ' + (field[Object.keys(field)[6]]) + '%';
 
     modalWindow.appendChild(fieldId);
     modalWindow.appendChild(fieldDensity);
