@@ -74,7 +74,7 @@
                     <label for="myRange" class="slider-value">Choose number of fields to generate:</label>
                     <input type="range" min="1" max="255" value="1" class="slider" id="myRange">
                 </div>
-                <p style="font-size: xx-small">Version v0.4</p>
+                <p style="font-size: xx-small">Version v0.5</p>
             </div>
 
 
@@ -82,7 +82,15 @@
 
     </div>
     <main>
+        <button id="open-modal" style="display: none"></button>
 
+        <div id="modal-container">
+            <div id="modal">
+                <h2>Field N2</h2>
+                <p>Here are properties</p>
+                <button id="close-modal">Close</button>
+            </div>
+        </div>
         <div id="grid-container"></div>
 
     </main>

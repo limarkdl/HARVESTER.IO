@@ -39,7 +39,7 @@ let receivedFileHeaders;
 let listOfCrops;
 
 let howMuchDoneIsShowed = true;
-
+let currentFieldIsShowed = false;
 let showOnlyArray = [];
 
 const slider = document.getElementById("myRange");
@@ -202,6 +202,7 @@ function generateGrid(data) {
         howMuchDoneText.style.display = 'block';
         howMuchDoneText.innerText = howMuchDone + '%';
         fieldNum.innerText = temp[fieldId];
+        item.onclick = function(){showCurrentField(temp)};
         fieldNum.style.textShadow = '0px -1px #000, 1px -1px #000, 1px 0px #000, 1px 1px #000, 0px 1px #000, -1px 1px #000, -1px 0px #000, -1px -1px #000';
         fieldNum.style.color = '#ffffff';
         item.classList.add("grid-item");
@@ -528,4 +529,54 @@ function showOnlyUncompleted() {
 }
 
 
+const openModalButton = document.getElementById("open-modal");
+const closeModalButton = document.getElementById("close-modal");
+const modalContainer = document.getElementById("modal-container");
 
+openModalButton.addEventListener("click", () => {
+    modalContainer.style.visibility = 'visible';
+    modalContainer.classList.add('modalOpen');
+});
+
+closeModalButton.addEventListener("click", () => {
+    modalContainer.style.visibility = 'hidden';
+    modalContainer.classList.remove('modalOpen');
+});
+
+function showCurrentField(field) {
+    console.log(field);
+    let modalWindow = document.querySelector('#modal');
+    modalWindow.innerHTML = "";
+    modalWindow.style.background = autoColor(field);
+    let fieldId = document.createElement('h2');
+    fieldId.innerText = 'Field ' + (field[Object.keys(field)[0]]);
+    let fieldDensity = document.createElement('h4');
+    fieldDensity.innerText = 'Density: ' + (field[Object.keys(field)[2]]);
+    let fieldComplexity = document.createElement('h4');
+    fieldComplexity.innerText = 'Complexity: ' + (field[Object.keys(field)[3]]);
+    let harvestersName = document.createElement('h4');
+    harvestersName.innerText = 'Harvester: ' + (field[Object.keys(field)[4]]);
+    let reapers = document.createElement('h4');
+    reapers.innerText = 'Reaper: ' + (field[Object.keys(field)[5]]);
+    let doneFor = document.createElement('h4');
+    doneFor.innerText = 'Completed for: ' + (field[Object.keys(field)[6]]) + '%';
+
+    modalWindow.appendChild(fieldId);
+    modalWindow.appendChild(fieldDensity);
+    modalWindow.appendChild(fieldComplexity);
+    modalWindow.appendChild(harvestersName);
+    modalWindow.appendChild(reapers);
+    modalWindow.appendChild(doneFor);
+
+
+
+    modalContainer.style.visibility = 'visible';
+    modalContainer.classList.add('modalOpen');
+}
+
+modalContainer.addEventListener("click", (event) => {
+    if (event.target === modalContainer) {
+        modalContainer.style.visibility = 'hidden';
+        modalContainer.classList.remove('modalOpen');
+    }
+});
