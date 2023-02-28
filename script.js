@@ -19,7 +19,7 @@ const defaultCropColors = {
     barley: '#f0e68c',
     cotton: '#cbcb91',
     banana: '#bcc460',
-    apple: '#ff69b4',
+    apple: '#dc8168',
     grapes: '#dda0dd',
     orange: '#ffa500',
     pineapple: '#ffd700',
@@ -40,16 +40,16 @@ const defaultCropColors = {
     hazelnut: '#deb887'
 };
 
-// Default color for a 'PROGRESS LAYER'
-let doneColor = '#A18353';
+// Default color for a 'Progress layer'
+let doneColor = '#b2976d';
 
 // Stores initial file with fields parameters
 let receivedFile = [];
 
-// Stores headers that recieved from file for more flexibility with headers name // !Useless!
+// Stores headers that received from file for more flexibility with headers name // !Useless!
 let receivedFileHeaders;
 
-// Stores the list of all recieved crops from the file
+// Stores the list of all received crops from the file
 let listOfCrops;
 
 // Stores 'slider's value and being used to generate this number of fields
@@ -65,13 +65,13 @@ let showOnlyArray = [];
 let isElementVisible = false;
 
 // The angle of rotation for 'Progress layer'
-let doneLayerDegree = 45;
+let processLayerAngle = 45;
 
 // Parameters from URL
 const params = new URLSearchParams(window.location.search);
 
 // Headers from file
-let idH, cropTypeH, densityH,complexityH,harvesterH,reaperH,progressH;
+let idH, cropTypeH, densityH,complexityH,harvesterH,headerH,progressH;
 
 // DOM ELEMENTS //
 
@@ -95,6 +95,9 @@ const miscContent = document.getElementById("miscContent");
 
 // Contains all 'tab' elements
 const menuTab = document.getElementById('menuTabs');
+
+// Stores all children of 'menuTab'
+const anyTab = menuTab.children;
 
 // Tab element for Visuals
 const visualTab = document.getElementById('visualTab');
@@ -204,17 +207,21 @@ logoutButton.addEventListener('click', () => {
 
 // INITIALIZATION //
 // Changes current tab to misc, to display it first
-changeCurrentTab('misc');
-
-
+changeCurrentTab('visual');
+try {
+    parseCSVStringAndGenerate(window.fieldCSV);
+} catch (e) {
+    console.log(' ');
+}
 // CORE FUNCTIONS //
 
 // Random mockup CSV generator
 function generateCSV(type) {
-    const headers = ["fieldID", "fieldCrop", "fieldDensity", "fieldComplexity", "harvester", "reaper", "progress"];
+    const Headers = ["ID", "Crop", "Density", "Complexity", "Harvester", "Header", "Progress"];
     const data = [];
-    let reaperTypes = ['Draper', 'Auger', 'Corn', 'Flex', 'Stripper', 'Rice',
-        'Shaker','Grape','Potato','Soybean','Sorghum','Flax','Haybine','Cotton','Carrot','Onion','Sugar cane'];
+    let HeaderTypes = ['Straight bar', 'Sickle bar', 'Rotary blade', 'Draper', 'Auger', 'Row-crop header',
+        'Stripper header','Flex header','Pickup header','Disc header','Draper belt header','Side-delivery header','Floating cutterbar header','Combine header',
+        'Stripper-combine header'];
     let harvesterNames = ['John Deere S700', 'Case IH 250','New Holland CR', 'Claas Lexion 700',
         'Massey Ferguson 9505','Gleaner S9', 'Challenger 700', 'Fendt IDEAL', 'Kubota M7 Gen 2',
         'AGCO IdealCombine', 'Versatile RT520', 'Rostselmash Vector 410', 'Deutz-Fahr 9',
@@ -222,19 +229,26 @@ function generateCSV(type) {
         'MacDon M1', 'Oxbo 6220', 'Braud 9090X'];
 // Generate random data for each row
     for (let i = 0; i < numToGenerate; i++) {
-        const fieldID = i + 1;
+        const ID = i + 1;
         const crops = Object.keys(defaultCropColors);
-        const fieldCrop = crops[Math.floor(Math.random() * crops.length)];
-        const fieldDensity = randomFloat();
-        const fieldComplexity = randomFloat();
-        const harvester = harvesterNames[Math.floor(Math.random() * 20)] + ' + ' + harvesterNames[Math.floor(Math.random() * 20)];
-        const reaper = reaperTypes[Math.floor(Math.random() * 16)] + ' + ' + reaperTypes[Math.floor(Math.random() * 16)];
-        const progress = getRandomProccessValue();
-        data.push([fieldID, fieldCrop, fieldDensity, fieldComplexity, harvester, reaper,progress]);
+        const Crop = crops[Math.floor(Math.random() * crops.length)];
+        const Density = randomFloat();
+        const Complexity = randomFloat();
+        const numOfHarvesters = Math.floor(Math.random() * 2);
+        let harvester = harvesterNames[Math.floor(Math.random() * harvesterNames.length)];
+        let Header = HeaderTypes[Math.floor(Math.random() * HeaderTypes.length)];
+        if (numOfHarvesters) {
+            harvester += ' + ' + harvesterNames[Math.floor(Math.random() * harvesterNames.length)];
+            Header += ' + ' + HeaderTypes[Math.floor(Math.random() * HeaderTypes.length)]
+        }
+
+        const Progress = getRandomProcessValue();
+        data.push([ID, Crop, Density, Complexity, harvester, Header, Progress]);
     }
-    const csv = headers.join(",") + "\n" + data.map(row => row.join(",")).join("\n");
+    const csv = Headers.join(",") + "\n" + data.map(row => row.join(",")).join("\n");
     parseCSVStringAndGenerate(csv);
     getAndDisplayCropTypes();
+    console.log(csv);
     if (type === 'file') {
         const link = document.createElement('a');
         link.setAttribute('href', 'data:text/csv;charset=utf-8,' + encodeURIComponent(csv));
@@ -258,13 +272,12 @@ function parseThisFile(event) {
         showOnlyArray = receivedFile;
         fileUploadLabel.innerText = 'Current file: ' + fileUploadElement.files[0].name;
         getAndDisplayCropTypes();
-        storeReceivedHeaders();
-        console.log(data);
         generateGrid(data);
+        console.log(data);
     });
 }
 
-// CSV parser to an array of objects 
+// CSV parser to an array of objects
 function csvFileParser(file, callback) {
     let reader = new FileReader();
     reader.readAsText(file);
@@ -272,18 +285,19 @@ function csvFileParser(file, callback) {
         try {
             let csv = reader.result;
             let lines = csv.split("\n");
-            let headers = lines[0].split(",");
+            let Headers = lines[0].split(",");
             let result = [];
             for (let i = 1; i < lines.length; i++) {
                 let obj = {};
                 let currentLine = lines[i].split(",");
-                for (let j = 0; j < headers.length; j++) {
-                    obj[headers[j]] = currentLine[j];
+                for (let j = 0; j < Headers.length; j++) {
+                    obj[Headers[j]] = currentLine[j];
                 }
                 result.push(obj);
             }
-            receivedFileHeaders = headers;
+            receivedFileHeaders = Headers;
             receivedFile = result;
+            storeReceivedHeaders();
             callback(null, result);
         } catch (e) {
             callback(e, null);
@@ -302,7 +316,7 @@ function getValueByProperty(obj, prop) {
 
 // Gets all 'crop' types from the file and stores it
 function getAndDisplayCropTypes() {
-    listOfCrops = [...new Set(receivedFile.map(item => item.fieldCrop))];
+    listOfCrops = [...new Set(receivedFile.map(item => item.Crop))];
     mySelect.innerHTML = "";
     let allCrops = document.createElement("option");
     allCrops.value = "all";
@@ -316,7 +330,7 @@ function getAndDisplayCropTypes() {
     });
 }
 
-// Returns color from 'defaultCropColors', otherwise returns a random 
+// Returns color from 'defaultCropColors', otherwise returns a random
 function autoColor(temp) {
     let current = temp[cropTypeH];
     return (getValueByProperty(defaultCropColors,current) != null) ? getValueByProperty(defaultCropColors,current) : getRandomColor();
@@ -324,6 +338,7 @@ function autoColor(temp) {
 
 // Generates a grid with fields and display them
 function generateGrid(data) {
+    console.log(data);
     container.innerHTML = "";
     if (data.length === 0) {
         let warning = document.createElement("h1");
@@ -332,7 +347,7 @@ function generateGrid(data) {
         container.appendChild(warning);
         return 0;
     }
-    let currentCrop,currentDensity,currentComplexity,currentHarvester,currentReaper;
+    let currentCrop,currentDensity,currentComplexity,currentHarvester,currentHeader;
     let grid = document.createElement("div");
     grid.classList.add("grid");
     let delay = 0;
@@ -340,30 +355,32 @@ function generateGrid(data) {
         let item = document.createElement("div");
         let temp = data[i];
         currentCrop = temp[cropTypeH];
+        console.log(currentCrop);
+        console.log(cropTypeH);
         currentDensity = temp[densityH];
         currentComplexity = temp[complexityH];
         currentHarvester = temp[harvesterH];
-        currentReaper = temp[reaperH];
+        currentHeader = temp[headerH];
         let fieldBackground = document.createElement("div");
-        let progress = temp[progressH];
+        let Progress = temp[progressH];
         let fieldNum = document.createElement("h2");
-        let progressTxt = document.createElement("h2");
+        let ProgressTxt = document.createElement("h2");
         let secondRow = document.createElement("div");
         let firstRow = document.createElement("div");
         firstRow.classList.add("first-row");
         secondRow.innerHTML = `<div class="second-row">
-            <div class="fieldCrop"><img src="CropICON.svg" alt="Crop"><h5>`+currentCrop+`</h5>
+            <div class="Crop"><img src="CropICON.svg" alt="Crop"><h5>`+currentCrop+`</h5>
             </div>
-            <div class="fieldDensity"><img src="DensityICON.svg" alt="Density"><h5>`+currentDensity+`</h5>
+            <div class="Density"><img src="DensityICON.svg" alt="Density"><h5>`+currentDensity+`</h5>
             </div>
-            <div class="fieldComplexity"><img src="ComplexityICON.svg" alt="Complexity">
+            <div class="Complexity"><img src="ComplexityICON.svg" alt="Complexity">
                 <h5>`+currentComplexity+`</h5></div>
-            <div class="fieldHarvester"><img src="HarvesterICON.svg" alt="Harvester"><div class="textLimit"><h5>`+currentHarvester+`</h5></div></div>
-            <div class="fieldReaper"><img src="ReaperICON.svg" alt="Reaper"><div class="textLimitR"><h5>`+currentReaper+`</h5></div>
+            <div class="Harvester"><img src="HarvesterICON.svg" alt="Harvester"><div class="textLimit"><h5>`+currentHarvester+`</h5></div></div>
+            <div class="Header"><img src="HeaderICON.svg" alt="Header"><div class="textLimitR"><h5>`+currentHeader+`</h5></div>
             </div>
         </div>`;
-        progressTxt.style.display = 'block';
-        progressTxt.innerText = progress + '%';
+        ProgressTxt.style.display = 'block';
+        ProgressTxt.innerText = Progress + '%';
         fieldNum.innerText = temp[idH];
         item.onclick = function(){showCurrentField(temp)};
         fieldNum.style.textShadow = '0px -1px #000, 1px -1px #000, 1px 0px #000, 1px 1px #000, 0px 1px #000, -1px 1px #000, -1px 0px #000, -1px -1px #000';
@@ -376,52 +393,51 @@ function generateGrid(data) {
         let linearGradient;
         setTimeout(()=>{
             container.style.opacity = '1';
-            progress = (progress === '100') ? '99': progress;
-
+            Progress = (Progress === '100') ? '99': Progress;
         },500)
-        linearGradient = "linear-gradient(var(--done-degree),var(--done-color) " + progress + "%,transparent 0%)";
+        linearGradient = "linear-gradient(var(--process-layer-angle),var(--process-layer-color) " + Progress + "%,transparent 0%)";
         if (!progressIsShowed) {
             fieldBackground.classList.add('doneLayerIsHidden');
         }
-        if (progress === '100') {
-            progressTxt.style.color = 'green';
-            progressTxt.style.opacity = '1';
+        if (Progress === '100') {
+            ProgressTxt.style.color = 'green';
+            ProgressTxt.style.opacity = '1';
         } else {
-            progressTxt.style.opacity = 'var(--done-percent-opacity)';
+            ProgressTxt.style.opacity = 'var(--process-layer-opacity)';
         }
         fieldBackground.style.backgroundImage = linearGradient;
         firstRow.appendChild(fieldNum);
-        firstRow.appendChild(progressTxt);
+        firstRow.appendChild(ProgressTxt);
         fieldBackground.appendChild(firstRow);
         fieldBackground.appendChild(secondRow);
         item.appendChild(fieldBackground);
         grid.appendChild(item);
         delay += 0.001;
         setTimeout(()=>{item.style.opacity = '1'},100);
-
     }
     container.appendChild(grid);
     document.getElementById('grid-container').style.opacity = '1';
 
-    setTimeout(()=>{
-        let fieldHarvester = document.getElementsByClassName('fieldHarvester');
-        let reaperType = document.getElementsByClassName('fieldReaper');
-        let TESTING_CONTAINER = document.getElementsByClassName('second-row');
 
+    //NEEDS OPTIMIZATION AND REFACTORING!!!//
+    setTimeout(()=>{
+        let Harvester = document.getElementsByClassName('Harvester');
+        let HeaderType = document.getElementsByClassName('Header');
+        let TESTING_CONTAINER = document.getElementsByClassName('second-row');
         for (let i = 0; i < data.length;i++) {let LIMITOBJECT = document.getElementsByClassName('textLimit');
-        if (fieldHarvester[i].offsetWidth > (TESTING_CONTAINER[i].offsetWidth - 10)) {
-            LIMITOBJECT[i].children[0].style.animation = 'scroll 10s ease-out infinite';
-            let  overflow = fieldHarvester[i].offsetWidth - TESTING_CONTAINER[i].offsetWidth + 20;
-            LIMITOBJECT[i].children[0].style.setProperty('--slide-distance', `-` + overflow + `px`);
-            /*console.log('SET SCROLL FOR ' + index +` ` + fieldHarvester[i].offsetWidth + `
-            ` + TESTING_CONTAINER[i].offsetWidth + ` ` + LIMITOBJECT[i].offsetWidth);*/
-        }
-        LIMITOBJECT = document.getElementsByClassName('textLimitR');
-        if (reaperType[i].offsetWidth > (TESTING_CONTAINER[i].offsetWidth - 10)) {
-                LIMITOBJECT[i].children[0].style.animation = 'scroll 10s ease-out infinite';
-                let  overflow = reaperType[i].offsetWidth - TESTING_CONTAINER[i].offsetWidth + 20;
+            if (Harvester[i].offsetWidth > (TESTING_CONTAINER[i].offsetWidth - 10)) {
+                LIMITOBJECT[i].children[0].style.animation = 'scroll 10s linear infinite';
+                let  overflow = Harvester[i].offsetWidth - TESTING_CONTAINER[i].offsetWidth + 20;
                 LIMITOBJECT[i].children[0].style.setProperty('--slide-distance', `-` + overflow + `px`);
-        }
+                /*console.log('SET SCROLL FOR ' + index +` ` + fieldHarvester[i].offsetWidth + `
+                ` + TESTING_CONTAINER[i].offsetWidth + ` ` + LIMITOBJECT[i].offsetWidth);*/
+            }
+            LIMITOBJECT = document.getElementsByClassName('textLimitR');
+            if (HeaderType[i].offsetWidth > (TESTING_CONTAINER[i].offsetWidth - 10)) {
+                LIMITOBJECT[i].children[0].style.animation = 'scroll 10s linear infinite';
+                let  overflow = HeaderType[i].offsetWidth - TESTING_CONTAINER[i].offsetWidth + 20;
+                LIMITOBJECT[i].children[0].style.setProperty('--slide-distance', `-` + overflow + `px`);
+            }
         }},1000);
 }
 
@@ -435,12 +451,12 @@ function getRandomColor() {
 
 // Sets 'Progress layer's angle
 function setProgressLayerAngle(parameter) {
-    doneLayerDegree += (parameter === '+') ? 45 : -45;
-    document.documentElement.style.setProperty('--done-degree', doneLayerDegree + 'deg');
+    processLayerAngle += (parameter === '+') ? 45 : -45;
+    document.documentElement.style.setProperty('--process-layer-angle', processLayerAngle + 'deg');
 }
 
-
-function getRandomProccessValue() {
+// Returns random 'Process' value, 100s shows more often
+function getRandomProcessValue() {
     // RETURNS '100' MORE OFTEN FOR VISUALIZATION
     const randomNumber = Math.floor(Math.random() * 5);
     if (randomNumber === 0) {
@@ -450,28 +466,31 @@ function getRandomProccessValue() {
     }
 }
 
+// Make from CSV string a 'grid'
 function parseCSVStringAndGenerate(csvString) {
     const rows = csvString.split('\n');
-    const headers = rows[0].split(',');
+    const Headers = rows[0].split(',');
     const data = [];
     for (let i = 1; i < rows.length; i++) {
         const values = rows[i].split(',');
         const obj = {};
-        for (let j = 0; j < headers.length; j++) {
-            obj[headers[j]] = values[j];
+        for (let j = 0; j < Headers.length; j++) {
+            obj[Headers[j]] = values[j];
         }
         data.push(obj);
     }
-    receivedFileHeaders = headers;
+    receivedFileHeaders = Headers;
     receivedFile = data;
     showOnlyArray = receivedFile;
     getAndDisplayCropTypes();
+    storeReceivedHeaders();
     generateGrid(data);
 }
 
+// Changes color of the 'Process layer'
 function updateDoneColor(value) {
     doneColor = value;
-    document.documentElement.style.setProperty('--done-color', doneColor);
+    document.documentElement.style.setProperty('--process-layer-color', doneColor);
 }
 
 function toggleFullscreen() {
@@ -482,8 +501,9 @@ function toggleFullscreen() {
     }
 }
 
+// Shows only this crop
 function showOnlyThisCrop(crop) {
-    showOnlyArray = (crop === 'all') ? receivedFile : receivedFile.filter(field => field.fieldCrop === crop);
+    showOnlyArray = (crop === 'all') ? receivedFile : receivedFile.filter(field => field.Crop === crop);
     generateGrid(showOnlyArray);
 }
 
@@ -491,8 +511,8 @@ function showOnlyThisCrop(crop) {
 function sortBy(type,order) {
     switch(type) {
         case 'ID':
-        sortArrayOfObjects(showOnlyArray,idH,order);
-        break;
+            sortArrayOfObjects(showOnlyArray,idH,order);
+            break;
         case 'Density':
             sortArrayOfObjects(showOnlyArray,densityH,order);
             break;
@@ -518,7 +538,6 @@ function sortArrayOfObjects(arr, prop, order) {
     } else if (order === 'desc') {
         arr.sort(function(a, b) {
             return parseFloat(a[prop]) < parseFloat(b[prop]) ? 1 : -1;
-
         });
     } else {
         console.log('Invalid order parameter');
@@ -528,32 +547,36 @@ function sortArrayOfObjects(arr, prop, order) {
 
 // Changes current tab with content
 function changeCurrentTab(tab) {
-    menuTab.forEach((element)=>{
-        element.style.background = 'var(--second-color)';
-    })
+    let temp = 'var(--second-color)';
+    visualTab.style.background = temp;
+    sortingTab.style.background = temp;
+    miscTab.style.background = temp;
     let currentTab = tab + 'Tab';
     document.getElementById(currentTab).style.background = 'var(--main-color)';
-
     visualContent.style.display = 'none';
     sortingContent.style.display = 'none';
     miscContent.style.display = 'none';
-
-
-    if (tab === 'visual') {
-        visualContent.style.display = 'flex';
-    } else if (tab === 'sorting') {
-        sortingContent.style.display = 'flex';
-    } else if (tab === 'misc') {
-        miscContent.style.display = 'flex';
+    switch(tab) {
+        case 'visual':
+            visualContent.style.display = 'flex';
+            break;
+        case 'sorting':
+            sortingContent.style.display = 'flex';
+            break;
+        case 'misc':
+            miscContent.style.display = 'flex';
+            break;
+        default:
+            console.log('ERROR: changecurrentTab(undefined)');
+            return -1;
     }
-
 }
 
 // Toggles 'Progress layer' showing
 function toggleProgress() {
     if (progressIsShowed) {
         for(let i = 0;i < document.getElementsByClassName('grid')[0].childElementCount;i++) {
-           document.getElementsByClassName('fieldBackground')[i].classList.add('doneLayerIsHidden');
+            document.getElementsByClassName('fieldBackground')[i].classList.add('doneLayerIsHidden');
         }
         progressIsShowed = false;
     } else  {
@@ -568,13 +591,14 @@ function toggleProgress() {
 function showSpecificFields(type) {
     switch (type) {
         case 'completed':
-            showOnlyArray = receivedFile.filter(field => field.progress === '100');
+            showOnlyArray = receivedFile.filter(field => field.Progress === '100');
             break;
         case 'inProgress':
-            showOnlyArray = receivedFile.filter(field => field.progress !== '100');
+            showOnlyArray = receivedFile.filter(field => field.Progress !== '100');
             break;
         case 'all':
             showOnlyArray = receivedFile;
+            break;
         default:
             console.log("ERROR: showSpecificFields(undefined)");
             return -1;
@@ -582,45 +606,58 @@ function showSpecificFields(type) {
     generateGrid(showOnlyArray);
 }
 
+// Opens modal windows and fills it with information about the field
 function showCurrentField(field) {
     console.log(field);
     let modalWindow = document.querySelector('#modal');
     modalWindow.innerHTML = "";
     modalWindow.style.background = autoColor(field);
-    let fieldId = document.createElement('h2');
-    fieldId.innerText = 'Field ' + (field[Object.keys(field)[0]]);
-    let fieldDensity = document.createElement('h4');
-    fieldDensity.innerText = 'Density: ' + (field[Object.keys(field)[2]]);
-    let fieldComplexity = document.createElement('h4');
-    fieldComplexity.innerText = 'Complexity: ' + (field[Object.keys(field)[3]]);
-    let harvestersName = document.createElement('h4');
-    harvestersName.innerText = 'Harvester: ' + (field[Object.keys(field)[4]]);
-    let reapers = document.createElement('h4');
-    reapers.innerText = 'Reaper: ' + (field[Object.keys(field)[5]]);
-    let doneFor = document.createElement('h4');
-    doneFor.innerText = 'Completed: ' + (field[Object.keys(field)[6]]) + '%';
-    modalWindow.appendChild(fieldId);
-    modalWindow.appendChild(fieldDensity);
-    modalWindow.appendChild(fieldComplexity);
-    modalWindow.appendChild(harvestersName);
-    modalWindow.appendChild(reapers);
-    modalWindow.appendChild(doneFor);
+    let ID = document.createElement('h2');
+    ID.innerText = 'Field ' + (field[idH]);
+    let Density = document.createElement('h4');
+    Density.innerText = 'Density: ' + (field[densityH]);
+    let Complexity = document.createElement('h4');
+    Complexity.innerText = 'Complexity: ' + (field[complexityH]);
+    let Harvester = document.createElement('h4');
+    Harvester.innerText = 'Harvester: ' + (field[harvesterH]);
+    let Headers = document.createElement('h4');
+    Headers.innerText = 'Header: ' + (field[headerH]);
+    let Progress = document.createElement('h4');
+    Progress.innerText = 'Completed: ' + (field[progressH]) + '%';
+    modalWindow.appendChild(ID);
+    modalWindow.appendChild(Density);
+    modalWindow.appendChild(Complexity);
+    modalWindow.appendChild(Harvester);
+    modalWindow.appendChild(Headers);
+    modalWindow.appendChild(Progress);
     modalContainer.style.visibility = 'visible';
     modalContainer.classList.add('modalOpen');
 }
 
 /*welcomeMessage.innerText = 'Добро пожаловать,' + username +'!';*/
 
+// Returns random float number
 function randomFloat() {
     return Math.random().toFixed(2);
 }
 
+// Gets headers from the files and put it to the 'ReceivedHeaders' variable
 function storeReceivedHeaders() {
-     idH = receivedFileHeaders[0];
-     cropTypeH = receivedFileHeaders[1];
-     densityH = receivedFileHeaders[2];
-     complexityH = receivedFileHeaders[3];
-     harvesterH = receivedFileHeaders[4];
-     reaperH = receivedFileHeaders[5];
-     progressH = receivedFileHeaders[6];
+    idH = receivedFileHeaders[0];
+    cropTypeH = receivedFileHeaders[1];
+    densityH = receivedFileHeaders[2];
+    complexityH = receivedFileHeaders[3];
+    harvesterH = receivedFileHeaders[4];
+    headerH = receivedFileHeaders[5];
+    progressH = receivedFileHeaders[6];
+}
+
+
+function downloadDefaultCSV() {
+    const link = document.createElement('a');
+    link.setAttribute('href', 'data:text/csv;charset=utf-8,' + encodeURIComponent(window.fieldCSV));
+    link.setAttribute('download', 'defaultField.csv');
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
 }

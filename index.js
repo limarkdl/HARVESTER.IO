@@ -1,7 +1,7 @@
 const loginForm = document.getElementById('login-form');
 const errorMessage = document.getElementById('error-message');
 
-const TrueLogin = '8c6976e5b5410415bde908bd4dee15dfb167a9c873fc4bb8a81f6f2ab448a918';
+const TrueLogin = '2a97516c354b68848cdbd8f54a226a0a55b21ed138e207ad6c5cbb9c00aa5aea';
 const TruePassword = '5994471abb01112afcc18159f6cc74b4f511b99806da59b3caf5a9c173cacfc5';
 
 loginForm.addEventListener('submit', async (event) => {
@@ -12,21 +12,17 @@ loginForm.addEventListener('submit', async (event) => {
         window.location.href = `app.html?username=${encodeURIComponent(username)}`;
     } else {
         console.log(compareLoginData(username, password));
-        errorMessage.innerText = 'Неверный логин или пароль';
+        errorMessage.innerText = 'Wrong username or password';
     }
 
 
 });
 
 
-// Функция, которая шифрует строку в хэш с использованием алгоритма SHA-256
 function sha256(str) {
-    // Конвертируем строку в байтовый массив
     const buffer = new TextEncoder().encode(str);
-    // Шифруем массив с использованием алгоритма SHA-256
     return crypto.subtle.digest("SHA-256", buffer)
         .then(hash => {
-            // Конвертируем массив байтов в строку hex
             return Array.from(new Uint8Array(hash))
                 .map(b => b.toString(16).padStart(2, "0"))
                 .join("");
