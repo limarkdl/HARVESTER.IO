@@ -601,3 +601,17 @@ modalContainer.addEventListener("click", (event) => {
         modalContainer.classList.remove('modalOpen');
     }
 });
+
+
+const logoutButton = document.getElementById('logout-button');
+/*const welcomeMessage = document.getElementById('welcome-message');*/
+
+const params = new URLSearchParams(window.location.search);
+const username = params.get('username');
+/*welcomeMessage.innerText = 'Добро пожаловать,' + username +'!';*/
+
+
+logoutButton.addEventListener('click', () => {
+    // При нажатии на кнопку "Выйти" перенаправляем на страницу авторизации
+    window.location.href = 'index.html';
+});
