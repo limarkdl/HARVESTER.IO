@@ -2,100 +2,40 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Harvester.io</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" type="text/css" href="style.css">
-    <link rel="icon" href="favicon.ico" type="image/x-icon">
+    <title>Log In</title>
+    <link rel="stylesheet" type="text/css" href="index.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@500;600;800&display=swap" rel="stylesheet">
 </head>
 <body>
-<header>
-    <h1>HARVESTER.IO</h1>
+<header><h1>HARVESTER.IO</h1>
     <div id="header-container">
         <div class="fullscreen-button"></div>
         <div id="settings-btn">
             <span></span>
         </div>
-    </div>
+    </div></header>
+<main>
+    <div class="wrapper"> <div class="container">
+        <h1>Authorization</h1>
+        <form id="login-form">
+            <label for="username">Username</label>
+            <input type="text" id="username" name="username" placeholder="Login: demo">
+            <label for="password">Password</label>
+            <input type="password" id="password" name="password" placeholder="Password: 12345">
+            <button type="submit">Log In</button>
+        </form>
+        <p id="error-message"></p>
+        <br><br>
 
-</header>
-<div id="extraBtnZone"></div>
-<div class="wrapper">
-    <div id="settings">
-        <div id="menuTabs">
-            <div id="visualTab" onclick="changeCurrentTab('visual')">VISUAL</div>
-            <div id="sortingTab" onclick="changeCurrentTab('sorting')">SORTING</div>
-            <div id="miscTab" onclick="changeCurrentTab('misc')">MISC</div>
-        </div>
-        <div id="settingsContent">
-            <div id="visualContent">
-                <div class="settingsRow">
-                    <div onclick="showAll()">Show All</div>
-                    <div onclick="showOnlyCompleted()">Completed</div>
-                    <div onclick="showOnlyUncompleted()">In progress</div>
-                </div>
-                <div class="settingsRow">
-                    <div onclick="toggleHowMuchDone()">Remove/Show 'COMPLETED' layer</div>
+    </div></div>
+
+   </main>
 
 
-                </div>
-                <div class="settingsRow">
-                    <label for="mySelect">Show crop:</label>
-                    <select id="mySelect" oninput="showOnlyThisCrop(value);">
-                        <option>None</option>
-                    </select>
-                </div>
+<script src="index.js"></script>
 
-                <div class="settingsRow">'COMPLETED' Layer:
-                    <div onclick="setDoneLayerDegree('+')">+45°</div>
-                    <div class="doneLayerPosition"></div>
-                    <div onclick="setDoneLayerDegree('-')">-45°</div>
-                    <input id="doneLayerColor" type="color" value="#A18353" oninput="updateDoneColor(value)">
-                </div>
-            </div>
-            <div id="sortingContent">
-                <div onclick="sortByID('asc')">ID ↑</div>
-                <div onclick="sortByID('desc')">ID ↓</div>
-                <div onclick="sortByDensity('asc')">Density ↑</div>
-                <div onclick="sortByDensity('desc')">Density ↓</div>
-                <div onclick="sortByComplexity('asc')">Complexity ↑</div>
-                <div onclick="sortByComplexity('desc')">Complexity ↓</div>
-                <div onclick="sortByProgress('asc')">Progress ↑</div>
-                <div onclick="sortByProgress('desc')">Progress ↓</div>
-            </div>
-            <div id="miscContent">
-                <label for="file-upload" class="file-upload-label settingsButton">Choose a CSV file:</label>
-                    <input id="file-upload" type="file" accept=".csv, .CSV, .txt" onchange="csvFileParse(event)">
-
-                <div onclick="generateCSV('file')">Show <span id="slider-value-display">1</span> random fields and download this mockup CSV </div>
-                <div class="slider-container">
-                    <label for="myRange" class="slider-value">Choose number of fields to generate:</label>
-                    <input type="range" min="1" max="255" value="1" class="slider" id="myRange">
-                </div>
-                <p style="font-size: xx-small">Version v0.5</p>
-            </div>
-
-
-        </div>
-
-    </div>
-    <main>
-        <button id="open-modal" style="display: none"></button>
-
-        <div id="modal-container">
-            <div id="modal">
-
-                <button id="close-modal" style="display: none">Close</button>
-            </div>
-        </div>
-        <div id="grid-container"></div>
-
-    </main>
-</div>
-
-
-<script src="script.js"></script>
 </body>
 </html>

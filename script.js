@@ -1,3 +1,12 @@
+/* DISCLAIMER:
+
+THIS CODE HAS NEVER BEEN REFACTORED, COMING SOON
+
+*/
+
+// GENERIC VARIABLES //
+
+// Default colors that will be applied to fields by default
 const defaultCropColors = {
     wheat: '#ffd700',
     corn: '#ffdab9',
@@ -10,7 +19,7 @@ const defaultCropColors = {
     barley: '#f0e68c',
     cotton: '#cbcb91',
     banana: '#bcc460',
-    apple: '#ff69b4',
+    apple: '#dc8168',
     grapes: '#dda0dd',
     orange: '#ffa500',
     pineapple: '#ffd700',
@@ -31,99 +40,264 @@ const defaultCropColors = {
     hazelnut: '#deb887'
 };
 
-let doneColor = '#A18353';
+// Default color for a 'Progress layer'
+let doneColor = '#b2976d';
 
+// Stores initial file with fields parameters
 let receivedFile = [];
+
+// Stores headers that received from file for more flexibility with headers name // !Useless!
 let receivedFileHeaders;
-let TESTPARSE;
+
+// Stores the list of all received crops from the file
 let listOfCrops;
 
-let howMuchDoneIsShowed = true;
-let currentFieldIsShowed = false;
+// Stores 'slider's value and being used to generate this number of fields
+let numToGenerate;
+
+// The visibility state of the 'Progress layer'
+let progressIsShowed = true;
+
+// Array that stores fields that satisfy filter to display
 let showOnlyArray = [];
 
+// The visibility state of the 'Settings' element
+let isElementVisible = false;
+
+// The angle of rotation for 'Progress layer'
+let processLayerAngle = 45;
+
+// Parameters from URL
+const params = new URLSearchParams(window.location.search);
+
+// Headers from file
+let idH, cropTypeH, densityH,complexityH,harvesterH,headerH,progressH;
+
+// DOM ELEMENTS //
+
+// <body></body>
+const body = document.body;
+
+// Slider that chooses the number of fields to generate
 const slider = document.getElementById("myRange");
+
+// Displays the current value of slider
 const sliderValueDisplay = document.getElementById("slider-value-display");
 
+// Content of Visual Tab in settings
 const visualContent = document.getElementById('visualContent');
+
+// Content of Sorting Tab in settings
 const sortingContent = document.getElementById('sortingContent');
+
+// Content of Misc Tab in settings
 const miscContent = document.getElementById("miscContent");
 
+// Contains all 'tab' elements
+const menuTab = document.getElementById('menuTabs');
+
+// Stores all children of 'menuTab'
+const anyTab = menuTab.children;
+
+// Tab element for Visuals
 const visualTab = document.getElementById('visualTab');
+
+// Tab element for Sorting
 const sortingTab = document.getElementById('sortingTab');
+
+// Tab element for Misc
 const miscTab = document.getElementById('miscTab');
 
+const fileUploadLabel = document.getElementById('fileUploadName');
+
+const fileUploadElement = document.getElementById('fileUpload');
+
+// Modal window is being used to display detailed information about the chosen field //
+
+// Button for opening modal window
+const openModalButton = document.getElementById("open-modal");
+
+// Button for closing modal window
+const closeModalButton = document.getElementById("close-modal");
+
+// The main modal container, that 'appears'/'disappears'
+const modalContainer = document.getElementById("modal-container");
+
+// Selected crop from the list input to display
+const mySelect = document.getElementById("mySelect");
+
+// The main container that holds 'grid'
+const container = document.getElementById("grid-container");
+
+// Settings button for 'menu'/'settings'
+const settingsButton = document.querySelector('#settings-btn');
+
+// Settings element that 'appears'/'disappears'
+const element = document.querySelector('#settings');
+
+// Extremely dumb way to extend touchable area for menu button since it's very thin
+const extraBtnZone = document.getElementById('extraBtnZone');
+
+// Log Out button to return to the 'index.html'
+const logoutButton = document.getElementById('logout-button');
+
+// Unused element for displaying welcome message after log in
+/*const welcomeMessage = document.getElementById('welcome-message');*/
+
+// Fullscreen button to toggle fullscreen mode
+const fullscreenButton = document.querySelector('.fullscreen-button');
+
+// Unused variable to store username that are stored inside the URL
+const username = params.get('username');
 
 
-let numToGenerate = 0;
-
-changeCurrentTab('misc');
-
+// EVENTS LISTENERS //
 
 slider.addEventListener("input", function() {
     numToGenerate = this.value;
-    sliderValueDisplay.textContent = numToGenerate;
+    sliderValueDisplay.textContent = this.value;
 });
 
-let mySelect = document.getElementById("mySelect");
+extraBtnZone.addEventListener('click', () => {
+    // NEEDS TO BE REFACTORED AND REDESIGNED, POOR LOGIC //
+    if (isElementVisible) {
+        element.style.opacity = 0;element.style.visibility = "hidden"
+        setTimeout(()=>{element.style.display = 'none';},300)
+        isElementVisible = false;
+    } else {
+        element.style.display = 'flex';
+        setTimeout(()=>{element.style.opacity = 1;element.style.visibility = "visible"},150)
+        isElementVisible = true;
+    }
+});
+
+// On 'click' toggles 'settings' // Adds extra zone since original 'menu' button is too thin
+extraBtnZone.addEventListener('click', () => {
+    settingsButton.classList.toggle('open');
+});
+
+// On 'click' toggles full screen mode
+fullscreenButton.addEventListener('click', toggleFullscreen);
+
+// On 'click' shows the modal window // !Useless! //
+openModalButton.addEventListener("click", () => {
+    modalContainer.style.visibility = 'visible';
+    modalContainer.classList.add('modalOpen');
+});
+
+// On 'click' hides the modal window
+closeModalButton.addEventListener("click", () => {
+    modalContainer.style.visibility = 'hidden';
+    modalContainer.classList.remove('modalOpen');
+});
+
+// On 'click' shows the modal windows to display detailed info about current field
+modalContainer.addEventListener("click", (event) => {
+    if (event.target === modalContainer) {
+        modalContainer.style.visibility = 'hidden';
+        modalContainer.classList.remove('modalOpen');
+    }
+});
+
+// On 'click' redirects user to the 'index.html' page
+logoutButton.addEventListener('click', () => {
+    window.location.href = 'index.html';
+});
 
 
+// INITIALIZATION //
+// Changes current tab to misc, to display it first
+changeCurrentTab('visual');
+try {
+    parseCSVStringAndGenerate(window.fieldCSV);
+} catch (e) {
+    console.log(' ');
+}
+// CORE FUNCTIONS //
 
+// Random mockup CSV generator
+function generateCSV(type) {
+    const Headers = ["ID", "Crop", "Density", "Complexity", "Harvester", "Header", "Progress"];
+    const data = [];
+    let HeaderTypes = ['Straight bar', 'Sickle bar', 'Rotary blade', 'Draper', 'Auger', 'Row-crop header',
+        'Stripper header','Flex header','Pickup header','Disc header','Draper belt header','Side-delivery header','Floating cutterbar header','Combine header',
+        'Stripper-combine header'];
+    let harvesterNames = ['John Deere S700', 'Case IH 250','New Holland CR', 'Claas Lexion 700',
+        'Massey Ferguson 9505','Gleaner S9', 'Challenger 700', 'Fendt IDEAL', 'Kubota M7 Gen 2',
+        'AGCO IdealCombine', 'Versatile RT520', 'Rostselmash Vector 410', 'Deutz-Fahr 9',
+        'Sampo-Rosenlew C10', 'Pottinger HIT 47N', 'Krone BiG X', 'Capello Quasar R8',
+        'MacDon M1', 'Oxbo 6220', 'Braud 9090X'];
+// Generate random data for each row
+    for (let i = 0; i < numToGenerate; i++) {
+        const ID = i + 1;
+        const crops = Object.keys(defaultCropColors);
+        const Crop = crops[Math.floor(Math.random() * crops.length)];
+        const Density = randomFloat();
+        const Complexity = randomFloat();
+        const numOfHarvesters = Math.floor(Math.random() * 2);
+        let harvester = harvesterNames[Math.floor(Math.random() * harvesterNames.length)];
+        let Header = HeaderTypes[Math.floor(Math.random() * HeaderTypes.length)];
+        if (numOfHarvesters) {
+            harvester += ' + ' + harvesterNames[Math.floor(Math.random() * harvesterNames.length)];
+            Header += ' + ' + HeaderTypes[Math.floor(Math.random() * HeaderTypes.length)]
+        }
 
-function getAndDisplayCropTypes() {
-    listOfCrops = [...new Set(receivedFile.map(item => item.fieldCrop))];
-    mySelect.innerHTML = "";
-    let allCrops = document.createElement("option");
-    allCrops.value = "all";
-    allCrops.innerText = "All";
-    mySelect.appendChild(allCrops);
-    listOfCrops.forEach(function(value) {
-
-        let option = document.createElement("option");
-        option.value = value;
-        option.text = value;
-        mySelect.appendChild(option);
-    });
-
+        const Progress = getRandomProcessValue();
+        data.push([ID, Crop, Density, Complexity, harvester, Header, Progress]);
+    }
+    const csv = Headers.join(",") + "\n" + data.map(row => row.join(",")).join("\n");
+    parseCSVStringAndGenerate(csv);
+    getAndDisplayCropTypes();
+    console.log(csv);
+    if (type === 'file') {
+        const link = document.createElement('a');
+        link.setAttribute('href', 'data:text/csv;charset=utf-8,' + encodeURIComponent(csv));
+        link.setAttribute('download', 'fields.csv');
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+    } else {
+        generateGrid(data);
+    }
 }
 
-function csvFileParse(event) {
+// Event function on file uploading
+function parseThisFile(event) {
     let file = event.target.files[0];
-    parseCsvFile(file, function (err, data) {
+    csvFileParser(file, function (err, data) {
         if (err) {
             console.error(err);
             return;
         }
-        console.log(data);
-        console.log("TYPE OF DATA" + typeof(data));
-
+        showOnlyArray = receivedFile;
+        fileUploadLabel.innerText = 'Current file: ' + fileUploadElement.files[0].name;
+        getAndDisplayCropTypes();
         generateGrid(data);
+        console.log(data);
     });
 }
 
-function parseCsvFile(file, callback) {
+// CSV parser to an array of objects
+function csvFileParser(file, callback) {
     let reader = new FileReader();
     reader.readAsText(file);
     reader.onload = function () {
         try {
             let csv = reader.result;
             let lines = csv.split("\n");
-            let headers = lines[0].split(",");
+            let Headers = lines[0].split(",");
             let result = [];
             for (let i = 1; i < lines.length; i++) {
                 let obj = {};
                 let currentLine = lines[i].split(",");
-                for (let j = 0; j < headers.length; j++) {
-                    obj[headers[j]] = currentLine[j];
+                for (let j = 0; j < Headers.length; j++) {
+                    obj[Headers[j]] = currentLine[j];
                 }
                 result.push(obj);
-
             }
-            receivedFileHeaders = headers;
+            receivedFileHeaders = Headers;
             receivedFile = result;
-            showOnlyArray = receivedFile;
-            document.getElementsByClassName('file-upload-label')[0].innerText = 'Current file: ' + document.getElementById('file-upload').files[0].name;
-            getAndDisplayCropTypes();
+            storeReceivedHeaders();
             callback(null, result);
         } catch (e) {
             callback(e, null);
@@ -131,29 +305,40 @@ function parseCsvFile(file, callback) {
     };
 }
 
-function getProperty(obj, prop) {
+// Returns chosen property's value of chosen object
+function getValueByProperty(obj, prop) {
     if (prop in obj) {
         return obj[prop];
     } else {
-        return null; // or whatever you want to return if the property is not found
+        return null;
     }
 }
+
+// Gets all 'crop' types from the file and stores it
+function getAndDisplayCropTypes() {
+    listOfCrops = [...new Set(receivedFile.map(item => item.Crop))];
+    mySelect.innerHTML = "";
+    let allCrops = document.createElement("option");
+    allCrops.value = "all";
+    allCrops.innerText = "All";
+    mySelect.appendChild(allCrops);
+    listOfCrops.forEach((value) => {
+        let option = document.createElement("option");
+        option.value = value;
+        option.text = value;
+        mySelect.appendChild(option);
+    });
+}
+
+// Returns color from 'defaultCropColors', otherwise returns a random
 function autoColor(temp) {
-    let test = receivedFileHeaders[1];
-    let current = temp[test];
-    if (getProperty(defaultCropColors,current) != null) {
-        return getProperty(defaultCropColors,current);
-    } else {
-        return getRandomBrightColor();
-    }
-
-
-
+    let current = temp[cropTypeH];
+    return (getValueByProperty(defaultCropColors,current) != null) ? getValueByProperty(defaultCropColors,current) : getRandomColor();
 }
 
+// Generates a grid with fields and display them
 function generateGrid(data) {
-
-    let container = document.getElementById("grid-container");
+    console.log(data);
     container.innerHTML = "";
     if (data.length === 0) {
         let warning = document.createElement("h1");
@@ -162,47 +347,41 @@ function generateGrid(data) {
         container.appendChild(warning);
         return 0;
     }
-    const cropType = receivedFileHeaders[1];
-    const density = receivedFileHeaders[2];
-    const complexity = receivedFileHeaders[3];
-    const harvester = receivedFileHeaders[4];
-    const reaper = receivedFileHeaders[5];
-    let currentCrop,currentDensity,currentComplexity,currentHarvester,currentReaper;
-
+    let currentCrop,currentDensity,currentComplexity,currentHarvester,currentHeader;
     let grid = document.createElement("div");
     grid.classList.add("grid");
     let delay = 0;
     for (let i = 0; i < data.length; i++) {
         let item = document.createElement("div");
         let temp = data[i];
-        currentCrop = temp[cropType];
-        currentDensity = temp[density];
-        currentComplexity = temp[complexity];
-        currentHarvester = temp[harvester];
-        currentReaper = temp[reaper];
+        currentCrop = temp[cropTypeH];
+        console.log(currentCrop);
+        console.log(cropTypeH);
+        currentDensity = temp[densityH];
+        currentComplexity = temp[complexityH];
+        currentHarvester = temp[harvesterH];
+        currentHeader = temp[headerH];
         let fieldBackground = document.createElement("div");
-        let howMuchDoneHeader = receivedFileHeaders[6];
-        let howMuchDone = temp[howMuchDoneHeader];
-        let fieldId = receivedFileHeaders[0];
+        let Progress = temp[progressH];
         let fieldNum = document.createElement("h2");
-        let howMuchDoneText = document.createElement("h2");
+        let ProgressTxt = document.createElement("h2");
         let secondRow = document.createElement("div");
         let firstRow = document.createElement("div");
         firstRow.classList.add("first-row");
         secondRow.innerHTML = `<div class="second-row">
-            <div class="fieldCrop"><img src="CropICON.svg" alt="Crop"><h5>`+currentCrop+`</h5>
+            <div class="Crop"><img src="CropICON.svg" alt="Crop"><h5>`+currentCrop+`</h5>
             </div>
-            <div class="fieldDensity"><img src="DensityICON.svg" alt="Density"><h5>`+currentDensity+`</h5>
+            <div class="Density"><img src="DensityICON.svg" alt="Density"><h5>`+currentDensity+`</h5>
             </div>
-            <div class="fieldComplexity"><img src="ComplexityICON.svg" alt="Complexity">
+            <div class="Complexity"><img src="ComplexityICON.svg" alt="Complexity">
                 <h5>`+currentComplexity+`</h5></div>
-            <div class="fieldHarvester"><img src="HarvesterICON.svg" alt="Harvester"><div class="textLimit"><h5>`+currentHarvester+`</h5></div></div>
-            <div class="fieldReaper"><img src="ReaperICON.svg" alt="Reaper"><div class="textLimitR"><h5>`+currentReaper+`</h5></div>
+            <div class="Harvester"><img src="HarvesterICON.svg" alt="Harvester"><div class="textLimit"><h5>`+currentHarvester+`</h5></div></div>
+            <div class="Header"><img src="HeaderICON.svg" alt="Header"><div class="textLimitR"><h5>`+currentHeader+`</h5></div>
             </div>
         </div>`;
-        howMuchDoneText.style.display = 'block';
-        howMuchDoneText.innerText = howMuchDone + '%';
-        fieldNum.innerText = temp[fieldId];
+        ProgressTxt.style.display = 'block';
+        ProgressTxt.innerText = Progress + '%';
+        fieldNum.innerText = temp[idH];
         item.onclick = function(){showCurrentField(temp)};
         fieldNum.style.textShadow = '0px -1px #000, 1px -1px #000, 1px 0px #000, 1px 1px #000, 0px 1px #000, -1px 1px #000, -1px 0px #000, -1px -1px #000';
         fieldNum.style.color = '#ffffff';
@@ -214,151 +393,71 @@ function generateGrid(data) {
         let linearGradient;
         setTimeout(()=>{
             container.style.opacity = '1';
-            console.log(howMuchDone);
-
-            howMuchDone = (howMuchDone === '100') ? '99': howMuchDone;
-
+            Progress = (Progress === '100') ? '99': Progress;
         },500)
-        linearGradient = "linear-gradient(var(--done-degree),var(--done-color) " + howMuchDone + "%,transparent 0%)";
-        if (!howMuchDoneIsShowed) {
+        linearGradient = "linear-gradient(var(--process-layer-angle),var(--process-layer-color) " + Progress + "%,transparent 0%)";
+        if (!progressIsShowed) {
             fieldBackground.classList.add('doneLayerIsHidden');
         }
-        if (howMuchDone === '100') {
-            howMuchDoneText.style.color = 'green';
-            howMuchDoneText.style.opacity = '1';
+        if (Progress === '100') {
+            ProgressTxt.style.color = 'green';
+            ProgressTxt.style.opacity = '1';
         } else {
-            howMuchDoneText.style.opacity = 'var(--done-percent-opacity)';
+            ProgressTxt.style.opacity = 'var(--process-layer-opacity)';
         }
         fieldBackground.style.backgroundImage = linearGradient;
         firstRow.appendChild(fieldNum);
-        firstRow.appendChild(howMuchDoneText);
+        firstRow.appendChild(ProgressTxt);
         fieldBackground.appendChild(firstRow);
         fieldBackground.appendChild(secondRow);
         item.appendChild(fieldBackground);
         grid.appendChild(item);
         delay += 0.001;
         setTimeout(()=>{item.style.opacity = '1'},100);
-
     }
     container.appendChild(grid);
     document.getElementById('grid-container').style.opacity = '1';
 
+
+    //NEEDS OPTIMIZATION AND REFACTORING!!!//
     setTimeout(()=>{
-        let fieldHarvester = document.getElementsByClassName('fieldHarvester');
-        let reaperType = document.getElementsByClassName('fieldReaper');
+        let Harvester = document.getElementsByClassName('Harvester');
+        let HeaderType = document.getElementsByClassName('Header');
         let TESTING_CONTAINER = document.getElementsByClassName('second-row');
-
-        for (let i = 0; i < data.length;i++) {
-        let index = i + 1;
-            let LIMITOBJECT = document.getElementsByClassName('textLimit');
-        if (fieldHarvester[i].offsetWidth > (TESTING_CONTAINER[i].offsetWidth - 10)) {
-            LIMITOBJECT[i].children[0].style.animation = 'scroll 10s ease-out infinite';
-            let  overflow = fieldHarvester[i].offsetWidth - TESTING_CONTAINER[i].offsetWidth + 20;
-            LIMITOBJECT[i].children[0].style.setProperty('--slide-distance', `-` + overflow + `px`);
-            console.log('SET SCROLL FOR ' + index +` ` + fieldHarvester[i].offsetWidth + ` ` + TESTING_CONTAINER[i].offsetWidth + ` ` + LIMITOBJECT[i].offsetWidth);
-        }
-        LIMITOBJECT = document.getElementsByClassName('textLimitR');
-        if (reaperType[i].offsetWidth > (TESTING_CONTAINER[i].offsetWidth - 10)) {
-                LIMITOBJECT[i].children[0].style.animation = 'scroll 10s ease-out infinite';
-                let  overflow = reaperType[i].offsetWidth - TESTING_CONTAINER[i].offsetWidth + 20;
+        for (let i = 0; i < data.length;i++) {let LIMITOBJECT = document.getElementsByClassName('textLimit');
+            if (Harvester[i].offsetWidth > (TESTING_CONTAINER[i].offsetWidth - 10)) {
+                LIMITOBJECT[i].children[0].style.animation = 'scroll 10s linear infinite';
+                let  overflow = Harvester[i].offsetWidth - TESTING_CONTAINER[i].offsetWidth + 20;
                 LIMITOBJECT[i].children[0].style.setProperty('--slide-distance', `-` + overflow + `px`);
-        }
-
-
+                /*console.log('SET SCROLL FOR ' + index +` ` + fieldHarvester[i].offsetWidth + `
+                ` + TESTING_CONTAINER[i].offsetWidth + ` ` + LIMITOBJECT[i].offsetWidth);*/
+            }
+            LIMITOBJECT = document.getElementsByClassName('textLimitR');
+            if (HeaderType[i].offsetWidth > (TESTING_CONTAINER[i].offsetWidth - 10)) {
+                LIMITOBJECT[i].children[0].style.animation = 'scroll 10s linear infinite';
+                let  overflow = HeaderType[i].offsetWidth - TESTING_CONTAINER[i].offsetWidth + 20;
+                LIMITOBJECT[i].children[0].style.setProperty('--slide-distance', `-` + overflow + `px`);
+            }
         }},1000);
 }
 
-let doneLayerDegree = 45;
-
-function getRandomBrightColor() {
+// Returns random color, but not too dark (64-255)(64-255)(64-255)(1)
+function getRandomColor() {
     const r = Math.floor(Math.random() * 128) + 64;
     const g = Math.floor(Math.random() * 128) + 64;
     const b = Math.floor(Math.random() * 128) + 64;
     return `#${r.toString(16)}${g.toString(16)}${b.toString(16)}`;
 }
 
-
-function setDoneLayerDegree(parameter) {
-    const elements = document.querySelectorAll('.fieldBackground');
-    switch (parameter) {
-        case '+':
-            doneLayerDegree +=45;
-            break;
-        case '-':
-            doneLayerDegree -=45;
-            break;
-    }
-    document.documentElement.style.setProperty('--done-degree', doneLayerDegree + 'deg');
-
+// Sets 'Progress layer's angle
+function setProgressLayerAngle(parameter) {
+    processLayerAngle += (parameter === '+') ? 45 : -45;
+    document.documentElement.style.setProperty('--process-layer-angle', processLayerAngle + 'deg');
 }
 
-
-function generateCSV(type) {
-    // Define the headers for the CSV file
-    const headers = ["fieldID", "fieldCrop", "fieldDensity", "fieldComplexity", "harvester", "reaper", "IsDoneFor"];
-
-// Define a function to generate a random number with 2 decimal points
-    function randomFloat() {
-        return Math.random().toFixed(2);
-    }
-
-// Define the number of rows to generate
-    const numRows = numToGenerate;
-
-// Create an array to hold the data for each row
-    const data = [];
-    let reaperTypes = ['Draper', 'Auger', 'Corn', 'Flex', 'Stripper', 'Rice',
-        'Shaker','Grape','Potato','Soybean','Sorghum','Flax','Haybine','Cotton','Carrot','Onion','Sugar cane'];
-    let harvesterNames = ['John Deere S700', 'Case IH 250','New Holland CR', 'Claas Lexion 700',
-        'Massey Ferguson 9505','Gleaner S9', 'Challenger 700', 'Fendt IDEAL', 'Kubota M7 Gen 2',
-        'AGCO IdealCombine', 'Versatile RT520', 'Rostselmash Vector 410', 'Deutz-Fahr 9',
-        'Sampo-Rosenlew C10', 'Pottinger HIT 47N', 'Krone BiG X', 'Capello Quasar R8',
-        'MacDon M1', 'Oxbo 6220', 'Braud 9090X'];
-// Generate random data for each row
-    for (let i = 0; i < numRows; i++) {
-        // Generate a random ID number between 1 and 100
-        const fieldID = i + 1;
-
-        // Generate a random crop from the list of 30 most popular crops
-        const crops = Object.keys(defaultCropColors);
-        const fieldCrop = crops[Math.floor(Math.random() * crops.length)];
-        // Generate a random field density and complexity with 2 decimal points
-        const fieldDensity = randomFloat();
-        const fieldComplexity = randomFloat();
-
-        // Generate a random harvester name and reaper status
-        const harvester = harvesterNames[Math.floor(Math.random() * 20)] + ' + ' + harvesterNames[Math.floor(Math.random() * 20)];
-        const reaper = reaperTypes[Math.floor(Math.random() * 16)] + ' + ' + reaperTypes[Math.floor(Math.random() * 16)];
-        const IsDoneFor = generateProgress();
-        // Add the row data to the array
-        data.push([fieldID, fieldCrop, fieldDensity, fieldComplexity, harvester, reaper,IsDoneFor]);
-    }
-
-// Convert the data to a CSV string
-    const csv = headers.join(",") + "\n" + data.map(row => row.join(",")).join("\n");
-    parseCSVStringAndGenerate(csv);
-    getAndDisplayCropTypes();
-// Print the CSV string to the console
-    console.log(csv);
-    if (type === 'file') {
-        const link = document.createElement('a');
-        link.setAttribute('href', 'data:text/csv;charset=utf-8,' + encodeURIComponent(csv));
-        link.setAttribute('download', 'fields.csv');
-        document.body.appendChild(link);
-        link.click();
-        document.body.removeChild(link);
-    } else {
-
-
-        generateGrid(data);
-    }
-    // Download the CSV file
-
-}
-
-
-// RETURN '100' MORE OFTEN FOR VISUALIZATION
-function generateProgress() {
+// Returns random 'Process' value, 100s shows more often
+function getRandomProcessValue() {
+    // RETURNS '100' MORE OFTEN FOR VISUALIZATION
     const randomNumber = Math.floor(Math.random() * 5);
     if (randomNumber === 0) {
         return 100;
@@ -367,63 +466,33 @@ function generateProgress() {
     }
 }
 
+// Make from CSV string a 'grid'
 function parseCSVStringAndGenerate(csvString) {
     const rows = csvString.split('\n');
-    const headers = rows[0].split(',');
+    const Headers = rows[0].split(',');
     const data = [];
-
     for (let i = 1; i < rows.length; i++) {
         const values = rows[i].split(',');
         const obj = {};
-        for (let j = 0; j < headers.length; j++) {
-            obj[headers[j]] = values[j];
+        for (let j = 0; j < Headers.length; j++) {
+            obj[Headers[j]] = values[j];
         }
         data.push(obj);
     }
-
-    receivedFileHeaders = headers;
+    receivedFileHeaders = Headers;
     receivedFile = data;
     showOnlyArray = receivedFile;
     getAndDisplayCropTypes();
+    storeReceivedHeaders();
     generateGrid(data);
 }
 
+// Changes color of the 'Process layer'
 function updateDoneColor(value) {
     doneColor = value;
-    document.documentElement.style.setProperty('--done-color', doneColor);
+    document.documentElement.style.setProperty('--process-layer-color', doneColor);
 }
 
-
-const settingsButton = document.querySelector('#settings-btn');
-const element = document.querySelector('#settings');
-
-let isElementVisible = false;
-
-const extraBtnZone = document.getElementById('extraBtnZone');
-
-
-extraBtnZone.addEventListener('click', () => {
-    if (isElementVisible) {
-        element.style.opacity = 0;element.style.visibility = "hidden"
-        setTimeout(()=>{element.style.display = 'none';},300)
-        isElementVisible = false;
-    } else {
-        element.style.display = 'flex';
-        setTimeout(()=>{element.style.opacity = 1;element.style.visibility = "visible"},150)
-
-
-        isElementVisible = true;
-
-    }
-});
-
-const fullscreenButton = document.querySelector('.fullscreen-button');
-const body = document.body;
-
-// Обработчик клика на кнопке
-fullscreenButton.addEventListener('click', toggleFullscreen);
-
-// Функция переключения полноэкранного режима
 function toggleFullscreen() {
     if (document.fullscreenElement) {
         document.exitFullscreen();
@@ -432,45 +501,35 @@ function toggleFullscreen() {
     }
 }
 
-
-extraBtnZone.addEventListener('click', () => {
-    settingsButton.classList.toggle('open');
-});
-
+// Shows only this crop
 function showOnlyThisCrop(crop) {
-    showOnlyArray = (crop === 'all') ? receivedFile : receivedFile.filter(field => field.fieldCrop === crop);
+    showOnlyArray = (crop === 'all') ? receivedFile : receivedFile.filter(field => field.Crop === crop);
     generateGrid(showOnlyArray);
 }
 
-
-function sortByID(order) {
-    sortArrayOfObjects(showOnlyArray,receivedFileHeaders[0],order);
+// Sorts 'showOnlyArray' in specified 'type' & 'order'
+function sortBy(type,order) {
+    switch(type) {
+        case 'ID':
+            sortArrayOfObjects(showOnlyArray,idH,order);
+            break;
+        case 'Density':
+            sortArrayOfObjects(showOnlyArray,densityH,order);
+            break;
+        case 'Complexity':
+            sortArrayOfObjects(showOnlyArray,complexityH,order);
+            break;
+        case 'Progress':
+            sortArrayOfObjects(showOnlyArray,progressH,order);
+            break;
+        default:
+            console.log('ERROR: SortBy(undefined)');
+            return -1;
+    }
     generateGrid(showOnlyArray);
-    /*document.getElementById('grid-container').style.opacity = '0';
-    setTimeout(()=>{generateGrid(showOnlyArray)},1000);*/
 }
 
-function sortByDensity(order) {
-    sortArrayOfObjects(showOnlyArray,receivedFileHeaders[2],order);
-    generateGrid(showOnlyArray);
-    /*document.getElementById('grid-container').style.opacity = '0';
-    setTimeout(()=>{generateGrid(showOnlyArray)},1000);*/
-}
-
-function sortByComplexity(order) {
-    sortArrayOfObjects(showOnlyArray,receivedFileHeaders[3],order);
-    generateGrid(showOnlyArray);
-    /*document.getElementById('grid-container').style.opacity = '0';
-    setTimeout(()=>{generateGrid(showOnlyArray)},1000);*/
-}
-
-function sortByProgress(order) {
-    sortArrayOfObjects(showOnlyArray,receivedFileHeaders[6],order);
-    generateGrid(showOnlyArray);
-    /*document.getElementById('grid-container').style.opacity = '0';
-    setTimeout(()=>{generateGrid(showOnlyArray)},1000);*/
-}
-
+// Sorting algorithm for integers/float numbers
 function sortArrayOfObjects(arr, prop, order) {
     if (order === 'asc') {
         arr.sort(function(a, b) {
@@ -479,7 +538,6 @@ function sortArrayOfObjects(arr, prop, order) {
     } else if (order === 'desc') {
         arr.sort(function(a, b) {
             return parseFloat(a[prop]) < parseFloat(b[prop]) ? 1 : -1;
-
         });
     } else {
         console.log('Invalid order parameter');
@@ -487,117 +545,119 @@ function sortArrayOfObjects(arr, prop, order) {
     return arr;
 }
 
-
+// Changes current tab with content
 function changeCurrentTab(tab) {
-    visualTab.style.background = 'var(--second-color)';
-    sortingTab.style.background = 'var(--second-color)';
-    miscTab.style.background = 'var(--second-color)';
+    let temp = 'var(--second-color)';
+    visualTab.style.background = temp;
+    sortingTab.style.background = temp;
+    miscTab.style.background = temp;
     let currentTab = tab + 'Tab';
     document.getElementById(currentTab).style.background = 'var(--main-color)';
-
     visualContent.style.display = 'none';
     sortingContent.style.display = 'none';
     miscContent.style.display = 'none';
-
-
-    if (tab === 'visual') {
-        visualContent.style.display = 'flex';
-    } else if (tab === 'sorting') {
-        sortingContent.style.display = 'flex';
-    } else if (tab === 'misc') {
-        miscContent.style.display = 'flex';
+    switch(tab) {
+        case 'visual':
+            visualContent.style.display = 'flex';
+            break;
+        case 'sorting':
+            sortingContent.style.display = 'flex';
+            break;
+        case 'misc':
+            miscContent.style.display = 'flex';
+            break;
+        default:
+            console.log('ERROR: changecurrentTab(undefined)');
+            return -1;
     }
-
 }
 
-
-function toggleHowMuchDone() {
-    if (howMuchDoneIsShowed) {
+// Toggles 'Progress layer' showing
+function toggleProgress() {
+    if (progressIsShowed) {
         for(let i = 0;i < document.getElementsByClassName('grid')[0].childElementCount;i++) {
-           document.getElementsByClassName('fieldBackground')[i].classList.add('doneLayerIsHidden');
+            document.getElementsByClassName('fieldBackground')[i].classList.add('doneLayerIsHidden');
         }
-        howMuchDoneIsShowed = false;
+        progressIsShowed = false;
     } else  {
         for(let i = 0;i < document.getElementsByClassName('grid')[0].childElementCount;i++) {
             document.getElementsByClassName('fieldBackground')[i].classList.remove('doneLayerIsHidden');
         }
-        howMuchDoneIsShowed = true;
+        progressIsShowed = true;
     }
 }
 
-
-function showOnlyCrop(crop) {
-    showOnlyArray = receivedFile.filter(field => field.fieldCrop === crop);
-    console.log(showOnlyArray);
+// Shows fields with a specific property from the file
+function showSpecificFields(type) {
+    switch (type) {
+        case 'completed':
+            showOnlyArray = receivedFile.filter(field => field.Progress === '100');
+            break;
+        case 'inProgress':
+            showOnlyArray = receivedFile.filter(field => field.Progress !== '100');
+            break;
+        case 'all':
+            showOnlyArray = receivedFile;
+            break;
+        default:
+            console.log("ERROR: showSpecificFields(undefined)");
+            return -1;
+    }
     generateGrid(showOnlyArray);
 }
 
-function showOnlyCompleted() {
-    showOnlyArray = receivedFile.filter(field => field.IsDoneFor === '100');
-    console.log(showOnlyArray);
-    generateGrid(showOnlyArray);
-}
-
-function showAll() {
-    showOnlyArray = receivedFile;
-    generateGrid(showOnlyArray);
-}
-
-function showOnlyUncompleted() {
-    showOnlyArray = receivedFile.filter(field => field.IsDoneFor !== '100');
-    console.log(showOnlyArray);
-    generateGrid(showOnlyArray);
-}
-
-
-const openModalButton = document.getElementById("open-modal");
-const closeModalButton = document.getElementById("close-modal");
-const modalContainer = document.getElementById("modal-container");
-
-openModalButton.addEventListener("click", () => {
-    modalContainer.style.visibility = 'visible';
-    modalContainer.classList.add('modalOpen');
-});
-
-closeModalButton.addEventListener("click", () => {
-    modalContainer.style.visibility = 'hidden';
-    modalContainer.classList.remove('modalOpen');
-});
-
+// Opens modal windows and fills it with information about the field
 function showCurrentField(field) {
     console.log(field);
     let modalWindow = document.querySelector('#modal');
     modalWindow.innerHTML = "";
     modalWindow.style.background = autoColor(field);
-    let fieldId = document.createElement('h2');
-    fieldId.innerText = 'Field ' + (field[Object.keys(field)[0]]);
-    let fieldDensity = document.createElement('h4');
-    fieldDensity.innerText = 'Density: ' + (field[Object.keys(field)[2]]);
-    let fieldComplexity = document.createElement('h4');
-    fieldComplexity.innerText = 'Complexity: ' + (field[Object.keys(field)[3]]);
-    let harvestersName = document.createElement('h4');
-    harvestersName.innerText = 'Harvester: ' + (field[Object.keys(field)[4]]);
-    let reapers = document.createElement('h4');
-    reapers.innerText = 'Reaper: ' + (field[Object.keys(field)[5]]);
-    let doneFor = document.createElement('h4');
-    doneFor.innerText = 'Completed: ' + (field[Object.keys(field)[6]]) + '%';
-
-    modalWindow.appendChild(fieldId);
-    modalWindow.appendChild(fieldDensity);
-    modalWindow.appendChild(fieldComplexity);
-    modalWindow.appendChild(harvestersName);
-    modalWindow.appendChild(reapers);
-    modalWindow.appendChild(doneFor);
-
-
-
+    let ID = document.createElement('h2');
+    ID.innerText = 'Field ' + (field[idH]);
+    let Density = document.createElement('h4');
+    Density.innerText = 'Density: ' + (field[densityH]);
+    let Complexity = document.createElement('h4');
+    Complexity.innerText = 'Complexity: ' + (field[complexityH]);
+    let Harvester = document.createElement('h4');
+    Harvester.innerText = 'Harvester: ' + (field[harvesterH]);
+    let Headers = document.createElement('h4');
+    Headers.innerText = 'Header: ' + (field[headerH]);
+    let Progress = document.createElement('h4');
+    Progress.innerText = 'Completed: ' + (field[progressH]) + '%';
+    modalWindow.appendChild(ID);
+    modalWindow.appendChild(Density);
+    modalWindow.appendChild(Complexity);
+    modalWindow.appendChild(Harvester);
+    modalWindow.appendChild(Headers);
+    modalWindow.appendChild(Progress);
     modalContainer.style.visibility = 'visible';
     modalContainer.classList.add('modalOpen');
 }
 
-modalContainer.addEventListener("click", (event) => {
-    if (event.target === modalContainer) {
-        modalContainer.style.visibility = 'hidden';
-        modalContainer.classList.remove('modalOpen');
-    }
-});
+/*welcomeMessage.innerText = 'Добро пожаловать,' + username +'!';*/
+
+// Returns random float number
+function randomFloat() {
+    return Math.random().toFixed(2);
+}
+
+// Gets headers from the files and put it to the 'ReceivedHeaders' variable
+function storeReceivedHeaders() {
+    idH = receivedFileHeaders[0];
+    cropTypeH = receivedFileHeaders[1];
+    densityH = receivedFileHeaders[2];
+    complexityH = receivedFileHeaders[3];
+    harvesterH = receivedFileHeaders[4];
+    headerH = receivedFileHeaders[5];
+    progressH = receivedFileHeaders[6];
+}
+
+
+function downloadDefaultCSV() {
+    const link = document.createElement('a');
+    link.setAttribute('href', 'data:text/csv;charset=utf-8,' + encodeURIComponent(window.fieldCSV));
+    link.setAttribute('download', 'defaultField.csv');
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+}
