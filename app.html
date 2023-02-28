@@ -32,9 +32,9 @@
         <div id="settingsContent">
             <div id="visualContent">
                 <div class="settingsRow">
-                    <div onclick="showAll()">Show All</div>
-                    <div onclick="showOnlyCompleted()">Completed</div>
-                    <div onclick="showOnlyUncompleted()">In progress</div>
+                    <div onclick="showSpecificFields('all')">Show All</div>
+                    <div onclick="showSpecificFields('completed')">Completed</div>
+                    <div onclick="showSpecificFields('inProgress')">In progress</div>
                 </div>
                 <div class="settingsRow">
                     <div onclick="toggleProgress()">Remove/Show 'COMPLETED' layer</div>
@@ -56,14 +56,14 @@
                 </div>
             </div>
             <div id="sortingContent">
-                <div onclick="sortByID('asc')">ID ↑</div>
-                <div onclick="sortByID('desc')">ID ↓</div>
-                <div onclick="sortByDensity('asc')">Density ↑</div>
-                <div onclick="sortByDensity('desc')">Density ↓</div>
-                <div onclick="sortByComplexity('asc')">Complexity ↑</div>
-                <div onclick="sortByComplexity('desc')">Complexity ↓</div>
-                <div onclick="sortByProgress('asc')">Progress ↑</div>
-                <div onclick="sortByProgress('desc')">Progress ↓</div>
+                <div onclick="sortBy('ID','asc')">ID ↑</div>
+                <div onclick="sortBy('ID','desc')">ID ↓</div>
+                <div onclick="sortBy('Density','asc')">Density ↑</div>
+                <div onclick="sortBy('Density','desc')">Density ↓</div>
+                <div onclick="sortBy('Complexity','asc')">Complexity ↑</div>
+                <div onclick="sortBy('Complexity','desc')">Complexity ↓</div>
+                <div onclick="sortBy('Progress','asc')">Progress ↑</div>
+                <div onclick="sortBy('Progress','desc')">Progress ↓</div>
             </div>
             <div id="miscContent">
                 <label for="fileUpload" id="fileUploadName" class="file-upload-label settingsButton">Choose a CSV file:</label>

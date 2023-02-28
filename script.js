@@ -168,22 +168,27 @@ extraBtnZone.addEventListener('click', () => {
     }
 });
 
+// On 'click' toggles 'settings' // Adds extra zone since original 'menu' button is too thin
 extraBtnZone.addEventListener('click', () => {
     settingsButton.classList.toggle('open');
 });
 
+// On 'click' toggles full screen mode
 fullscreenButton.addEventListener('click', toggleFullscreen);
 
+// On 'click' shows the modal window // !Useless! //
 openModalButton.addEventListener("click", () => {
     modalContainer.style.visibility = 'visible';
     modalContainer.classList.add('modalOpen');
 });
 
+// On 'click' hides the modal window
 closeModalButton.addEventListener("click", () => {
     modalContainer.style.visibility = 'hidden';
     modalContainer.classList.remove('modalOpen');
 });
 
+// On 'click' shows the modal windows to display detailed info about current field
 modalContainer.addEventListener("click", (event) => {
     if (event.target === modalContainer) {
         modalContainer.style.visibility = 'hidden';
@@ -191,6 +196,7 @@ modalContainer.addEventListener("click", (event) => {
     }
 });
 
+// On 'click' redirects user to the 'index.html' page
 logoutButton.addEventListener('click', () => {
     window.location.href = 'index.html';
 });
@@ -223,7 +229,7 @@ function generateCSV(type) {
         const fieldComplexity = randomFloat();
         const harvester = harvesterNames[Math.floor(Math.random() * 20)] + ' + ' + harvesterNames[Math.floor(Math.random() * 20)];
         const reaper = reaperTypes[Math.floor(Math.random() * 16)] + ' + ' + reaperTypes[Math.floor(Math.random() * 16)];
-        const progress = generateProgress();
+        const progress = getRandomProccessValue();
         data.push([fieldID, fieldCrop, fieldDensity, fieldComplexity, harvester, reaper,progress]);
     }
     const csv = headers.join(",") + "\n" + data.map(row => row.join(",")).join("\n");
@@ -286,7 +292,7 @@ function csvFileParser(file, callback) {
 }
 
 // Returns chosen property's value of chosen object
-function getProperty(obj, prop) {
+function getValueByProperty(obj, prop) {
     if (prop in obj) {
         return obj[prop];
     } else {
@@ -313,9 +319,10 @@ function getAndDisplayCropTypes() {
 // Returns color from 'defaultCropColors', otherwise returns a random 
 function autoColor(temp) {
     let current = temp[cropTypeH];
-    return (getProperty(defaultCropColors,current) != null) ? getProperty(defaultCropColors,current) : getRandomColor();
+    return (getValueByProperty(defaultCropColors,current) != null) ? getValueByProperty(defaultCropColors,current) : getRandomColor();
 }
 
+// Generates a grid with fields and display them
 function generateGrid(data) {
     container.innerHTML = "";
     if (data.length === 0) {
@@ -418,6 +425,7 @@ function generateGrid(data) {
         }},1000);
 }
 
+// Returns random color, but not too dark (64-255)(64-255)(64-255)(1)
 function getRandomColor() {
     const r = Math.floor(Math.random() * 128) + 64;
     const g = Math.floor(Math.random() * 128) + 64;
@@ -431,7 +439,8 @@ function setProgressLayerAngle(parameter) {
     document.documentElement.style.setProperty('--done-degree', doneLayerDegree + 'deg');
 }
 
-function generateProgress() {
+
+function getRandomProccessValue() {
     // RETURNS '100' MORE OFTEN FOR VISUALIZATION
     const randomNumber = Math.floor(Math.random() * 5);
     if (randomNumber === 0) {
@@ -478,34 +487,29 @@ function showOnlyThisCrop(crop) {
     generateGrid(showOnlyArray);
 }
 
-function sortByID(order) {
-    sortArrayOfObjects(showOnlyArray,idH,order);
+// Sorts 'showOnlyArray' in specified 'type' & 'order'
+function sortBy(type,order) {
+    switch(type) {
+        case 'ID':
+        sortArrayOfObjects(showOnlyArray,idH,order);
+        break;
+        case 'Density':
+            sortArrayOfObjects(showOnlyArray,densityH,order);
+            break;
+        case 'Complexity':
+            sortArrayOfObjects(showOnlyArray,complexityH,order);
+            break;
+        case 'Progress':
+            sortArrayOfObjects(showOnlyArray,progressH,order);
+            break;
+        default:
+            console.log('ERROR: SortBy(undefined)');
+            return -1;
+    }
     generateGrid(showOnlyArray);
-    /*document.getElementById('grid-container').style.opacity = '0';
-    setTimeout(()=>{generateGrid(showOnlyArray)},1000);*/
 }
 
-function sortByDensity(order) {
-    sortArrayOfObjects(showOnlyArray,densityH,order);
-    generateGrid(showOnlyArray);
-    /*document.getElementById('grid-container').style.opacity = '0';
-    setTimeout(()=>{generateGrid(showOnlyArray)},1000);*/
-}
-
-function sortByComplexity(order) {
-    sortArrayOfObjects(showOnlyArray,complexityH,order);
-    generateGrid(showOnlyArray);
-    /*document.getElementById('grid-container').style.opacity = '0';
-    setTimeout(()=>{generateGrid(showOnlyArray)},1000);*/
-}
-
-function sortByProgress(order) {
-    sortArrayOfObjects(showOnlyArray,progressH,order);
-    generateGrid(showOnlyArray);
-    /*document.getElementById('grid-container').style.opacity = '0';
-    setTimeout(()=>{generateGrid(showOnlyArray)},1000);*/
-}
-
+// Sorting algorithm for integers/float numbers
 function sortArrayOfObjects(arr, prop, order) {
     if (order === 'asc') {
         arr.sort(function(a, b) {
@@ -522,6 +526,7 @@ function sortArrayOfObjects(arr, prop, order) {
     return arr;
 }
 
+// Changes current tab with content
 function changeCurrentTab(tab) {
     menuTab.forEach((element)=>{
         element.style.background = 'var(--second-color)';
@@ -544,7 +549,7 @@ function changeCurrentTab(tab) {
 
 }
 
-// Toggle's 
+// Toggles 'Progress layer' showing
 function toggleProgress() {
     if (progressIsShowed) {
         for(let i = 0;i < document.getElementsByClassName('grid')[0].childElementCount;i++) {
@@ -559,20 +564,21 @@ function toggleProgress() {
     }
 }
 
-function showOnlyCompleted() {
-    showOnlyArray = receivedFile.filter(field => field.progress === '100');
-    console.log(showOnlyArray);
-    generateGrid(showOnlyArray);
-}
-
-function showAll() {
-    showOnlyArray = receivedFile;
-    generateGrid(showOnlyArray);
-}
-
-function showOnlyUncompleted() {
-    showOnlyArray = receivedFile.filter(field => field.progress !== '100');
-    console.log(showOnlyArray);
+// Shows fields with a specific property from the file
+function showSpecificFields(type) {
+    switch (type) {
+        case 'completed':
+            showOnlyArray = receivedFile.filter(field => field.progress === '100');
+            break;
+        case 'inProgress':
+            showOnlyArray = receivedFile.filter(field => field.progress !== '100');
+            break;
+        case 'all':
+            showOnlyArray = receivedFile;
+        default:
+            console.log("ERROR: showSpecificFields(undefined)");
+            return -1;
+    }
     generateGrid(showOnlyArray);
 }
 
