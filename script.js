@@ -1,3 +1,13 @@
+/* DISCLAIMER:
+
+THIS CODE HAS NEVER BEEN REFACTORED, COMING SOON
+
+*/
+
+
+
+
+// Default colors that will be applied to fields by default
 const defaultCropColors = {
     wheat: '#ffd700',
     corn: '#ffdab9',
@@ -31,33 +41,59 @@ const defaultCropColors = {
     hazelnut: '#deb887'
 };
 
+// Default color for a 'PROGRESS LAYER'
 let doneColor = '#A18353';
 
+// Stores initial file with fields parameters
 let receivedFile = [];
+
+// Stores headers that recieved from file for more flexibility with headers name // !Useless!
 let receivedFileHeaders;
-let TESTPARSE;
+
+// Stores the list of all recieved crops from the file
 let listOfCrops;
 
+// The visibility state of the 'Progress layer'
 let howMuchDoneIsShowed = true;
-let currentFieldIsShowed = false;
+
+// Array that stores fields that satisfy filter to display
 let showOnlyArray = [];
 
-const slider = document.getElementById("myRange");
-const sliderValueDisplay = document.getElementById("slider-value-display");
+// The visibility state of the 'Settings' element
+let isElementVisible = false;
 
+// The angle of rotation for 'Progress layer'
+let doneLayerDegree = 45;
+
+const params = new URLSearchParams(window.location.search);
+
+// DOM ELEMENTS //
+const slider = document.getElementById("myRange");
+
+const sliderValueDisplay = document.getElementById("slider-value-display");
 const visualContent = document.getElementById('visualContent');
 const sortingContent = document.getElementById('sortingContent');
-const miscContent = document.getElementById("miscContent");
 
+const miscContent = document.getElementById("miscContent");
 const visualTab = document.getElementById('visualTab');
 const sortingTab = document.getElementById('sortingTab');
+
 const miscTab = document.getElementById('miscTab');
+const openModalButton = document.getElementById("open-modal");
+const closeModalButton = document.getElementById("close-modal");
+const modalContainer = document.getElementById("modal-container");
+
+const mySelect = document.getElementById("mySelect");
+
+const container = document.getElementById("grid-container");
+const settingsButton = document.querySelector('#settings-btn');
+
+const element = document.querySelector('#settings');
+const extraBtnZone = document.getElementById('extraBtnZone');
+const logoutButton = document.getElementById('logout-button');
+/*const welcomeMessage = document.getElementById('welcome-message');*/
 
 
-
-let numToGenerate = 0;
-
-changeCurrentTab('misc');
 
 
 slider.addEventListener("input", function() {
@@ -65,7 +101,7 @@ slider.addEventListener("input", function() {
     sliderValueDisplay.textContent = numToGenerate;
 });
 
-let mySelect = document.getElementById("mySelect");
+
 
 
 
@@ -95,8 +131,6 @@ function csvFileParse(event) {
             return;
         }
         console.log(data);
-        console.log("TYPE OF DATA" + typeof(data));
-
         generateGrid(data);
     });
 }
@@ -153,7 +187,6 @@ function autoColor(temp) {
 
 function generateGrid(data) {
 
-    let container = document.getElementById("grid-container");
     container.innerHTML = "";
     if (data.length === 0) {
         let warning = document.createElement("h1");
@@ -214,8 +247,6 @@ function generateGrid(data) {
         let linearGradient;
         setTimeout(()=>{
             container.style.opacity = '1';
-            console.log(howMuchDone);
-
             howMuchDone = (howMuchDone === '100') ? '99': howMuchDone;
 
         },500)
@@ -248,14 +279,13 @@ function generateGrid(data) {
         let reaperType = document.getElementsByClassName('fieldReaper');
         let TESTING_CONTAINER = document.getElementsByClassName('second-row');
 
-        for (let i = 0; i < data.length;i++) {
-        let index = i + 1;
-            let LIMITOBJECT = document.getElementsByClassName('textLimit');
+        for (let i = 0; i < data.length;i++) {let LIMITOBJECT = document.getElementsByClassName('textLimit');
         if (fieldHarvester[i].offsetWidth > (TESTING_CONTAINER[i].offsetWidth - 10)) {
             LIMITOBJECT[i].children[0].style.animation = 'scroll 10s ease-out infinite';
             let  overflow = fieldHarvester[i].offsetWidth - TESTING_CONTAINER[i].offsetWidth + 20;
             LIMITOBJECT[i].children[0].style.setProperty('--slide-distance', `-` + overflow + `px`);
-            console.log('SET SCROLL FOR ' + index +` ` + fieldHarvester[i].offsetWidth + ` ` + TESTING_CONTAINER[i].offsetWidth + ` ` + LIMITOBJECT[i].offsetWidth);
+            /*console.log('SET SCROLL FOR ' + index +` ` + fieldHarvester[i].offsetWidth + `
+            ` + TESTING_CONTAINER[i].offsetWidth + ` ` + LIMITOBJECT[i].offsetWidth);*/
         }
         LIMITOBJECT = document.getElementsByClassName('textLimitR');
         if (reaperType[i].offsetWidth > (TESTING_CONTAINER[i].offsetWidth - 10)) {
@@ -263,12 +293,10 @@ function generateGrid(data) {
                 let  overflow = reaperType[i].offsetWidth - TESTING_CONTAINER[i].offsetWidth + 20;
                 LIMITOBJECT[i].children[0].style.setProperty('--slide-distance', `-` + overflow + `px`);
         }
-
-
         }},1000);
 }
 
-let doneLayerDegree = 45;
+
 
 function getRandomBrightColor() {
     const r = Math.floor(Math.random() * 128) + 64;
@@ -277,35 +305,14 @@ function getRandomBrightColor() {
     return `#${r.toString(16)}${g.toString(16)}${b.toString(16)}`;
 }
 
-
 function setDoneLayerDegree(parameter) {
-    const elements = document.querySelectorAll('.fieldBackground');
-    switch (parameter) {
-        case '+':
-            doneLayerDegree +=45;
-            break;
-        case '-':
-            doneLayerDegree -=45;
-            break;
-    }
+    doneLayerDegree += (parameter === '+') ? 45 : -45;
     document.documentElement.style.setProperty('--done-degree', doneLayerDegree + 'deg');
-
 }
 
-
 function generateCSV(type) {
-    // Define the headers for the CSV file
     const headers = ["fieldID", "fieldCrop", "fieldDensity", "fieldComplexity", "harvester", "reaper", "IsDoneFor"];
 
-// Define a function to generate a random number with 2 decimal points
-    function randomFloat() {
-        return Math.random().toFixed(2);
-    }
-
-// Define the number of rows to generate
-    const numRows = numToGenerate;
-
-// Create an array to hold the data for each row
     const data = [];
     let reaperTypes = ['Draper', 'Auger', 'Corn', 'Flex', 'Stripper', 'Rice',
         'Shaker','Grape','Potato','Soybean','Sorghum','Flax','Haybine','Cotton','Carrot','Onion','Sugar cane'];
@@ -315,7 +322,7 @@ function generateCSV(type) {
         'Sampo-Rosenlew C10', 'Pottinger HIT 47N', 'Krone BiG X', 'Capello Quasar R8',
         'MacDon M1', 'Oxbo 6220', 'Braud 9090X'];
 // Generate random data for each row
-    for (let i = 0; i < numRows; i++) {
+    for (let i = 0; i < numToGenerate; i++) {
         // Generate a random ID number between 1 and 100
         const fieldID = i + 1;
 
@@ -394,12 +401,6 @@ function updateDoneColor(value) {
 }
 
 
-const settingsButton = document.querySelector('#settings-btn');
-const element = document.querySelector('#settings');
-
-let isElementVisible = false;
-
-const extraBtnZone = document.getElementById('extraBtnZone');
 
 
 extraBtnZone.addEventListener('click', () => {
@@ -525,13 +526,6 @@ function toggleHowMuchDone() {
     }
 }
 
-
-function showOnlyCrop(crop) {
-    showOnlyArray = receivedFile.filter(field => field.fieldCrop === crop);
-    console.log(showOnlyArray);
-    generateGrid(showOnlyArray);
-}
-
 function showOnlyCompleted() {
     showOnlyArray = receivedFile.filter(field => field.IsDoneFor === '100');
     console.log(showOnlyArray);
@@ -549,10 +543,6 @@ function showOnlyUncompleted() {
     generateGrid(showOnlyArray);
 }
 
-
-const openModalButton = document.getElementById("open-modal");
-const closeModalButton = document.getElementById("close-modal");
-const modalContainer = document.getElementById("modal-container");
 
 openModalButton.addEventListener("click", () => {
     modalContainer.style.visibility = 'visible';
@@ -603,10 +593,6 @@ modalContainer.addEventListener("click", (event) => {
 });
 
 
-const logoutButton = document.getElementById('logout-button');
-/*const welcomeMessage = document.getElementById('welcome-message');*/
-
-const params = new URLSearchParams(window.location.search);
 const username = params.get('username');
 /*welcomeMessage.innerText = 'Добро пожаловать,' + username +'!';*/
 
@@ -615,3 +601,7 @@ logoutButton.addEventListener('click', () => {
     // При нажатии на кнопку "Выйти" перенаправляем на страницу авторизации
     window.location.href = 'index.html';
 });
+
+function randomFloat() {
+    return Math.random().toFixed(2);
+}

@@ -1,4 +1,4 @@
-const fieldCSV = 'fieldID,fieldCrop,fieldDensity,fieldComplexity,harvester,reaper,IsDoneFor\n' +
+window.fieldCSV = 'fieldID,fieldCrop,fieldDensity,fieldComplexity,harvester,reaper,IsDoneFor\n' +
     '1,potato,0.52,0.22,Kubota M7 Gen 2 + Kubota M7 Gen 2,Potato + Grape,69\n' +
     '2,tea,0.94,0.22,Rostselmash Vector 410 + Fendt IDEAL,Shaker + Grape,100\n' +
     '3,cashew,0.26,0.33,AGCO IdealCombine + Rostselmash Vector 410,Soybean + Carrot,7\n' +
