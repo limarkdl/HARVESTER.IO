@@ -37,7 +37,7 @@
                     <div onclick="showOnlyUncompleted()">In progress</div>
                 </div>
                 <div class="settingsRow">
-                    <div onclick="toggleHowMuchDone()">Remove/Show 'COMPLETED' layer</div>
+                    <div onclick="toggleProgress()">Remove/Show 'COMPLETED' layer</div>
 
 
                 </div>
@@ -49,9 +49,9 @@
                 </div>
 
                 <div class="settingsRow">'COMPLETED' Layer:
-                    <div onclick="setDoneLayerDegree('+')">+45°</div>
+                    <div onclick="setProgressLayerAngle('+')">+45°</div>
                     <div class="doneLayerPosition"></div>
-                    <div onclick="setDoneLayerDegree('-')">-45°</div>
+                    <div onclick="setProgressLayerAngle('-')">-45°</div>
                     <input id="doneLayerColor" type="color" value="#A18353" oninput="updateDoneColor(value)">
                 </div>
             </div>
@@ -66,9 +66,8 @@
                 <div onclick="sortByProgress('desc')">Progress ↓</div>
             </div>
             <div id="miscContent">
-                <label for="file-upload" class="file-upload-label settingsButton">Choose a CSV file:</label>
-                    <input id="file-upload" type="file" accept=".csv, .CSV, .txt" onchange="csvFileParse(event)">
-
+                <label for="fileUpload" id="fileUploadName" class="file-upload-label settingsButton">Choose a CSV file:</label>
+                    <input id="fileUpload" type="file" accept=".csv, .CSV, .txt" onchange="parseThisFile(event)">
                 <div onclick="generateCSV('file')">Show <span id="slider-value-display">1</span> random fields and download this mockup CSV </div>
                 <div class="slider-container">
                     <label for="myRange" class="slider-value">Choose number of fields to generate:</label>
