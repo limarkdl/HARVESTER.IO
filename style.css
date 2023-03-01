@@ -494,9 +494,8 @@ img {
     color: white;
     cursor: pointer;
     border: none;
-    padding:5px;
+    padding: 5px 10px 5px 10px;
     border-radius: 10px;
-    text-align: center;
 }
 
 .file-upload-label:hover {

@@ -66,16 +66,16 @@
                 <div onclick="sortBy('Progress','desc')">Progress ↓</div>
             </div>
             <div id="miscContent">
-                <label for="fileUpload" id="fileUploadName" class="file-upload-label settingsButton">Choose a CSV file</label>
+                <label for="fileUpload" id="fileUploadName" class="file-upload-label settingsButton">Upload CSV file and display</label>
                     <input id="fileUpload" type="file" accept=".csv, .CSV, .txt" onchange="parseThisFile(event)">
                 <div onclick="generateCSV('file')">Show <span id="slider-value-display">1</span> random fields and download generated mockup CSV </div>
                 <div class="slider-container">
                     <label for="myRange" class="slider-value">Choose number of fields to generate:</label>
                     <input type="range" min="1" max="255" value="1" class="slider" id="myRange">
                 </div>
-                <div onclick="downloadDefaultCSV()">Download default .csv</div>
+                <div onclick="downloadDefaultCSV()">Download default 'demo' CSV</div>
                 <div id="logout-button">Log Out</div>
-                <p style="font-size: xx-small">Version v0.5</p>
+                <p style="font-size: xx-small">Version v0.5.4</p>
             </div>
 
 
