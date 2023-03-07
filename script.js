@@ -41,7 +41,7 @@ const defaultCropColors = {
 };
 
 // Default color for a 'Progress layer'
-let doneColor = '#b2976d';
+let doneColor = '#B2A999';
 
 // Stores initial file with fields parameters
 let receivedFile = [];
