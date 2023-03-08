@@ -41,7 +41,7 @@ const defaultCropColors = {
 };
 
 // Default color for a 'Progress layer'
-let doneColor = '#b2976d';
+let doneColor = '#B2A999';
 
 // Stores initial file with fields parameters
 let receivedFile = [];
@@ -206,12 +206,13 @@ logoutButton.addEventListener('click', () => {
 
 
 // INITIALIZATION //
+
 // Changes current tab to misc, to display it first
 changeCurrentTab('visual');
 try {
     parseCSVStringAndGenerate(window.fieldCSV);
 } catch (e) {
-    console.log(' ');
+    console.log('Something went wrong...');
 }
 // CORE FUNCTIONS //
 
@@ -241,7 +242,6 @@ function generateCSV(type) {
             harvester += ' + ' + harvesterNames[Math.floor(Math.random() * harvesterNames.length)];
             Header += ' + ' + HeaderTypes[Math.floor(Math.random() * HeaderTypes.length)]
         }
-
         const Progress = getRandomProcessValue();
         data.push([ID, Crop, Density, Complexity, harvester, Header, Progress]);
     }
@@ -355,8 +355,6 @@ function generateGrid(data) {
         let item = document.createElement("div");
         let temp = data[i];
         currentCrop = temp[cropTypeH];
-        console.log(currentCrop);
-        console.log(cropTypeH);
         currentDensity = temp[densityH];
         currentComplexity = temp[complexityH];
         currentHarvester = temp[harvesterH];
@@ -369,14 +367,14 @@ function generateGrid(data) {
         let firstRow = document.createElement("div");
         firstRow.classList.add("first-row");
         secondRow.innerHTML = `<div class="second-row">
-            <div class="Crop"><img src="CropICON.svg" alt="Crop"><h5>`+currentCrop+`</h5>
+            <div class="Crop"><img src="media/CropICON.svg" alt="Crop"><h5>`+currentCrop+`</h5>
             </div>
-            <div class="Density"><img src="DensityICON.svg" alt="Density"><h5>`+currentDensity+`</h5>
+            <div class="Density"><img src="media/DensityICON.svg" alt="Density"><h5>`+currentDensity+`</h5>
             </div>
-            <div class="Complexity"><img src="ComplexityICON.svg" alt="Complexity">
+            <div class="Complexity"><img src="media/ComplexityICON.svg" alt="Complexity">
                 <h5>`+currentComplexity+`</h5></div>
-            <div class="Harvester"><img src="HarvesterICON.svg" alt="Harvester"><div class="textLimit"><h5>`+currentHarvester+`</h5></div></div>
-            <div class="Header"><img src="HeaderICON.svg" alt="Header"><div class="textLimitR"><h5>`+currentHeader+`</h5></div>
+            <div class="Harvester"><img src="media/HarvesterICON.svg" alt="Harvester"><div class="textLimit"><h5>`+currentHarvester+`</h5></div></div>
+            <div class="Header"><img src="media/HeaderICON.svg" alt="Header"><div class="textLimitR"><h5>`+currentHeader+`</h5></div>
             </div>
         </div>`;
         ProgressTxt.style.display = 'block';
@@ -429,8 +427,6 @@ function generateGrid(data) {
                 LIMITOBJECT[i].children[0].style.animation = 'scroll 10s linear infinite';
                 let  overflow = Harvester[i].offsetWidth - TESTING_CONTAINER[i].offsetWidth + 20;
                 LIMITOBJECT[i].children[0].style.setProperty('--slide-distance', `-` + overflow + `px`);
-                /*console.log('SET SCROLL FOR ' + index +` ` + fieldHarvester[i].offsetWidth + `
-                ` + TESTING_CONTAINER[i].offsetWidth + ` ` + LIMITOBJECT[i].offsetWidth);*/
             }
             LIMITOBJECT = document.getElementsByClassName('textLimitR');
             if (HeaderType[i].offsetWidth > (TESTING_CONTAINER[i].offsetWidth - 10)) {
@@ -495,9 +491,11 @@ function updateDoneColor(value) {
 
 function toggleFullscreen() {
     if (document.fullscreenElement) {
+        document.webkitCancelFullScreen();
         document.exitFullscreen();
     } else {
         body.requestFullscreen();
+        body.webkitRequestFullScreen();
     }
 }
 
@@ -634,8 +632,6 @@ function showCurrentField(field) {
     modalContainer.classList.add('modalOpen');
 }
 
-/*welcomeMessage.innerText = 'Добро пожаловать,' + username +'!';*/
-
 // Returns random float number
 function randomFloat() {
     return Math.random().toFixed(2);
@@ -652,7 +648,7 @@ function storeReceivedHeaders() {
     progressH = receivedFileHeaders[6];
 }
 
-
+// Gives the file from fieldCSV.js to the user
 function downloadDefaultCSV() {
     const link = document.createElement('a');
     link.setAttribute('href', 'data:text/csv;charset=utf-8,' + encodeURIComponent(window.fieldCSV));

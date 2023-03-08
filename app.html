@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <title>Harvester.io</title>
@@ -10,6 +11,7 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@500;600;800&display=swap" rel="stylesheet">
 </head>
+
 <body>
 <header>
     <h1>HARVESTER.IO</h1>
@@ -19,7 +21,6 @@
             <span></span>
         </div>
     </div>
-
 </header>
 <div id="extraBtnZone"></div>
 <div class="wrapper">
@@ -38,8 +39,6 @@
                 </div>
                 <div class="settingsRow">
                     <div onclick="toggleProgress()">Remove/Show 'COMPLETED' layer</div>
-
-
                 </div>
                 <div class="settingsRow">
                     <label for="mySelect">Show crop:</label>
@@ -47,7 +46,6 @@
                         <option>None</option>
                     </select>
                 </div>
-
                 <div class="settingsRow">'COMPLETED' Layer:
                     <div onclick="setProgressLayerAngle('+')">+45°</div>
                     <div class="doneLayerPosition"></div>
@@ -66,38 +64,33 @@
                 <div onclick="sortBy('Progress','desc')">Progress ↓</div>
             </div>
             <div id="miscContent">
-                <label for="fileUpload" id="fileUploadName" class="file-upload-label settingsButton">Choose a CSV file</label>
-                    <input id="fileUpload" type="file" accept=".csv, .CSV, .txt" onchange="parseThisFile(event)">
-                <div onclick="generateCSV('file')">Show <span id="slider-value-display">1</span> random fields and download generated mockup CSV </div>
+                <label for="fileUpload" id="fileUploadName" class="file-upload-label settingsButton">Upload CSV file
+                    and display</label>
+                <input id="fileUpload" type="file" accept=".csv, .CSV, .txt" onchange="parseThisFile(event)">
+                <div onclick="generateCSV('file')">Show <span id="slider-value-display">1</span> random fields and
+                    download generated mockup CSV </div>
                 <div class="slider-container">
                     <label for="myRange" class="slider-value">Choose number of fields to generate:</label>
                     <input type="range" min="1" max="255" value="1" class="slider" id="myRange">
                 </div>
-                <div onclick="downloadDefaultCSV()">Download default .csv</div>
+                <div onclick="downloadDefaultCSV()">Download default 'demo' CSV</div>
                 <div id="logout-button">Log Out</div>
-                <p style="font-size: xx-small">Version v0.5</p>
+                <p style="font-size: xx-small">Version v0.5.4</p>
             </div>
-
-
         </div>
-
     </div>
     <main>
         <button id="open-modal" style="display: none"></button>
-
         <div id="modal-container">
             <div id="modal">
-
                 <button id="close-modal" style="display: none">Close</button>
             </div>
         </div>
         <div id="grid-container"></div>
-
     </main>
 </div>
-
 <script src="fieldCSV.js"></script>
 <script src="script.js"></script>
-
 </body>
+
 </html>
